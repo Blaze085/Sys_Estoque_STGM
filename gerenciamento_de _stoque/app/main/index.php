@@ -5,137 +5,439 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerenciamento de Estoque</title>
-    <link rel="stylesheet" type="text/css" href="assets/css/styleindex.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#005A24',
+                        secondary: '#FFA500',
+                        accent: '#E6F4EA',
+                        dark: '#1A3C34',
+                        light: '#F8FAF9',
+                        white: '#FFFFFF'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Poppins', 'sans-serif']
+                    },
+                    boxShadow: {
+                        card: '0 10px 15px -3px rgba(0, 90, 36, 0.1), 0 4px 6px -2px rgba(0, 90, 36, 0.05)',
+                        'card-hover': '0 20px 25px -5px rgba(0, 90, 36, 0.2), 0 10px 10px -5px rgba(0, 90, 36, 0.1)'
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.5s ease-out'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            background-color: #F8FAF9;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #005A24 0%, #1A3C34 100%);
+        }
+
+        .card-item {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            will-change: transform;
+        }
+
+        .card-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 165, 0, 0.1) 0%, rgba(0, 90, 36, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+
+        .card-item:hover::before {
+            opacity: 1;
+        }
+
+        .card-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 90, 36, 0.2), 0 10px 10px -5px rgba(0, 90, 36, 0.1);
+            border-color: #FFA500;
+        }
+
+        .card-icon {
+            transition: all 0.3s ease;
+            z-index: 2;
+            position: relative;
+        }
+
+        .card-item:hover .card-icon {
+            transform: scale(1.1);
+            color: #FFA500;
+        }
+
+        .card-item p {
+            z-index: 2;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .card-item:hover p {
+            color: #005A24;
+        }
+
+        .logo-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: translateY(-50%) translateX(-50%) scale(1); }
+            50% { transform: translateY(-50%) translateX(-50%) scale(1.05); }
+            100% { transform: translateY(-50%) translateX(-50%) scale(1); }
+        }
+
+        .social-icon {
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-3px);
+            filter: drop-shadow(0 4px 3px rgba(255, 165, 0, 0.3));
+        }
+
+        .page-title {
+            position: relative;
+            display: inline-block;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: #FFA500;
+            border-radius: 3px;
+        }
+
+        .card-shine {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 100%);
+            transform: skewX(-25deg);
+            transition: all 0.75s ease;
+            z-index: 2;
+        }
+
+        .card-item:hover .card-shine {
+            left: 150%;
+        }
+
+        .card-badge {
+            transition: all 0.3s ease;
+        }
+
+        .card-item:hover .card-badge {
+            background-color: #FFA500;
+            color: white;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 20px;
+            height: 20px;
+            background-color: #FF5252;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        /* New styles for header and footer */
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #FFA500;
+            transition: width 0.3s ease;
+        }
+
+ 
+
+      
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #FFA500;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            background-color: #E69500;
+            transform: scale(1.1);
+        }
+    </style>
 </head>
 
-<body>
-    <div class="header">
-        <img src="assets/imagens/logostgm.png" alt="User Icon">
+<body class="min-h-screen flex flex-col font-sans bg-light">
+    <!-- Improved Header -->
+    <header class="sticky top-0 bg-gradient-to-r from-primary to-dark text-white py-4 shadow-md z-50">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <a href="/" class="flex items-center">
+                    <img src="assets/imagens/logostgm.png" alt="Logo S" class="h-12 mr-3 transition-transform hover:scale-105">
+                    <span class="text-white font-heading text-xl font-semibold hidden md:inline">STGM Estoque</span>
+                </a>
+            </div>
+           
+           
+        </div>
+    </header>
+
+    <!-- Main content (unchanged) -->
+    <main class="container mx-auto px-4 py-8 md:py-12 flex-1 flex flex-col items-center justify-center">
+        <h1 class="text-primary text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center page-title tracking-tight font-heading">GERENCIAMENTO DE ESTOQUE</h1>
+        
+        <div class="w-full max-w-7xl grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 px-2">
+            <a href="view/estoque.php" target="_blank" class="group animate-fade-in">
+                <div class="card-item bg-white border-2 border-primary rounded-xl md:rounded-2xl shadow-card w-full h-48 md:h-56 flex flex-col items-center justify-center p-4 md:p-6 relative">
+                    <div class="card-shine"></div>
+                    <div class="card-badge absolute top-0 right-0 bg-accent w-10 h-10 md:w-12 md:h-12 rounded-bl-xl md:rounded-bl-2xl rounded-tr-xl md:rounded-tr-2xl flex items-center justify-center">
+                        <span class="text-primary text-xs font-bold">1</span>
     </div>
-    <div class="container">
-        <h1>GERENCIAMENTO DE ESTOQUE</h1>
-        <div class="cards-wrapper" id="cardsWrapper">
-            <a href="view/estoque.php" target="_blank">
-                <div class="card">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#000">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6z" />
-                    </svg>
-                    <p>VISUALIZAR ESTOQUE</p>
+                    <i class="fas fa-boxes card-icon text-4xl md:text-5xl text-primary mb-4 md:mb-5"></i>
+                    <p class="text-secondary font-bold text-center text-base md:text-lg leading-tight">VISUALIZAR ESTOQUE</p>
                 </div>
             </a>
-            <a href="view/adicionarproduto.php" target="_blank">
-                <div class="card">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#000">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
-                    </svg>
-                    <p>ADICIONAR PRODUTO</p>
+            
+            <a href="view/adicionarproduto.php" target="_blank" class="group animate-fade-in" style="animation-delay: 0.1s">
+                <div class="card-item bg-white border-2 border-primary rounded-xl md:rounded-2xl shadow-card w-full h-48 md:h-56 flex flex-col items-center justify-center p-4 md:p-6 relative">
+                    <div class="card-shine"></div>
+                    <div class="card-badge absolute top-0 right-0 bg-accent w-10 h-10 md:w-12 md:h-12 rounded-bl-xl md:rounded-bl-2xl rounded-tr-xl md:rounded-tr-2xl flex items-center justify-center">
+                        <span class="text-primary text-xs font-bold">2</span>
+                    </div>
+                    <i class="fas fa-plus-circle card-icon text-4xl md:text-5xl text-primary mb-4 md:mb-5"></i>
+                    <p class="text-secondary font-bold text-center text-base md:text-lg leading-tight">ADICIONAR PRODUTO</p>
                 </div>
             </a>
-            <a href="view/solicitar.php" target="_blank">
-                <div class="card">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#000">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
-                    </svg>
-                    <p>SOLICITAR PRODUTO</p>
+            
+            <a href="view/solicitar.php" target="_blank" class="group animate-fade-in" style="animation-delay: 0.2s">
+                <div class="card-item bg-white border-2 border-primary rounded-xl md:rounded-2xl shadow-card w-full h-48 md:h-56 flex flex-col items-center justify-center p-4 md:p-6 relative">
+                    <div class="card-shine"></div>
+                    <div class="card-badge absolute top-0 right-0 bg-accent w-10 h-10 md:w-12 md:h-12 rounded-bl-xl md:rounded-bl-2xl rounded-tr-xl md:rounded-tr-2xl flex items-center justify-center">
+                        <span class="text-primary text-xs font-bold">3</span>
+                    </div>
+                    <i class="fas fa-clipboard-list card-icon text-4xl md:text-5xl text-primary mb-4 md:mb-5"></i>
+                    <p class="text-secondary font-bold text-center text-base md:text-lg leading-tight">SOLICITAR PRODUTO</p>
                 </div>
             </a>
-            <a href="view/solicitarnovproduto.html" target="_blank">
-                <div class="card">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#000">
-                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
-                    </svg>
-                    <p>SOLICITAR NOVOS SUPRIMENTOS</p>
+            
+            <a href="view/solicitarnovproduto.html" target="_blank" class="group animate-fade-in" style="animation-delay: 0.3s">
+                <div class="card-item bg-white border-2 border-primary rounded-xl md:rounded-2xl shadow-card w-full h-48 md:h-56 flex flex-col items-center justify-center p-4 md:p-6 relative">
+                    <div class="card-shine"></div>
+                    <div class="card-badge absolute top-0 right-0 bg-accent w-10 h-10 md:w-12 md:h-12 rounded-bl-xl md:rounded-bl-2xl rounded-tr-xl md:rounded-tr-2xl flex items-center justify-center">
+                        <span class="text-primary text-xs font-bold">4</span>
+                    </div>
+                    <i class="fas fa-truck-loading card-icon text-4xl md:text-5xl text-primary mb-4 md:mb-5"></i>
+                    <p class="text-secondary font-bold text-center text-base md:text-lg leading-tight">SOLICITAR NOVOS SUPRIMENTOS</p>
                 </div>
             </a>
-            <a href="view/relatorios.php" target="_blank">
-                <div class="card">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#000">
-                        <path d="M6 2v6h.01L6 8.01 10 12l-4 4 .01.01H6V22h12v-5.99h-.01L18 16l-4-4 4-3.99-.01-.01H18V2H6zm10 14.5V20H8v-3.5l4-4 4 4zm-4-5l-4-4V4h8v3.5l-4 4z" />
-                    </svg>
-                    <p>GERAR RELATÓRIOS</p>
+            
+            <a href="view/relatorios.php" target="_blank" class="group animate-fade-in" style="animation-delay: 0.4s">
+                <div class="card-item bg-white border-2 border-primary rounded-xl md:rounded-2xl shadow-card w-full h-48 md:h-56 flex flex-col items-center justify-center p-4 md:p-6 relative">
+                    <div class="card-shine"></div>
+                    <div class="card-badge absolute top-0 right-0 bg-accent w-10 h-10 md:w-12 md:h-12 rounded-bl-xl md:rounded-bl-2xl rounded-tr-xl md:rounded-tr-2xl flex items-center justify-center">
+                        <span class="text-primary text-xs font-bold">5</span>
+                    </div>
+                    <i class="fas fa-chart-bar card-icon text-4xl md:text-5xl text-primary mb-4 md:mb-5"></i>
+                    <p class="text-secondary font-bold text-center text-base md:text-lg leading-tight">GERAR RELATÓRIOS</p>
                 </div>
             </a>
         </div>
+    </main>
+
+    <footer class="bg-gradient-to-r from-primary to-dark text-white py-6 mt-8">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Sobre a Escola -->
+            <div>
+                <h3 class="font-heading text-lg font-semibold mb-3 flex items-center">
+                    <i class="fas fa-school mr-2 text-sm"></i>
+                    EEEP STGM
+                </h3>
+                <p class="text-xs leading-relaxed">
+                    <i class="fas fa-map-marker-alt mr-1 text-xs"></i> 
+                    AV. Marta Maria Carvalho Nojoza, SN<br>
+                    Maranguape - CE
+                </p>
     </div>
-    <div class="footer">
+
+            <!-- Contato -->
         <div>
-            © 2024 Eeep salaberga torquato gomes de matos.
-            Todos os direitos reservados. Sistema Educacional
-            Integrado | CNPJ: 07.954.514/0256-24 | AV. Marta
-            Maria Carvalho Nojoza, SN - Outra Banda, Maranguape
-            - CE Tel: (85) 3341-3990 | E-
-            mail: eeepsantariamata@gmail.com | Horário de
-            Atendimento: Segunda a Sexta, das 7h às 17h
+                <h3 class="font-heading text-lg font-semibold mb-3 flex items-center">
+                    <i class="fas fa-address-book mr-2 text-sm"></i>
+                    Contato
+                </h3>
+                <div class="text-xs leading-relaxed space-y-1">
+                    <p class="flex items-start">
+                        <i class="fas fa-phone-alt mr-1 mt-0.5 text-xs"></i>
+                        (85) 3341-3990
+                    </p>
+                    <p class="flex items-start">
+                        <i class="fas fa-envelope mr-1 mt-0.5 text-xs"></i>
+                        eeepsantariamata@gmail.com
+                    </p>
+                </div>
         </div>
+
+            <!-- Desenvolvedores em Grid -->
         <div>
-            Desenvolvedores
-            <a href="https://www.instagram.com/dudu.limasx/?next=%2F" target="_blank">
-                <button class="developer-button">
-                    <svg class="instagram-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#f5c518">
-                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.326 3.608 1.301.975.975 1.24 2.242 1.301 3.608.058 1.265.07 1.645.07 4.849s-.012 3.584-.07 4.85c-.062 1.366-.326 2.633-1.301 3.608-.975.975-2.242 1.24-3.608 1.301-1.265.058-1.645.07-4.849.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.326-3.608-1.301-.975-.975-1.24-2.242-1.301-3.608-.058-1.265-.07-1.645-.07-4.849s.012-3.584.07-4.85c.062-1.366.326-2.633 1.301-3.608.975-.975 2.242-1.24 3.608-1.301 1.265-.058 1.645-.07 4.849-.07m0-2.163c-3.259 0-3.667.014-4.947.072-1.453.066-2.758.39-3.842 1.474-1.084 1.084-1.408 2.389-1.474 3.842-.058 1.28-.072 1.688-.072 4.947s.014 3.667.072 4.947c.066 1.453.39 2.758 1.474 3.842 1.084 1.084 2.389 1.408 3.842 1.474 1.28.058 1.688.072 4.947.072s3.667-.014 4.947-.072c1.453-.066 2.758-.39 3.842-1.474 1.084-1.084 1.408-2.389 1.474-3.842.058-1.28.072-1.688.072-4.947s-.014-3.667-.072-4.947c-.066-1.453-.39-2.758-1.474-3.842-1.084-1.084-2.389-1.408-3.842-1.474-1.28-.058-1.688-.072-4.947-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.441s.645 1.441 1.441 1.441 1.441-.645 1.441-1.441-.645-1.441-1.441-1.441z" />
-                    </svg>
-                    Carlos E. Costa
-                </button>
-            </a>
-            <a href="ttps://www.instagram.com/millenafreires_/?next=%2F" target="_blank">
-                <button class="developer-button">
-                    <svg class="instagram-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#f5c518">
-                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.326 3.608 1.301.975.975 1.24 2.242 1.301 3.608.058 1.265.07 1.645.07 4.849s-.012 3.584-.07 4.85c-.062 1.366-.326 2.633-1.301 3.608-.975.975-2.242 1.24-3.608 1.301-1.265.058-1.645.07-4.849.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.326-3.608-1.301-.975-.975-1.24-2.242-1.301-3.608-.058-1.265-.07-1.645-.07-4.849s.012-3.584.07-4.85c.062-1.366.326-2.633 1.301-3.608.975-.975 2.242-1.24 3.608-1.301 1.265-.058 1.645-.07 4.849-.07m0-2.163c-3.259 0-3.667.014-4.947.072-1.453.066-2.758.39-3.842 1.474-1.084 1.084-1.408 2.389-1.474 3.842-.058 1.28-.072 1.688-.072 4.947s.014 3.667.072 4.947c.066 1.453.39 2.758 1.474 3.842 1.084 1.084 2.389 1.408 3.842 1.474 1.28.058 1.688.072 4.947.072s3.667-.014 4.947-.072c1.453-.066 2.758-.39 3.842-1.474 1.084-1.084 1.408-2.389 1.474-3.842.058-1.28.072-1.688.072-4.947s-.014-3.667-.072-4.947c-.066-1.453-.39-2.758-1.474-3.842-1.084-1.084-2.389-1.408-3.842-1.474-1.28-.058-1.688-.072-4.947-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.441s.645 1.441 1.441 1.441 1.441-.645 1.441-1.441-.645-1.441-1.441-1.441z" />
-                    </svg>
-                    Millena Freires
-                </button>
-            </a>
-            <a href="https://www.instagram.com/matheusz.mf/" target="_blank">
-                <button class="developer-button">
-                    <svg class="instagram-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#f5c518">
-                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.326 3.608 1.301.975.975 1.24 2.242 1.301 3.608.058 1.265.07 1.645.07 4.849s-.012 3.584-.07 4.85c-.062 1.366-.326 2.633-1.301 3.608-.975.975-2.242 1.24-3.608 1.301-1.265.058-1.645.07-4.849.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.326-3.608-1.301-.975-.975-1.24-2.242-1.301-3.608-.058-1.265-.07-1.645-.07-4.849s.012-3.584.07-4.85c.062-1.366.326-2.633 1.301-3.608.975-.975 2.242-1.24 3.608-1.301 1.265-.058 1.645-.07 4.849-.07m0-2.163c-3.259 0-3.667.014-4.947.072-1.453.066-2.758.39-3.842 1.474-1.084 1.084-1.408 2.389-1.474 3.842-.058 1.28-.072 1.688-.072 4.947s.014 3.667.072 4.947c.066 1.453.39 2.758 1.474 3.842 1.084 1.084 2.389 1.408 3.842 1.474 1.28.058 1.688.072 4.947.072s3.667-.014 4.947-.072c1.453-.066 2.758-.39 3.842-1.474 1.084-1.084 1.408-2.389 1.474-3.842.058-1.28.072-1.688.072-4.947s-.014-3.667-.072-4.947c-.066-1.453-.39-2.758-1.474-3.842-1.084-1.084-2.389-1.408-3.842-1.474-1.28-.058-1.688-.072-4.947-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.441s.645 1.441 1.441 1.441 1.441-.645 1.441-1.441-.645-1.441-1.441-1.441z" />
-                    </svg>
-                    Matheus Machado
-                </button>
-            </a>
-            <a href="https://www.instagram.com/yanlucas10__/" target="_blank">
-                <button class="developer-button">
-                    <svg class="instagram-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#f5c518">
-                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.326 3.608 1.301.975.975 1.24 2.242 1.301 3.608.058 1.265.07 1.645.07 4.849s-.012 3.584-.07 4.85c-.062 1.366-.326 2.633-1.301 3.608-.975.975-2.242 1.24-3.608 1.301-1.265.058-1.645.07-4.849.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.326-3.608-1.301-.975-.975-1.24-2.242-1.301-3.608-.058-1.265-.07-1.645-.07-4.849s.012-3.584.07-4.85c.062-1.366.326-2.633 1.301-3.608.975-.975 2.242-1.24 3.608-1.301 1.265-.058 1.645-.07 4.849-.07m0-2.163c-3.259 0-3.667.014-4.947.072-1.453.066-2.758.39-3.842 1.474-1.084 1.084-1.408 2.389-1.474 3.842-.058 1.28-.072 1.688-.072 4.947s.014 3.667.072 4.947c.066 1.453.39 2.758 1.474 3.842 1.084 1.084 2.389 1.408 3.842 1.474 1.28.058 1.688.072 4.947.072s3.667-.014 4.947-.072c1.453-.066 2.758-.39 3.842-1.474 1.084-1.084 1.408-2.389 1.474-3.842.058-1.28.072-1.688.072-4.947s-.014-3.667-.072-4.947c-.066-1.453-.39-2.758-1.474-3.842-1.084-1.084-2.389-1.408-3.842-1.474-1.28-.058-1.688-.072-4.947-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.441s.645 1.441 1.441 1.441 1.441-.645 1.441-1.441-.645-1.441-1.441-1.441z" />
-                    </svg>
+                <h3 class="font-heading text-lg font-semibold mb-3 flex items-center">
+                    <i class="fas fa-code mr-2 text-sm"></i>
+                    Dev Team
+                </h3>
+                <div class="grid grid-cols-2 gap-2">
+                    <a href="https://www.instagram.com/dudu.limasx/" target="_blank" 
+                       class="text-xs flex items-center hover:text-secondary transition-colors">
+                        <i class="fab fa-instagram mr-1 text-xs"></i>
+                        Carlos E.
+                    </a>
+                    <a href="https://www.instagram.com/millenafreires_/" target="_blank" 
+                       class="text-xs flex items-center hover:text-secondary transition-colors">
+                        <i class="fab fa-instagram mr-1 text-xs"></i>
+                        Millena F.
+                    </a>
+                    <a href="https://www.instagram.com/matheusz.mf/" target="_blank" 
+                       class="text-xs flex items-center hover:text-secondary transition-colors">
+                        <i class="fab fa-instagram mr-1 text-xs"></i>
+                        Matheus M.
+                    </a>
+                    <a href="https://www.instagram.com/yanlucas10__/" target="_blank" 
+                       class="text-xs flex items-center hover:text-secondary transition-colors">
+                        <i class="fab fa-instagram mr-1 text-xs"></i>
                     Ian Lucas
-                </button>
             </a>
+                </div>
+            </div>
         </div>
-        <div>
-            FÉLIX EU TE AMO
+
+        <!-- Rodapé inferior compacto -->
+        <div class="border-t border-white/20 pt-4 mt-4 text-center">
+            <p class="text-xs">
+                © 2024 STGM v1.2.0 | Desenvolvido por alunos EEEP STGM
+            </p>
         </div>
     </div>
+</footer>
 
     <script>
-        const cardsWrapper = document.getElementById('cardsWrapper');
-        let isDown = false;
-        let startX;
-        let scrollLeft;
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hamburger menu toggle
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+            
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                hamburger.classList.toggle('open');
+            });
 
-        cardsWrapper.addEventListener('mousedown', (e) => {
-            isDown = true;
-            cardsWrapper.style.cursor = 'grabbing';
-            startX = e.pageX - cardsWrapper.offsetLeft;
-            scrollLeft = cardsWrapper.scrollLeft;
-        });
+            // Back to top button visibility
+            const backToTop = document.querySelector('.back-to-top');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTop.classList.add('visible');
+                    backToTop.classList.remove('hidden');
+                } else {
+                    backToTop.classList.remove('visible');
+                    backToTop.classList.add('hidden');
+                }
+            });
 
-        cardsWrapper.addEventListener('mouseleave', () => {
-            isDown = false;
-            cardsWrapper.style.cursor = 'grab';
-        });
-
-        cardsWrapper.addEventListener('mouseup', () => {
-            isDown = false;
-            cardsWrapper.style.cursor = 'grab';
-        });
-
-        cardsWrapper.addEventListener('mousemove', (e) => {
-            if (!isDown) return;
-            e.preventDefault();
-            const x = e.pageX - cardsWrapper.offsetLeft;
-            const walk = (x - startX) * 2;
-            cardsWrapper.scrollLeft = scrollLeft - walk;
+            // Card entrance animation
+            const cards = document.querySelectorAll('.card-item');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('translate-y-0', 'opacity-100');
+                    card.classList.remove('translate-y-4', 'opacity-0');
+                }, index * 100);
+            });
+            
+            // Lazy loading for images
+            if ('loading' in HTMLImageElement.prototype) {
+                const images = document.querySelectorAll('img[loading="lazy"]');
+                images.forEach(img => {
+                    img.loading = 'lazy';
+                });
+            }
+            
+            // Preload linked pages
+            const links = document.querySelectorAll('a[target="_blank"]');
+            links.forEach(link => {
+                link.addEventListener('mouseover', () => {
+                    const href = link.getAttribute('href');
+                    if (href) {
+                        fetch(href, { mode: 'no-cors' })
+                            .catch(() => {});
+                    }
+                });
+            });
         });
     </script>
 </body>
