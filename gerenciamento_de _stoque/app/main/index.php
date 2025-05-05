@@ -186,6 +186,109 @@
             font-weight: bold;
         }
 
+        /* Estilos para o header melhorado */
+        .header-nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+        }
+        
+        .header-nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .header-nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background-color: #FFA500;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .header-nav-link:hover::after {
+            width: 80%;
+        }
+        
+        .header-nav-link.active {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .header-nav-link.active::after {
+            width: 80%;
+        }
+        
+        .mobile-menu-button {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .header-nav {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: linear-gradient(135deg, #005A24 0%, #1A3C34 100%);
+                padding: 1rem;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                z-index: 40;
+            }
+            
+            .header-nav.show {
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .header-nav-link {
+                padding: 0.75rem 1rem;
+                text-align: center;
+                margin: 0.25rem 0;
+            }
+            
+            .mobile-menu-button {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                width: 30px;
+                height: 21px;
+                background: transparent;
+                border: none;
+                cursor: pointer;
+                padding: 0;
+                z-index: 10;
+            }
+            
+            .mobile-menu-button span {
+                width: 100%;
+                height: 3px;
+                background-color: white;
+                border-radius: 10px;
+                transition: all 0.3s linear;
+                position: relative;
+                transform-origin: 1px;
+            }
+            
+            .mobile-menu-button span:first-child.active {
+                transform: rotate(45deg);
+                top: 0px;
+            }
+            
+            .mobile-menu-button span:nth-child(2).active {
+                opacity: 0;
+            }
+            
+            .mobile-menu-button span:nth-child(3).active {
+                transform: rotate(-45deg);
+                top: -1px;
+            }
+        }
+
         /* New styles for header and footer */
         .nav-link {
             position: relative;
@@ -238,76 +341,114 @@
 
 <body class="min-h-screen flex flex-col font-sans bg-light">
     <!-- Improved Header -->
-    <header class="sticky top-0 bg-gradient-to-r from-primary to-dark text-white py-4 shadow-md z-50">
+    <header class="sticky top-0 bg-gradient-to-r from-primary to-dark text-white py-4 shadow-lg z-50">
         <div class="container mx-auto px-4 flex justify-between items-center">
             <div class="flex items-center">
-                <a href="/" class="flex items-center">
+                <a href="index.php" class="flex items-center">
                     <img src="assets/imagens/logostgm.png" alt="Logo S" class="h-12 mr-3 transition-transform hover:scale-105">
                     <span class="text-white font-heading text-xl font-semibold hidden md:inline">STGM Estoque</span>
                 </a>
             </div>
-           
-           
+            
+            <button class="mobile-menu-button focus:outline-none" aria-label="Menu" id="menuButton">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <nav class="header-nav md:flex items-center space-x-1" id="headerNav">
+                <a href="index.php" class="header-nav-link active flex items-center">
+                    <i class="fas fa-home mr-2"></i>
+                    <span>Início</span>
+                </a>
+                <a href="view/estoque.php" class="header-nav-link flex items-center">
+                    <i class="fas fa-boxes mr-2"></i>
+                    <span>Estoque</span>
+                </a>
+                <a href="view/adicionarproduto.php" class="header-nav-link flex items-center">
+                    <i class="fas fa-plus-circle mr-2"></i>
+                    <span>Adicionar</span>
+                </a>
+                <div class="relative group">
+                    <a class="header-nav-link flex items-center cursor-pointer">
+                        <i class="fas fa-clipboard-list mr-2"></i>
+                        <span>Solicitar</span>
+                        <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                    </a>
+                    <div class="absolute left-0 mt-1 w-48 bg-white rounded-lg shadow-lg overflow-hidden transform scale-0 group-hover:scale-100 transition-transform origin-top z-50">
+                        <a href="view/solicitar.php" class="block px-4 py-2 text-primary hover:bg-primary hover:text-white transition-colors">
+                            <i class="fas fa-clipboard-check mr-2"></i>Solicitar Produto
+                        </a>
+                        <a href="view/solicitarnovproduto.php" class="block px-4 py-2 text-primary hover:bg-primary hover:text-white transition-colors">
+                            <i class="fas fa-plus-square mr-2"></i>Solicitar Novo Produto
+                        </a>
+                    </div>
+                </div>
+                <a href="view/relatorios.php" class="header-nav-link flex items-center">
+                    <i class="fas fa-chart-bar mr-2"></i>
+                    <span>Relatórios</span>
+                </a>
+            </nav>
         </div>
     </header>
 
     <!-- Main content (unchanged) -->
     <main class="container mx-auto px-4 py-8 md:py-12 flex-1 flex flex-col items-center justify-center">
-        <h1 class="text-primary text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center page-title tracking-tight font-heading">GERENCIAMENTO DE ESTOQUE</h1>
+        <h1 class="text-primary text-3xl md:text-4xl font-bold mb-12 md:mb-16 mt-6 md:mt-8 text-center page-title tracking-tight font-heading">GERENCIAMENTO DE ESTOQUE</h1>
         
         <div class="w-full max-w-7xl grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 px-2">
-            <a href="view/estoque.php" target="_blank" class="group animate-fade-in">
+            <a href="view/estoque.php" class="group animate-fade-in">
                 <div class="card-item bg-white border-2 border-primary rounded-xl md:rounded-2xl shadow-card w-full h-48 md:h-56 flex flex-col items-center justify-center p-4 md:p-6 relative">
                     <div class="card-shine"></div>
                     <div class="card-badge absolute top-0 right-0 bg-accent w-10 h-10 md:w-12 md:h-12 rounded-bl-xl md:rounded-bl-2xl rounded-tr-xl md:rounded-tr-2xl flex items-center justify-center">
                         <span class="text-primary text-xs font-bold">1</span>
     </div>
                     <i class="fas fa-boxes card-icon text-4xl md:text-5xl text-primary mb-4 md:mb-5"></i>
-                    <p class="text-secondary font-bold text-center text-base md:text-lg leading-tight">VISUALIZAR ESTOQUE</p>
+                    <p class="text-secondary font-bold text-center text-base md:text-lg leading-tight">ESTOQUE</p>
                 </div>
             </a>
             
-            <a href="view/adicionarproduto.php" target="_blank" class="group animate-fade-in" style="animation-delay: 0.1s">
+            <a href="view/adicionarproduto.php"  class="group animate-fade-in" style="animation-delay: 0.1s">
                 <div class="card-item bg-white border-2 border-primary rounded-xl md:rounded-2xl shadow-card w-full h-48 md:h-56 flex flex-col items-center justify-center p-4 md:p-6 relative">
                     <div class="card-shine"></div>
                     <div class="card-badge absolute top-0 right-0 bg-accent w-10 h-10 md:w-12 md:h-12 rounded-bl-xl md:rounded-bl-2xl rounded-tr-xl md:rounded-tr-2xl flex items-center justify-center">
                         <span class="text-primary text-xs font-bold">2</span>
                     </div>
                     <i class="fas fa-plus-circle card-icon text-4xl md:text-5xl text-primary mb-4 md:mb-5"></i>
-                    <p class="text-secondary font-bold text-center text-base md:text-lg leading-tight">ADICIONAR PRODUTO</p>
+                    <p class="text-secondary font-bold text-center text-base md:text-lg leading-tight">ADICIONAR</p>
                 </div>
             </a>
             
-            <a href="view/solicitar.php" target="_blank" class="group animate-fade-in" style="animation-delay: 0.2s">
+            <a href="view/solicitar.php"  class="group animate-fade-in" style="animation-delay: 0.2s">
                 <div class="card-item bg-white border-2 border-primary rounded-xl md:rounded-2xl shadow-card w-full h-48 md:h-56 flex flex-col items-center justify-center p-4 md:p-6 relative">
                     <div class="card-shine"></div>
                     <div class="card-badge absolute top-0 right-0 bg-accent w-10 h-10 md:w-12 md:h-12 rounded-bl-xl md:rounded-bl-2xl rounded-tr-xl md:rounded-tr-2xl flex items-center justify-center">
                         <span class="text-primary text-xs font-bold">3</span>
                     </div>
                     <i class="fas fa-clipboard-list card-icon text-4xl md:text-5xl text-primary mb-4 md:mb-5"></i>
-                    <p class="text-secondary font-bold text-center text-base md:text-lg leading-tight">SOLICITAR PRODUTO</p>
+                    <p class="text-secondary font-bold text-center text-base md:text-lg leading-tight">SOLICITAR</p>
                 </div>
             </a>
             
-            <a href="view/solicitarnovproduto.html" target="_blank" class="group animate-fade-in" style="animation-delay: 0.3s">
+            <a href="view/solicitarnovproduto.php"  class="group animate-fade-in" style="animation-delay: 0.3s">
                 <div class="card-item bg-white border-2 border-primary rounded-xl md:rounded-2xl shadow-card w-full h-48 md:h-56 flex flex-col items-center justify-center p-4 md:p-6 relative">
                     <div class="card-shine"></div>
                     <div class="card-badge absolute top-0 right-0 bg-accent w-10 h-10 md:w-12 md:h-12 rounded-bl-xl md:rounded-bl-2xl rounded-tr-xl md:rounded-tr-2xl flex items-center justify-center">
                         <span class="text-primary text-xs font-bold">4</span>
                     </div>
                     <i class="fas fa-truck-loading card-icon text-4xl md:text-5xl text-primary mb-4 md:mb-5"></i>
-                    <p class="text-secondary font-bold text-center text-base md:text-lg leading-tight">SOLICITAR NOVOS SUPRIMENTOS</p>
+                    <p class="text-secondary font-bold text-center text-base md:text-lg leading-tight">SUPRIMENTOS</p>
                 </div>
             </a>
             
-            <a href="view/relatorios.php" target="_blank" class="group animate-fade-in" style="animation-delay: 0.4s">
+            <a href="view/relatorios.php"  class="group animate-fade-in" style="animation-delay: 0.4s">
                 <div class="card-item bg-white border-2 border-primary rounded-xl md:rounded-2xl shadow-card w-full h-48 md:h-56 flex flex-col items-center justify-center p-4 md:p-6 relative">
                     <div class="card-shine"></div>
                     <div class="card-badge absolute top-0 right-0 bg-accent w-10 h-10 md:w-12 md:h-12 rounded-bl-xl md:rounded-bl-2xl rounded-tr-xl md:rounded-tr-2xl flex items-center justify-center">
                         <span class="text-primary text-xs font-bold">5</span>
                     </div>
                     <i class="fas fa-chart-bar card-icon text-4xl md:text-5xl text-primary mb-4 md:mb-5"></i>
-                    <p class="text-secondary font-bold text-center text-base md:text-lg leading-tight">GERAR RELATÓRIOS</p>
+                    <p class="text-secondary font-bold text-center text-base md:text-lg leading-tight">RELATÓRIOS</p>
                 </div>
             </a>
         </div>
@@ -389,14 +530,44 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Menu mobile toggle
+            const menuButton = document.getElementById('menuButton');
+            const headerNav = document.getElementById('headerNav');
+            
+            if (menuButton && headerNav) {
+                menuButton.addEventListener('click', function() {
+                    headerNav.classList.toggle('show');
+                    
+                    // Animação para o botão do menu
+                    const spans = menuButton.querySelectorAll('span');
+                    spans.forEach(span => {
+                        span.classList.toggle('active');
+                    });
+                });
+            }
+            
+            // Adicionar suporte para dropdown no mobile
+            const dropdownToggle = document.querySelector('.group > a');
+            const dropdownMenu = document.querySelector('.group > div');
+            
+            if (window.innerWidth <= 768 && dropdownToggle && dropdownMenu) {
+                dropdownToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    dropdownMenu.classList.toggle('scale-0');
+                    dropdownMenu.classList.toggle('scale-100');
+                });
+            }
+
             // Hamburger menu toggle
             const hamburger = document.querySelector('.hamburger');
             const navLinks = document.querySelector('.nav-links');
             
-            hamburger.addEventListener('click', () => {
-                navLinks.classList.toggle('active');
-                hamburger.classList.toggle('open');
-            });
+            if (hamburger && navLinks) {
+                hamburger.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                    hamburger.classList.toggle('open');
+                });
+            }
 
             // Back to top button visibility
             const backToTop = document.querySelector('.back-to-top');

@@ -209,12 +209,115 @@
             background-color: #FFA500;
             border-radius: 4px;
         }
+        
+        /* Estilos para o header melhorado */
+        .header-nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+        }
+        
+        .header-nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .header-nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background-color: #FFA500;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .header-nav-link:hover::after {
+            width: 80%;
+        }
+        
+        .header-nav-link.active {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .header-nav-link.active::after {
+            width: 80%;
+        }
+        
+        .mobile-menu-button {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .header-nav {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: linear-gradient(135deg, #005A24 0%, #1A3C34 100%);
+                padding: 1rem;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                z-index: 40;
+            }
+            
+            .header-nav.show {
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .header-nav-link {
+                padding: 0.75rem 1rem;
+                text-align: center;
+                margin: 0.25rem 0;
+            }
+            
+            .mobile-menu-button {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                width: 30px;
+                height: 21px;
+                background: transparent;
+                border: none;
+                cursor: pointer;
+                padding: 0;
+                z-index: 10;
+            }
+            
+            .mobile-menu-button span {
+                width: 100%;
+                height: 3px;
+                background-color: white;
+                border-radius: 10px;
+                transition: all 0.3s linear;
+                position: relative;
+                transform-origin: 1px;
+            }
+            
+            .mobile-menu-button span:first-child.active {
+                transform: rotate(45deg);
+                top: 0px;
+            }
+            
+            .mobile-menu-button span:nth-child(2).active {
+                opacity: 0;
+            }
+            
+            .mobile-menu-button span:nth-child(3).active {
+                transform: rotate(-45deg);
+                top: -1px;
+            }
+        }
     </style>
 </head>
 
 <body class="min-h-screen flex flex-col font-sans bg-light">
-    <!-- Header -->
-    <header class="sticky top-0 bg-gradient-to-r from-primary to-dark text-white py-4 shadow-md z-50">
+    <!-- Header Melhorado -->
+    <header class="sticky top-0 bg-gradient-to-r from-primary to-dark text-white py-4 shadow-lg z-50">
         <div class="container mx-auto px-4 flex justify-between items-center">
             <div class="flex items-center">
                 <a href="../index.php" class="flex items-center" aria-label="Voltar para a página inicial">
@@ -222,15 +325,55 @@
                     <span class="text-white font-heading text-xl font-semibold hidden md:inline">STGM Estoque</span>
                 </a>
             </div>
-           
+            
+            <button class="mobile-menu-button focus:outline-none" aria-label="Menu" id="menuButton">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <nav class="header-nav md:flex items-center space-x-1" id="headerNav">
+                <a href="../index.php" class="header-nav-link flex items-center">
+                    <i class="fas fa-home mr-2"></i>
+                    <span>Início</span>
+                </a>
+                <a href="estoque.php" class="header-nav-link flex items-center">
+                    <i class="fas fa-boxes mr-2"></i>
+                    <span>Estoque</span>
+                </a>
+                <a href="adicionarproduto.php" class="header-nav-link active flex items-center">
+                    <i class="fas fa-plus-circle mr-2"></i>
+                    <span>Adicionar</span>
+                </a>
+                <div class="relative group">
+                    <a class="header-nav-link flex items-center cursor-pointer">
+                        <i class="fas fa-clipboard-list mr-2"></i>
+                        <span>Solicitar</span>
+                        <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                    </a>
+                    <div class="absolute left-0 mt-1 w-48 bg-white rounded-lg shadow-lg overflow-hidden transform scale-0 group-hover:scale-100 transition-transform origin-top z-50">
+                        <a href="solicitar.php" class="block px-4 py-2 text-primary hover:bg-primary hover:text-white transition-colors">
+                            <i class="fas fa-clipboard-check mr-2"></i>Solicitar Produto
+                        </a>
+                        <a href="solicitarnovproduto.php" class="block px-4 py-2 text-primary hover:bg-primary hover:text-white transition-colors">
+                            <i class="fas fa-plus-square mr-2"></i>Solicitar Novo Produto
+                        </a>
+                    </div>
+                </div>
+                <a href="relatorios.php" class="header-nav-link flex items-center">
+                    <i class="fas fa-chart-bar mr-2"></i>
+                    <span>Relatórios</span>
+                </a>
+            </nav>
         </div>
     </header>
 
-    <main class="container mx-auto px-4 py-8 md:py-12 flex-1 flex flex-col justify-center items-center">
-    <h1 class="text-primary text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center page-title tracking-tight font-heading animate-fade-in">
-            ADICIONAR PRODUTO
-        </h1>
-        <div class="bg-white rounded-xl shadow-lg p-8 max-w-2xl w-full border-2 border-primary animate-fade-in">
+    <main class="container mx-auto px-4 py-8 md:py-12 flex-1">
+        <div class="text-center mb-10">
+            <h1 class="text-primary text-3xl md:text-4xl font-bold mb-8 md:mb-6 text-center page-title tracking-tight font-heading inline-block mx-auto">ADICIONAR PRODUTO</h1>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-lg p-8 max-w-2xl w-full border-2 border-primary mx-auto">
             <form action="../control/controllerAdicionarProduto.php" method="POST" class="space-y-6">
                 <div class="space-y-4">
                     <div>
@@ -396,14 +539,44 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Menu mobile toggle
+            const menuButton = document.getElementById('menuButton');
+            const headerNav = document.getElementById('headerNav');
+            
+            if (menuButton && headerNav) {
+                menuButton.addEventListener('click', function() {
+                    headerNav.classList.toggle('show');
+                    
+                    // Animação para o botão do menu
+                    const spans = menuButton.querySelectorAll('span');
+                    spans.forEach(span => {
+                        span.classList.toggle('active');
+                    });
+                });
+            }
+            
+            // Adicionar suporte para dropdown no mobile
+            const dropdownToggle = document.querySelector('.group > a');
+            const dropdownMenu = document.querySelector('.group > div');
+            
+            if (window.innerWidth <= 768) {
+                dropdownToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    dropdownMenu.classList.toggle('scale-0');
+                    dropdownMenu.classList.toggle('scale-100');
+                });
+            }
+            
             // Hamburger menu toggle
             const hamburger = document.querySelector('.hamburger');
             const navLinks = document.querySelector('.nav-links');
             
-            hamburger.addEventListener('click', () => {
-                navLinks.classList.toggle('active');
-                hamburger.classList.toggle('open');
-            });
+            if (hamburger && navLinks) {
+                hamburger.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                    hamburger.classList.toggle('open');
+                });
+            }
 
             // Back to top button visibility
             const backToTop = document.querySelector('.back-to-top');

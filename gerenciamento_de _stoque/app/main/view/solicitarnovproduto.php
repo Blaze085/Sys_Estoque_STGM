@@ -1,22 +1,10 @@
-<?php
- if(isset($_GET['resultado'])){
-
-}else{
-    header('location:../control/controllerGerarRelatorios.php');
-}
-
-
-
-
-?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerar Relatórios</title>
+    <title>Solicitar Novo Produto</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
@@ -70,6 +58,45 @@
             background: linear-gradient(135deg, #005A24 0%, #1A3C34 100%);
         }
 
+        .card {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            will-change: transform;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 90, 36, 0.2), 0 10px 10px -5px rgba(0, 90, 36, 0.1);
+            border-color: #FFA500;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 165, 0, 0.1) 0%, rgba(0, 90, 36, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+        
+        .social-icon {
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-3px);
+            filter: drop-shadow(0 4px 3px rgba(255, 165, 0, 0.3));
+        }
+        
         .page-title {
             position: relative;
             display: inline-block;
@@ -87,36 +114,6 @@
             border-radius: 3px;
         }
 
-        .card-item {
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            position: relative;
-            overflow: hidden;
-            will-change: transform;
-        }
-
-        .card-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 90, 36, 0.2), 0 10px 10px -5px rgba(0, 90, 36, 0.1);
-            border-color: #FFA500;
-        }
-        
-        .card-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(255, 165, 0, 0.1) 0%, rgba(0, 90, 36, 0.05) 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 1;
-        }
-
-        .card-item:hover::before {
-            opacity: 1;
-        }
-
         .card-shine {
             position: absolute;
             top: 0;
@@ -129,17 +126,8 @@
             z-index: 2;
         }
 
-        .card-item:hover .card-shine {
+        .card:hover .card-shine {
             left: 150%;
-        }
-
-        .social-icon {
-            transition: all 0.3s ease;
-        }
-
-        .social-icon:hover {
-            transform: translateY(-3px);
-            filter: drop-shadow(0 4px 3px rgba(255, 165, 0, 0.3));
         }
         
         /* Estilos para o header melhorado */
@@ -252,8 +240,8 @@
     <header class="sticky top-0 bg-gradient-to-r from-primary to-dark text-white py-4 shadow-lg z-50">
         <div class="container mx-auto px-4 flex justify-between items-center">
             <div class="flex items-center">
-                <a href="../index.php" class="flex items-center">
-                    <img src="../assets/imagens/logostgm.png" alt="Logo S" class="h-12 mr-3 transition-transform hover:scale-105">
+                <a href="../index.php" class="flex items-center" aria-label="Voltar para a página inicial">
+                    <img src="../assets/imagens/logostgm.png" alt="Logo STGM" class="h-12 mr-3 transition-transform hover:scale-105">
                     <span class="text-white font-heading text-xl font-semibold hidden md:inline">STGM Estoque</span>
                 </a>
             </div>
@@ -278,7 +266,7 @@
                     <span>Adicionar</span>
                 </a>
                 <div class="relative group">
-                    <a class="header-nav-link flex items-center cursor-pointer">
+                    <a class="header-nav-link active flex items-center cursor-pointer">
                         <i class="fas fa-clipboard-list mr-2"></i>
                         <span>Solicitar</span>
                         <i class="fas fa-chevron-down ml-1 text-xs"></i>
@@ -287,12 +275,12 @@
                         <a href="solicitar.php" class="block px-4 py-2 text-primary hover:bg-primary hover:text-white transition-colors">
                             <i class="fas fa-clipboard-check mr-2"></i>Solicitar Produto
                         </a>
-                        <a href="solicitarnovproduto.php" class="block px-4 py-2 text-primary hover:bg-primary hover:text-white transition-colors">
+                        <a href="solicitarnovproduto.php" class="block px-4 py-2 text-primary hover:bg-primary hover:text-white transition-colors bg-primary bg-opacity-10">
                             <i class="fas fa-plus-square mr-2"></i>Solicitar Novo Produto
                         </a>
                     </div>
                 </div>
-                <a href="relatorios.php" class="header-nav-link active flex items-center">
+                <a href="relatorios.php" class="header-nav-link flex items-center">
                     <i class="fas fa-chart-bar mr-2"></i>
                     <span>Relatórios</span>
                 </a>
@@ -301,85 +289,77 @@
     </header>
 
     <main class="container mx-auto px-4 py-8 md:py-12 flex-1">
-        <h1 class="text-primary text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center page-title tracking-tight font-heading">GERAR RELATÓRIOS</h1>
+        <div class="text-center mb-10">
+            <h1 class="text-primary text-3xl md:text-4xl font-bold mb-8 md:mb-6 text-center page-title tracking-tight font-heading inline-block mx-auto">SOLICITAR NOVO PRODUTO</h1>
+        </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            <!-- Relatório de Estoque -->
-            <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in">
-                <div class="card-shine"></div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-primary mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-                <h2 class="text-xl font-bold text-primary mb-2">Relatório de Estoque</h2>
-                <p class="text-gray-600 text-center mb-4">Gerar relatório completo do estoque atual</p>
-                <button class="bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold">
-                    Gerar Relatório
-                </button>
-            </div>
+        <div class="bg-white rounded-xl shadow-lg p-8 max-w-5xl w-full border-2 border-primary mx-auto">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mx-auto w-full">
+                <!-- Card 1 -->
+                <div class="card bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center">
+                    <div class="card-shine"></div>
+                    <div class="text-4xl mb-4">👤</div>
+                    <p class="font-bold text-primary text-xl mb-2 text-center">PAPEL HIGIÊNICO</p>
+                    <p class="text-gray-600 text-center">CONTATO: (85) 9-9999-9999</p>
+                    <button class="mt-4 bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold" aria-label="Solicitar Papel Higiênico">
+                        Solicitar
+                    </button>
+                </div>
 
-            <!-- Relatório de Movimentações -->
-            <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in" style="animation-delay: 0.1s">
-                <div class="card-shine"></div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-primary mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
-                </svg>
-                <h2 class="text-xl font-bold text-primary mb-2">Relatório de Movimentações</h2>
-                <p class="text-gray-600 text-center mb-4">Gerar relatório de entradas e saídas</p>
-                <button class="bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold">
-                    Gerar Relatório
-                </button>
-            </div>
+                <!-- Card 2 -->
+                <div class="card bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center" style="animation-delay: 0.1s">
+                    <div class="card-shine"></div>
+                    <div class="text-4xl mb-4">👤</div>
+                    <p class="font-bold text-primary text-xl mb-2 text-center">PAPEL TOALHA</p>
+                    <p class="text-gray-600 text-center">CONTATO: (85) 9-8888-8888</p>
+                    <button class="mt-4 bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold" aria-label="Solicitar Papel Toalha">
+                        Solicitar
+                    </button>
+                </div>
 
-            <!-- Relatório por Categoria -->
-            <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in" style="animation-delay: 0.2s">
-                <div class="card-shine"></div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-primary mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                </svg>
-                <h2 class="text-xl font-bold text-primary mb-2">Relatório por Categoria</h2>
-                <p class="text-gray-600 text-center mb-4">Gerar relatório por categoria de produtos</p>
-                <button class="bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold">
-                    Gerar Relatório
-                </button>
-            </div>
+                <!-- Card 3 -->
+                <div class="card bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center" style="animation-delay: 0.2s">
+                    <div class="card-shine"></div>
+                    <div class="text-4xl mb-4">👤</div>
+                    <p class="font-bold text-primary text-xl mb-2 text-center">SABÃO EM PÓ</p>
+                    <p class="text-gray-600 text-center">CONTATO: (85) 9-7777-7777</p>
+                    <button class="mt-4 bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold" aria-label="Solicitar Sabão em Pó">
+                        Solicitar
+                    </button>
+                </div>
 
-            <!-- Relatório de Produtos com Baixo Estoque -->
-            <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in" style="animation-delay: 0.3s">
-                <div class="card-shine"></div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-primary mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
-                <h2 class="text-xl font-bold text-primary mb-2">Baixo Estoque</h2>
-                <p class="text-gray-600 text-center mb-4">Relatório de produtos com estoque baixo</p>
-                <button class="bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold">
-                    Gerar Relatório
-                </button>
-            </div>
+                <!-- Card 4 -->
+                <div class="card bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center" style="animation-delay: 0.3s">
+                    <div class="card-shine"></div>
+                    <div class="text-4xl mb-4">👤</div>
+                    <p class="font-bold text-primary text-xl mb-2 text-center">DETERGENTE</p>
+                    <p class="text-gray-600 text-center">CONTATO: (85) 9-6666-6666</p>
+                    <button class="mt-4 bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold" aria-label="Solicitar Detergente">
+                        Solicitar
+                    </button>
+                </div>
 
-            <!-- Relatório de Solicitações -->
-            <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in" style="animation-delay: 0.4s">
-                <div class="card-shine"></div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-primary mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
-                <h2 class="text-xl font-bold text-primary mb-2">Relatório de Solicitações</h2>
-                <p class="text-gray-600 text-center mb-4">Histórico de solicitações realizadas</p>
-                <button class="bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold">
-                    Gerar Relatório
-                </button>
-            </div>
+                <!-- Card 5 -->
+                <div class="card bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center" style="animation-delay: 0.4s">
+                    <div class="card-shine"></div>
+                    <div class="text-4xl mb-4">👤</div>
+                    <p class="font-bold text-primary text-xl mb-2 text-center">ÁLCOOL EM GEL</p>
+                    <p class="text-gray-600 text-center">CONTATO: (85) 9-5555-5555</p>
+                    <button class="mt-4 bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold" aria-label="Solicitar Álcool em Gel">
+                        Solicitar
+                    </button>
+                </div>
 
-            <!-- Relatório Personalizado -->
-            <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in" style="animation-delay: 0.5s">
-                <div class="card-shine"></div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-primary mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                </svg>
-                <h2 class="text-xl font-bold text-primary mb-2">Relatório Personalizado</h2>
-                <p class="text-gray-600 text-center mb-4">Crie um relatório com parâmetros personalizados</p>
-                <button class="bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold">
-                    Criar Relatório
-                </button>
+                <!-- Card 6 -->
+                <div class="card bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center" style="animation-delay: 0.5s">
+                    <div class="card-shine"></div>
+                    <div class="text-4xl mb-4">👤</div>
+                    <p class="font-bold text-primary text-xl mb-2 text-center">ESPONJA</p>
+                    <p class="text-gray-600 text-center">CONTATO: (85) 9-4444-4444</p>
+                    <button class="mt-4 bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold" aria-label="Solicitar Esponja">
+                        Solicitar
+                    </button>
+                </div>
             </div>
         </div>
     </main>
@@ -426,22 +406,22 @@
                     </h3>
                     <div class="grid grid-cols-2 gap-2">
                         <a href="https://www.instagram.com/dudu.limasx/" target="_blank" 
-                           class="text-xs flex items-center hover:text-secondary transition-colors">
+                           class="text-xs flex items-center hover:text-secondary transition-colors social-icon">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Carlos E.
                         </a>
                         <a href="https://www.instagram.com/millenafreires_/" target="_blank" 
-                           class="text-xs flex items-center hover:text-secondary transition-colors">
+                           class="text-xs flex items-center hover:text-secondary transition-colors social-icon">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Millena F.
                         </a>
                         <a href="https://www.instagram.com/matheusz.mf/" target="_blank" 
-                           class="text-xs flex items-center hover:text-secondary transition-colors">
+                           class="text-xs flex items-center hover:text-secondary transition-colors social-icon">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Matheus M.
                         </a>
                         <a href="https://www.instagram.com/yanlucas10__/" target="_blank" 
-                           class="text-xs flex items-center hover:text-secondary transition-colors">
+                           class="text-xs flex items-center hover:text-secondary transition-colors social-icon">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Ian Lucas
                         </a>
@@ -488,27 +468,13 @@
                 });
             }
             
-            // Adicionar efeito de hover nos cards
-            const cards = document.querySelectorAll('.card-item');
-            cards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    const shine = this.querySelector('.card-shine');
-                    if (shine) {
-                        shine.style.left = '-100%';
-                        setTimeout(() => {
-                            shine.style.left = '150%';
-                        }, 50);
-                    }
-                });
-                
-                // Botões de relatório
-                const btn = card.querySelector('button');
-                if (btn) {
-                    btn.addEventListener('click', function() {
-                        // Aqui iria a lógica para gerar os relatórios
-                        console.log('Gerando relatório');
-                    });
-                }
+            // Card entrance animation
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('translate-y-0', 'opacity-100');
+                    card.classList.remove('translate-y-4', 'opacity-0');
+                }, index * 100);
             });
         });
     </script>
