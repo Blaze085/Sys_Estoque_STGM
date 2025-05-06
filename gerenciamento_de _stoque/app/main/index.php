@@ -384,7 +384,7 @@
                         </a>
                     </div>
                 </div>
-                <a href="view/relatorios.php" class="header-nav-link flex items-center">
+                <a href="view/relatorios.php" class="header-nav-link flex items-center" target="_blank">
                     <i class="fas fa-chart-bar mr-2"></i>
                     <span>Relatórios</span>
                 </a>
@@ -441,7 +441,7 @@
                 </div>
             </a>
             
-            <a href="view/relatorios.php"  class="group animate-fade-in" style="animation-delay: 0.4s">
+            <a href="view/relatorios.php"  class="group animate-fade-in" style="animation-delay: 0.4s" target="_blank">
                 <div class="card-item bg-white border-2 border-primary rounded-xl md:rounded-2xl shadow-card w-full h-48 md:h-56 flex flex-col items-center justify-center p-4 md:p-6 relative">
                     <div class="card-shine"></div>
                     <div class="card-badge absolute top-0 right-0 bg-accent w-10 h-10 md:w-12 md:h-12 rounded-bl-xl md:rounded-bl-2xl rounded-tr-xl md:rounded-tr-2xl flex items-center justify-center">
