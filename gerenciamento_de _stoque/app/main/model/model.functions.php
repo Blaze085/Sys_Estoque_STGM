@@ -71,6 +71,15 @@ class PDF extends FPDF
 
 class gerenciamento
 {
+    public function removerAcentos($texto) {
+        $texto = str_replace(
+            ['á', 'à', 'ã', 'â', 'ä', 'é', 'è', 'ê', 'ë', 'í', 'ì', 'î', 'ï', 'ó', 'ò', 'õ', 'ô', 'ö', 'ú', 'ù', 'û', 'ü', 'ç', 'Á', 'À', 'Ã', 'Â', 'Ä', 'É', 'È', 'Ê', 'Ë', 'Í', 'Ì', 'Î', 'Ï', 'Ó', 'Ò', 'Õ', 'Ô', 'Ö', 'Ú', 'Ù', 'Û', 'Ü', 'Ç'],
+            ['a', 'a', 'a', 'a', 'a', 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'i', 'o', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u', 'c', 'A', 'A', 'A', 'A', 'A', 'E', 'E', 'E', 'E', 'I', 'I', 'I', 'I', 'O', 'O', 'O', 'O', 'O', 'U', 'U', 'U', 'U', 'C'],
+            $texto
+        );
+        return $texto;
+    }
+
     public function estoque()
     {
         try {
@@ -853,53 +862,112 @@ class gerenciamento
                     });
                 }
                 
+                // Debounce para melhorar performance da pesquisa
+                let timeoutId;
+                
                 // Função para filtrar produtos
                 function filtrarProdutos() {
-                    const termoPesquisa = pesquisarInput.value.toLowerCase();
-                    const categoria = filtroCategoria.value.toLowerCase();
-                    
-                    // Filtrar tabela (desktop)
-                    const linhasTabela = document.querySelectorAll(".desktop-table tbody tr");
-                    linhasTabela.forEach(linha => {
-                        const barcode = linha.cells[0].textContent.toLowerCase();
-                        const nome = linha.cells[1].textContent.toLowerCase();
-                        const natureza = linha.cells[3].textContent.toLowerCase();
+                    clearTimeout(timeoutId);
+                    timeoutId = setTimeout(() => {
+                        const termoPesquisa = pesquisarInput.value.toLowerCase().trim();
+                        const categoria = filtroCategoria.value.toLowerCase();
                         
-                        const matchTermo = barcode.includes(termoPesquisa) || 
-                                         nome.includes(termoPesquisa);
-                        const matchCategoria = categoria === "" || natureza === categoria;
+                        // Filtrar tabela (desktop)
+                        const linhasTabela = document.querySelectorAll(".desktop-table tbody tr");
+                        let temResultadosDesktop = false;
                         
-                        linha.style.display = matchTermo && matchCategoria ? "" : "none";
-                    });
-                    
-                    // Filtrar cards (mobile)
-                    const cards = document.querySelectorAll(".mobile-cards .card-item");
-                    cards.forEach(card => {
-                        const nome = card.querySelector("h3").textContent.toLowerCase();
-                        const barcode = card.querySelector("p span").textContent.toLowerCase();
+                        linhasTabela.forEach(linha => {
+                            const barcode = linha.cells[0].textContent.toLowerCase();
+                            const nome = linha.cells[1].textContent.toLowerCase();
+                            const natureza = linha.cells[3].textContent.toLowerCase();
+                            
+                            const matchTermo = termoPesquisa === "" || 
+                                               barcode.includes(termoPesquisa) || 
+                                               nome.includes(termoPesquisa);
+                            const matchCategoria = categoria === "" || natureza === categoria;
+                            
+                            if (matchTermo && matchCategoria) {
+                                linha.style.display = "";
+                                temResultadosDesktop = true;
+                            } else {
+                                linha.style.display = "none";
+                            }
+                        });
                         
-                        // Encontrar a categoria do card
-                        let currentHeader = card.previousElementSibling;
-                        while (currentHeader && !currentHeader.classList.contains("categoria-header")) {
-                            currentHeader = currentHeader.previousElementSibling;
+                        // Mensagem de "nenhum resultado" para desktop
+                        const mensagemDesktop = document.querySelector(".desktop-table .sem-resultados");
+                        if (!temResultadosDesktop) {
+                            if (!mensagemDesktop) {
+                                const tr = document.createElement("tr");
+                                tr.className = "sem-resultados";
+                                const td = document.createElement("td");
+                                td.colSpan = 5;
+                                td.className = "py-4 px-4 text-center text-gray-500";
+                                td.textContent = "Nenhum produto encontrado";
+                                tr.appendChild(td);
+                                document.querySelector(".desktop-table tbody").appendChild(tr);
+                            }
+                        } else if (mensagemDesktop) {
+                            mensagemDesktop.remove();
                         }
                         
-                        const natureza = currentHeader ? 
-                            currentHeader.querySelector("h3").textContent.toLowerCase() : "";
+                        // Filtrar cards (mobile)
+                        const cards = document.querySelectorAll(".mobile-cards .card-item");
+                        let temResultadosMobile = false;
                         
-                        const matchTermo = barcode.includes(termoPesquisa) || 
-                                         nome.includes(termoPesquisa);
-                        const matchCategoria = categoria === "" || natureza === categoria;
+                        cards.forEach(card => {
+                            const nome = card.querySelector("h3").textContent.toLowerCase();
+                            const barcode = card.querySelector("p span").textContent.toLowerCase();
+                            
+                            // Encontrar a categoria do card
+                            let currentHeader = card.previousElementSibling;
+                            while (currentHeader && !currentHeader.classList.contains("categoria-header")) {
+                                currentHeader = currentHeader.previousElementSibling;
+                            }
+                            
+                            const natureza = currentHeader ? 
+                                currentHeader.querySelector("h3").textContent.toLowerCase() : "";
+                            
+                            const matchTermo = termoPesquisa === "" || 
+                                               barcode.includes(termoPesquisa) || 
+                                               nome.includes(termoPesquisa);
+                            const matchCategoria = categoria === "" || natureza === categoria;
+                            
+                            if (matchTermo && matchCategoria) {
+                                card.style.display = "";
+                                temResultadosMobile = true;
+                            } else {
+                                card.style.display = "none";
+                            }
+                        });
                         
-                        card.style.display = matchTermo && matchCategoria ? "" : "none";
-                    });
-                    
-                    // Mostrar cabeçalhos relevantes
-                    mostrarCategoriaHeaders();
+                        // Mensagem de "nenhum resultado" para mobile
+                        const mensagemMobile = document.querySelector(".mobile-cards .sem-resultados");
+                        if (!temResultadosMobile) {
+                            if (!mensagemMobile) {
+                                const div = document.createElement("div");
+                                div.className = "sem-resultados text-center py-8 text-gray-500";
+                                
+                                const icon = document.createElement("i");
+                                icon.className = "fas fa-box-open text-4xl mb-2";
+                                
+                                const p = document.createElement("p");
+                                p.textContent = "Nenhum produto encontrado";
+                                
+                                div.appendChild(icon);
+                                div.appendChild(p);
+                                document.querySelector(".mobile-cards").appendChild(div);
+                            }
+                        } else if (mensagemMobile) {
+                            mensagemMobile.remove();
+                        }
+                        
+                        // Mostrar cabeçalhos relevantes
+                        mostrarCategoriaHeaders();
+                    }, 300); // Debounce de 300ms
                 }
                 
-                // Event listeners
-                filtrarBtn.addEventListener("click", filtrarProdutos);
+                // Event listeners com debounce
                 pesquisarInput.addEventListener("input", filtrarProdutos);
                 filtroCategoria.addEventListener("change", filtrarProdutos);
                 
