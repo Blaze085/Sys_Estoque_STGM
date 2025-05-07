@@ -71,7 +71,8 @@ class PDF extends FPDF
 
 class gerenciamento
 {
-    public function removerAcentos($texto) {
+    public function removerAcentos($texto)
+    {
         $texto = str_replace(
             ['á', 'à', 'ã', 'â', 'ä', 'é', 'è', 'ê', 'ë', 'í', 'ì', 'î', 'ï', 'ó', 'ò', 'õ', 'ô', 'ö', 'ú', 'ù', 'û', 'ü', 'ç', 'Á', 'À', 'Ã', 'Â', 'Ä', 'É', 'È', 'Ê', 'Ë', 'Í', 'Ì', 'Î', 'Ï', 'Ó', 'Ò', 'Õ', 'Ô', 'Ö', 'Ú', 'Ù', 'Û', 'Ü', 'Ç'],
             ['a', 'a', 'a', 'a', 'a', 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'i', 'o', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u', 'c', 'A', 'A', 'A', 'A', 'A', 'E', 'E', 'E', 'E', 'I', 'I', 'I', 'I', 'O', 'O', 'O', 'O', 'O', 'U', 'U', 'U', 'U', 'C'],
@@ -987,24 +988,48 @@ class gerenciamento
     public function adicionarestoque($nome, $barcode, $quantidade, $natureza)
     {
         $pdo = new PDO("mysql:host=localhost;dbname=gerenciamento_estoque", "root", "");
-        $consulta = "INSERT INTO produtos VALUES (null, :barcode, :nome, :quantidade, :natureza)";
+        $consulta = "SELECT quantidade FROM produtos WHERE barcode = :barcode";
         $query = $pdo->prepare($consulta);
-        $query->bindValue(":nome", $nome);
         $query->bindValue(":barcode", $barcode);
-        $query->bindValue(":quantidade", $quantidade);
-        $query->bindValue(":natureza", $natureza);
         $query->execute();
+        $produto = $query->fetch(PDO::FETCH_ASSOC);
+
+        if ($produto) {
+            $nova_quantidade = $produto['quantidade'] + $quantidade;
+            $update = "UPDATE produtos SET quantidade = :quantidade WHERE barcode = :barcode";
+            $query = $pdo->prepare($update);
+            $query->bindValue(":quantidade", $nova_quantidade);
+            $query->bindValue(":barcode", $barcode);
+            $query->execute();
+        } else {
+            $insert = "INSERT INTO produtos VALUES (null, :barcode, :nome, :quantidade, :natureza)";
+            $query = $pdo->prepare($insert);
+            $query->bindValue(":nome", $nome);
+            $query->bindValue(":barcode", $barcode);
+            $query->bindValue(":quantidade", $quantidade);
+            $query->bindValue(":natureza", $natureza);
+            $query->execute();
+        }
+
+        header("Location: ../view/estoque.php");
     }
 
-    public function solicitarrproduto($valor_retirada, $barcode)
+
+    public function solicitarproduto($valor_retirada, $barcode)
     {
-        $pdo = new PDO("mysql:host=localhost;dbname=gerenciamento_estoque", "root", "");
-        $consulta = "update produtos set quantidade=quantidade-:valor_retirada where barcode=:barcode;";
-        $query = $pdo->prepare($consulta);
-        $query->bindValue(":valor_retirada", $valor_retirada);
-        $query->bindValue(":barcode", $barcode);
-        $query->execute();
-    }
+            // Conexão com o banco de dados
+            $pdo = new PDO("mysql:host=localhost;dbname=gerenciamento_estoque", "root", "");
+
+            // Atualiza a quantidade
+            $consulta = "UPDATE produtos SET quantidade = quantidade - :valor_retirada WHERE barcode = :barcode";
+            $query = $pdo->prepare($consulta);
+            $query->bindValue(":valor_retirada", $valor_retirada);
+            $query->bindValue(":barcode", $barcode);
+            $query->execute();
+
+            // Redireciona para a página de estoque
+            header("Location: ../view/estoque.php");
+        }
 
     public function editarProduto($id, $nome, $barcode, $quantidade, $natureza)
     {

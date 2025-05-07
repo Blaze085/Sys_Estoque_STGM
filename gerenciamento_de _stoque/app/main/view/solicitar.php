@@ -340,7 +340,7 @@
                     </div>
                 </div>
                 
-                <button type="submit" class="w-full bg-secondary text-white font-bold py-3 px-4 rounded-lg hover:bg-opacity-90 transition-colors"
+                <button type="submit" name="btn"  class="w-full bg-secondary text-white font-bold py-3 px-4 rounded-lg hover:bg-opacity-90 transition-colors"
                     aria-label="Confirmar solicitação">
                     CONFIRMAR
                 </button>
