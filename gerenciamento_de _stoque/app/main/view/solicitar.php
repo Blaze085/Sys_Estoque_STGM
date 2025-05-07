@@ -245,34 +245,34 @@
             </button>
             
             <nav class="header-nav md:flex items-center space-x-1" id="headerNav">
-                <a href="../index.php" class="header-nav-link flex items-center">
+                <a href="../index.php" class="header-nav-link flex items-center" target="_blank">
                     <i class="fas fa-home mr-2"></i>
                     <span>Início</span>
                 </a>
-                <a href="estoque.php" class="header-nav-link flex items-center">
+                <a href="estoque.php" class="header-nav-link flex items-center" target="_blank">
                     <i class="fas fa-boxes mr-2"></i>
                     <span>Estoque</span>
                 </a>
-                <a href="adicionarproduto.php" class="header-nav-link flex items-center">
+                <a href="adicionarproduto.php" class="header-nav-link flex items-center" target="_blank">
                     <i class="fas fa-plus-circle mr-2"></i>
                     <span>Adicionar</span>
                 </a>
                 <div class="relative group">
-                    <a class="header-nav-link active flex items-center cursor-pointer">
+                    <a class="header-nav-link active flex items-center cursor-pointer" target="_blank">
                         <i class="fas fa-clipboard-list mr-2"></i>
                         <span>Solicitar</span>
                         <i class="fas fa-chevron-down ml-1 text-xs"></i>
                     </a>
-                    <div class="absolute left-0 mt-1 w-48 bg-white rounded-lg shadow-lg overflow-hidden transform scale-0 group-hover:scale-100 transition-transform origin-top z-50">
+                    <div class="absolute left-0 mt-1 w-48 bg-white rounded-lg shadow-lg overflow-hidden transform scale-0 group-hover:scale-100 transition-transform origin-top z-50" target="_blank">
                         <a href="solicitar.php" class="block px-4 py-2 text-primary hover:bg-primary hover:text-white transition-colors">
                             <i class="fas fa-clipboard-check mr-2"></i>Solicitar Produto
                         </a>
-                        <a href="solicitarnovproduto.php" class="block px-4 py-2 text-primary hover:bg-primary hover:text-white transition-colors">
+                        <a href="solicitarnovproduto.php" class="block px-4 py-2 text-primary hover:bg-primary hover:text-white transition-colors" target="_blank">
                             <i class="fas fa-plus-square mr-2"></i>Solicitar Novo Produto
                         </a>
                     </div>
                 </div>
-                <a href="relatorios.php" class="header-nav-link flex items-center">
+                <a href="relatorios.php" class="header-nav-link flex items-center" target="_blank">
                     <i class="fas fa-chart-bar mr-2"></i>
                     <span>Relatórios</span>
                 </a>
@@ -288,7 +288,7 @@
       
         
         <div class="bg-white rounded-xl shadow-lg p-8 max-w-2xl w-full border-2 border-primary mx-auto">
-            <form action="../control/controllersolicitar.php" method="POST" class="space-y-6">
+            <form action="../control/controllersolicitar.php" method="POST">
                 <div class="space-y-4">
                     <div>
                         <input type="text" placeholder="BARCODE" id="barcode" name="barcode" required
@@ -340,7 +340,7 @@
                     </div>
                 </div>
                 
-                <button type="submit" class="w-full bg-secondary text-white font-bold py-3 px-4 rounded-lg hover:bg-opacity-90 transition-colors"
+                <button type="submit" name="btn" class="w-full bg-secondary text-white font-bold py-3 px-4 rounded-lg hover:bg-opacity-90 transition-colors"
                     aria-label="Confirmar solicitação">
                     CONFIRMAR
                 </button>
