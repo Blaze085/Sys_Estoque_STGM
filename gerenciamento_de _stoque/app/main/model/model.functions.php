@@ -1431,3 +1431,8 @@ class gerenciamento
         $pdf->Output("relatorio_estoque.pdf", "I");
     }
 }
+
+class usuario
+{
+
+}
