@@ -1,13 +1,9 @@
 <?php
- if(isset($_GET['resultado'])){
-
-}else{
+if (isset($_GET['resultado'])) {
+    // Handle result if needed
+} else {
     header('location:../control/controllerGerarRelatorios.php');
 }
-
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -324,10 +320,16 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
                 </svg>
                 <h2 class="text-xl font-bold text-primary mb-2">Relatório de Movimentações</h2>
-                <p class="text-gray-600 text-center mb-4">Gerar relatório de entradas e saídas</p>
-                <button class="bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold">
-                    Gerar Relatório
-                </button>
+                <p class="text-gray-600 text-center mb-4">Gerar relatório de entradas e saídas por período</p>
+                <form action="../control/controllerGerarRelatorios.php" method="POST" class="w-full flex flex-col items-center">
+                    <div class="flex flex-col sm:flex-row gap-2 mb-4 w-full">
+                        <input type="date" name="data_inicio" class="border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary" required>
+                        <input type="date" name="data_fim" class="border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary" required>
+                    </div>
+                    <button type="submit" name="relatorio_movimentacoes" class="bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold">
+                        Gerar Relatório
+                    </button>
+                </form>
             </div>
 
             <!-- Relatório por Categoria -->

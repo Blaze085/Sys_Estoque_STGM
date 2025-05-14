@@ -1083,14 +1083,11 @@ class gerenciamento
         }
     }
 
-    public function GerarRelatorios()
+
+    public function GerarRelatorios($tipo = 'estoque', $data_inicio = null, $data_fim = null)
     {
         $pdo = new PDO("mysql:host=localhost;dbname=gerenciamento_estoque", "root", "");
-        $consulta = "SELECT * FROM produtos ORDER BY natureza, nome_produto";
-        $query = $pdo->prepare($consulta);
-        $query->execute();
-        $result = $query->rowCount();
-
+        
         // Criar PDF personalizado
         $pdf = new PDF("L", "pt", "A4");
         $pdf->AddPage();
@@ -1124,7 +1121,8 @@ class gerenciamento
         // Título e subtítulo
         $pdf->SetFont('Arial', 'B', 24);
         $pdf->SetTextColor($corBranco[0], $corBranco[1], $corBranco[2]);
-        $pdf->Cell(0, 24, utf8_decode("RELATÓRIO DE ESTOQUE"), 0, 1, 'L');
+        $titulo = $tipo == 'movimentacoes' ? "RELATÓRIO DE MOVIMENTAÇÕES" : "RELATÓRIO DE ESTOQUE";
+        $pdf->Cell(0, 24, utf8_decode($titulo), 0, 1, 'L');
 
         $pdf->SetFont('Arial', '', 12);
         $pdf->SetXY(40 + $logoWidth + 15, $pdf->GetY());
@@ -1137,87 +1135,155 @@ class gerenciamento
         $pdf->SetXY($pdf->GetPageWidth() - 200, 45);
         $pdf->Cell(160, 15, utf8_decode(date("H:i:s")), 0, 1, 'R');
 
+        // Exibir período para relatório de movimentações
+        if ($tipo == 'movimentacoes' && $data_inicio && $data_fim) {
+            $pdf->SetXY(40 + $logoWidth + 15, $pdf->GetY());
+            $pdf->Cell(0, 15, utf8_decode("Período: " . date("d/m/Y", strtotime($data_inicio)) . " a " . date("d/m/Y", strtotime($data_fim))), 0, 1, 'L');
+        }
+
         // ===== RESUMO DE DADOS EM CARDS =====
-        $consultaResumo = "SELECT 
-            COUNT(*) as total_produtos,
-            SUM(CASE WHEN quantidade <= 5 THEN 1 ELSE 0 END) as produtos_criticos,
-            COUNT(DISTINCT natureza) as total_categorias
-            FROM produtos";
-        $queryResumo = $pdo->prepare($consultaResumo);
-        $queryResumo->execute();
-        $resumo = $queryResumo->fetch(PDO::FETCH_ASSOC);
+        if ($tipo == 'estoque') {
+            $consultaResumo = "SELECT 
+                COUNT(*) as total_produtos,
+                SUM(CASE WHEN quantidade <= 5 THEN 1 ELSE 0 END) as produtos_criticos,
+                COUNT(DISTINCT natureza) as total_categorias
+                FROM produtos";
+            $queryResumo = $pdo->prepare($consultaResumo);
+            $queryResumo->execute();
+            $resumo = $queryResumo->fetch(PDO::FETCH_ASSOC);
 
-        // Criar cards para os resumos
-        $cardWidth = 200;
-        $cardHeight = 80;
-        $cardMargin = 20;
-        $startX = ($pdf->GetPageWidth() - (3 * $cardWidth + 2 * $cardMargin)) / 2;
-        $startY = 110;
+            // Criar cards para os resumos
+            $cardWidth = 200;
+            $cardHeight = 80;
+            $cardMargin = 20;
+            $startX = ($pdf->GetPageWidth() - (3 * $cardWidth + 2 * $cardMargin)) / 2;
+            $startY = 110;
 
-        // Card 1 - Total Produtos
-        $pdf->SetFillColor($corBranco[0], $corBranco[1], $corBranco[2]);
-        $pdf->RoundedRect($startX, $startY, $cardWidth, $cardHeight, 8, 'F');
+            // Card 1 - Total Produtos
+            $pdf->SetFillColor($corBranco[0], $corBranco[1], $corBranco[2]);
+            $pdf->RoundedRect($startX, $startY, $cardWidth, $cardHeight, 8, 'F');
+            $pdf->SetFont('Arial', 'B', 12);
+            $pdf->SetTextColor($corPreto[0], $corPreto[1], $corPreto[2]);
+            $pdf->SetXY($startX + 15, $startY + 15);
+            $pdf->Cell($cardWidth - 30, 20, utf8_decode("TOTAL DE PRODUTOS"), 0, 1, 'L');
+            $pdf->SetFont('Arial', 'B', 24);
+            $pdf->SetTextColor($corPrimary[0], $corPrimary[1], $corPrimary[2]);
+            $pdf->SetXY($startX + 15, $startY + 40);
+            $pdf->Cell($cardWidth - 30, 25, $resumo['total_produtos'], 0, 1, 'L');
 
-        $pdf->SetFont('Arial', 'B', 12);
-        $pdf->SetTextColor($corPreto[0], $corPreto[1], $corPreto[2]);
-        $pdf->SetXY($startX + 15, $startY + 15);
-        $pdf->Cell($cardWidth - 30, 20, utf8_decode("TOTAL DE PRODUTOS"), 0, 1, 'L');
+            // Card 2 - Estoque Crítico
+            $pdf->SetFillColor($corBranco[0], $corBranco[1], $corBranco[2]);
+            $pdf->RoundedRect($startX + $cardWidth + $cardMargin, $startY, $cardWidth, $cardHeight, 8, 'F');
+            $pdf->SetFont('Arial', 'B', 12);
+            $pdf->SetTextColor($corPreto[0], $corPreto[1], $corPreto[2]);
+            $pdf->SetXY($startX + $cardWidth + $cardMargin + 15, $startY + 15);
+            $pdf->Cell($cardWidth - 30, 20, utf8_decode("ESTOQUE CRÍTICO"), 0, 1, 'L');
+            $pdf->SetFont('Arial', 'B', 24);
+            $pdf->SetTextColor($corAlerta[0], $corAlerta[1], $corAlerta[2]);
+            $pdf->SetXY($startX + $cardWidth + $cardMargin + 15, $startY + 40);
+            $pdf->Cell($cardWidth - 30, 25, $resumo['produtos_criticos'], 0, 1, 'L');
 
-        $pdf->SetFont('Arial', 'B', 24);
-        $pdf->SetTextColor($corPrimary[0], $corPrimary[1], $corPrimary[2]);
-        $pdf->SetXY($startX + 15, $startY + 40);
-        $pdf->Cell($cardWidth - 30, 25, $resumo['total_produtos'], 0, 1, 'L');
+            // Card 3 - Categorias
+            $pdf->SetFillColor($corBranco[0], $corBranco[1], $corBranco[2]);
+            $pdf->RoundedRect($startX + 2 * ($cardWidth + $cardMargin), $startY, $cardWidth, $cardHeight, 8, 'F');
+            $pdf->SetFont('Arial', 'B', 12);
+            $pdf->SetTextColor($corPreto[0], $corPreto[1], $corPreto[2]);
+            $pdf->SetXY($startX + 2 * ($cardWidth + $cardMargin) + 15, $startY + 15);
+            $pdf->Cell($cardWidth - 30, 20, utf8_decode("CATEGORIAS"), 0, 1, 'L');
+            $pdf->SetFont('Arial', 'B', 24);
+            $pdf->SetTextColor($corSecondary[0], $corSecondary[1], $corSecondary[2]);
+            $pdf->SetXY($startX + 2 * ($cardWidth + $cardMargin) + 15, $startY + 40);
+            $pdf->Cell($cardWidth - 30, 25, $resumo['total_categorias'], 0, 1, 'L');
+        } else {
+            $consultaResumo = "SELECT 
+                COUNT(*) as total_movimentacoes,
+                SUM(CASE WHEN tipo_movimentacao = 'entrada' THEN 1 ELSE 0 END) as entradas,
+                SUM(CASE WHEN tipo_movimentacao = 'saida' THEN 1 ELSE 0 END) as saidas
+                FROM movimentacoes 
+                WHERE data_movimentacao BETWEEN :data_inicio AND :data_fim";
+            $queryResumo = $pdo->prepare($consultaResumo);
+            $queryResumo->execute(['data_inicio' => $data_inicio, 'data_fim' => $data_fim]);
+            $resumo = $queryResumo->fetch(PDO::FETCH_ASSOC);
 
-        // Card 2 - Estoque Crítico
-        $pdf->SetFillColor($corBranco[0], $corBranco[1], $corBranco[2]);
-        $pdf->RoundedRect($startX + $cardWidth + $cardMargin, $startY, $cardWidth, $cardHeight, 8, 'F');
+            $cardWidth = 200;
+            $cardHeight = 80;
+            $cardMargin = 20;
+            $startX = ($pdf->GetPageWidth() - (3 * $cardWidth + 2 * $cardMargin)) / 2;
+            $startY = 110;
 
-        $pdf->SetFont('Arial', 'B', 12);
-        $pdf->SetTextColor($corPreto[0], $corPreto[1], $corPreto[2]);
-        $pdf->SetXY($startX + $cardWidth + $cardMargin + 15, $startY + 15);
-        $pdf->Cell($cardWidth - 30, 20, utf8_decode("ESTOQUE CRÍTICO"), 0, 1, 'L');
+            // Card 1 - Total Movimentações
+            $pdf->SetFillColor($corBranco[0], $corBranco[1], $corBranco[2]);
+            $pdf->RoundedRect($startX, $startY, $cardWidth, $cardHeight, 8, 'F');
+            $pdf->SetFont('Arial', 'B', 12);
+            $pdf->SetTextColor($corPreto[0], $corPreto[1], $corPreto[2]);
+            $pdf->SetXY($startX + 15, $startY + 15);
+            $pdf->Cell($cardWidth - 30, 20, utf8_decode("TOTAL MOVIMENTAÇÕES"), 0, 1, 'L');
+            $pdf->SetFont('Arial', 'B', 24);
+            $pdf->SetTextColor($corPrimary[0], $corPrimary[1], $corPrimary[2]);
+            $pdf->SetXY($startX + 15, $startY + 40);
+            $pdf->Cell($cardWidth - 30, 25, $resumo['total_movimentacoes'], 0, 1, 'L');
 
-        $pdf->SetFont('Arial', 'B', 24);
-        $pdf->SetTextColor($corAlerta[0], $corAlerta[1], $corAlerta[2]);
-        $pdf->SetXY($startX + $cardWidth + $cardMargin + 15, $startY + 40);
-        $pdf->Cell($cardWidth - 30, 25, $resumo['produtos_criticos'], 0, 1, 'L');
+            // Card 2 - Entradas
+            $pdf->SetFillColor($corBranco[0], $corBranco[1], $corBranco[2]);
+            $pdf->RoundedRect($startX + $cardWidth + $cardMargin, $startY, $cardWidth, $cardHeight, 8, 'F');
+            $pdf->SetFont('Arial', 'B', 12);
+            $pdf->SetTextColor($corPreto[0], $corPreto[1], $corPreto[2]);
+            $pdf->SetXY($startX + $cardWidth + $cardMargin + 15, $startY + 15);
+            $pdf->Cell($cardWidth - 30, 20, utf8_decode("ENTRADAS"), 0, 1, 'L');
+            $pdf->SetFont('Arial', 'B', 24);
+            $pdf->SetTextColor($corPrimary[0], $corPrimary[1], $corPrimary[2]);
+            $pdf->SetXY($startX + $cardWidth + $cardMargin + 15, $startY + 40);
+            $pdf->Cell($cardWidth - 30, 25, $resumo['entradas'], 0, 1, 'L');
 
-        // Card 3 - Categorias
-        $pdf->SetFillColor($corBranco[0], $corBranco[1], $corBranco[2]);
-        $pdf->RoundedRect($startX + 2 * ($cardWidth + $cardMargin), $startY, $cardWidth, $cardHeight, 8, 'F');
-
-        $pdf->SetFont('Arial', 'B', 12);
-        $pdf->SetTextColor($corPreto[0], $corPreto[1], $corPreto[2]);
-        $pdf->SetXY($startX + 2 * ($cardWidth + $cardMargin) + 15, $startY + 15);
-        $pdf->Cell($cardWidth - 30, 20, utf8_decode("CATEGORIAS"), 0, 1, 'L');
-
-        $pdf->SetFont('Arial', 'B', 24);
-        $pdf->SetTextColor($corSecondary[0], $corSecondary[1], $corSecondary[2]);
-        $pdf->SetXY($startX + 2 * ($cardWidth + $cardMargin) + 15, $startY + 40);
-        $pdf->Cell($cardWidth - 30, 25, $resumo['total_categorias'], 0, 1, 'L');
+            // Card 3 - Saídas
+            $pdf->SetFillColor($corBranco[0], $corBranco[1], $corBranco[2]);
+            $pdf->RoundedRect($startX + 2 * ($cardWidth + $cardMargin), $startY, $cardWidth, $cardHeight, 8, 'F');
+            $pdf->SetFont('Arial', 'B', 12);
+            $pdf->SetTextColor($corPreto[0], $corPreto[1], $corPreto[2]);
+            $pdf->SetXY($startX + 2 * ($cardWidth + $cardMargin) + 15, $startY + 15);
+            $pdf->Cell($cardWidth - 30, 20, utf8_decode("SAÍDAS"), 0, 1, 'L');
+            $pdf->SetFont('Arial', 'B', 24);
+            $pdf->SetTextColor($corAlerta[0], $corAlerta[1], $corAlerta[2]);
+            $pdf->SetXY($startX + 2 * ($cardWidth + $cardMargin) + 15, $startY + 40);
+            $pdf->Cell($cardWidth - 30, 25, $resumo['saidas'], 0, 1, 'L');
+        }
 
         // ===== TÍTULO DA TABELA =====
         $pdf->SetXY(40, $startY + $cardHeight + 30);
         $pdf->SetFont('Arial', 'B', 16);
         $pdf->SetTextColor($corPrimary[0], $corPrimary[1], $corPrimary[2]);
 
-
-        // Linha decorativa
-
-
         // ===== TABELA DE PRODUTOS COM MELHOR DESIGN =====
         $margemTabela = 40;
         $larguraDisponivel = $pdf->GetPageWidth() - (2 * $margemTabela);
 
         // Definindo colunas e larguras proporcionais
-        $colunas = array('ID', 'Código', 'Produto', 'Quant.', 'Categoria');
-        $larguras = array(
-            round($larguraDisponivel * 0.06), // 6% para ID
-            round($larguraDisponivel * 0.18), // 18% para Código
-            round($larguraDisponivel * 0.44), // 44% para Produto
-            round($larguraDisponivel * 0.12), // 12% para Quantidade
-            round($larguraDisponivel * 0.20)  // 20% para Categoria
-        );
+        if ($tipo == 'estoque') {
+            $colunas = array('ID', 'Código', 'Produto', 'Quant.', 'Categoria');
+            $larguras = array(
+                round($larguraDisponivel * 0.06), // 6% para ID
+                round($larguraDisponivel * 0.18), // 18% para Código
+                round($larguraDisponivel * 0.44), // 44% para Produto
+                round($larguraDisponivel * 0.12), // 12% para Quantidade
+                round($larguraDisponivel * 0.20)  // 20% para Categoria
+            );
+            $consulta = "SELECT * FROM produtos ORDER BY natureza, nome_produto";
+        } else {
+            $colunas = array('ID', 'Produto', 'Tipo', 'Quant.', 'Data', 'Categoria');
+            $larguras = array(
+                round($larguraDisponivel * 0.06), // 6% para ID
+                round($larguraDisponivel * 0.34), // 34% para Produto
+                round($larguraDisponivel * 0.15), // 15% para Tipo
+                round($larguraDisponivel * 0.10), // 10% para Quantidade
+                round($larguraDisponivel * 0.20), // 20% para Data
+                round($larguraDisponivel * 0.15)  // 15% para Categoria
+            );
+            $consulta = "SELECT m.id, p.nome_produto, m.tipo_movimentacao, m.quantidade, m.data_movimentacao, p.natureza 
+                         FROM movimentacoes m 
+                         JOIN produtos p ON m.id_produto = p.id 
+                         WHERE m.data_movimentacao BETWEEN :data_inicio AND :data_fim 
+                         ORDER BY m.data_movimentacao DESC";
+        }
 
         $pdf->SetXY($margemTabela, $pdf->GetY() + 10);
         $pdf->SetFont('Arial', 'B', 11);
@@ -1256,10 +1322,18 @@ class gerenciamento
         $linhaAlternada = false;
         $alturaLinhaDados = 24;
 
+        $query = $pdo->prepare($consulta);
+        if ($tipo == 'movimentacoes') {
+            $query->execute(['data_inicio' => $data_inicio, 'data_fim' => $data_fim]);
+        } else {
+            $query->execute();
+        }
+        $result = $query->rowCount();
+
         if ($result > 0) {
             foreach ($query as $idx => $row) {
-                // Cabeçalho de categoria
-                if ($categoriaAtual != $row['natureza']) {
+                // Cabeçalho de categoria (apenas para estoque)
+                if ($tipo == 'estoque' && $categoriaAtual != $row['natureza']) {
                     $categoriaAtual = $row['natureza'];
 
                     // Verificar se é necessário adicionar nova página
@@ -1326,17 +1400,19 @@ class gerenciamento
                     $pdf->Ln($alturaLinha);
                     $y = $pdf->GetY();
 
-                    // Redesenhar cabeçalho de categoria
-                    $pdf->SetXY($margemTabela, $y);
-                    $pdf->SetFont('Arial', 'B', 12);
-                    $pdf->SetTextColor($corBranco[0], $corBranco[1], $corBranco[2]);
-                    $pdf->SetFillColor($corSecondary[0], $corSecondary[1], $corSecondary[2]);
+                    // Redesenhar cabeçalho de categoria (apenas para estoque)
+                    if ($tipo == 'estoque') {
+                        $pdf->SetXY($margemTabela, $y);
+                        $pdf->SetFont('Arial', 'B', 12);
+                        $pdf->SetTextColor($corBranco[0], $corBranco[1], $corBranco[2]);
+                        $pdf->SetFillColor($corSecondary[0], $corSecondary[1], $corSecondary[2]);
 
-                    $pdf->RoundedRect($margemTabela, $y, array_sum($larguras), 26, 5, 'FD');
-                    $pdf->SetXY($margemTabela + 10, $y);
-                    $pdf->Cell(array_sum($larguras) - 20, 26, utf8_decode(strtoupper($categoriaAtual)), 0, 1, 'L');
+                        $pdf->RoundedRect($margemTabela, $y, array_sum($larguras), 26, 5, 'FD');
+                        $pdf->SetXY($margemTabela + 10, $y);
+                        $pdf->Cell(array_sum($larguras) - 20, 26, utf8_decode(strtoupper($categoriaAtual)), 0, 1, 'L');
 
-                    $y = $pdf->GetY();
+                        $y = $pdf->GetY();
+                    }
 
                     // Restaurar cor de fundo para a linha
                     if ($linhaAlternada) {
@@ -1352,42 +1428,80 @@ class gerenciamento
 
                 // Desenhar linha de dados
                 $posX = $margemTabela;
-                $estoqueCritico = $row['quantidade'] <= 5;
 
-                // ID
-                $pdf->Rect($posX, $y, $larguras[0], $alturaLinhaDados, 'FD');
-                $pdf->SetXY($posX, $y);
-                $pdf->Cell($larguras[0], $alturaLinhaDados, $row['id'], 0, 0, 'C');
-                $posX += $larguras[0];
+                if ($tipo == 'estoque') {
+                    $estoqueCritico = $row['quantidade'] <= 5;
 
-                // Barcode
-                $pdf->Rect($posX, $y, $larguras[1], $alturaLinhaDados, 'FD');
-                $pdf->SetXY($posX + 5, $y);
-                $pdf->Cell($larguras[1] - 10, $alturaLinhaDados, $row['barcode'], 0, 0, 'L');
-                $posX += $larguras[1];
+                    // ID
+                    $pdf->Rect($posX, $y, $larguras[0], $alturaLinhaDados, 'FD');
+                    $pdf->SetXY($posX, $y);
+                    $pdf->Cell($larguras[0], $alturaLinhaDados, $row['id'], 0, 0, 'C');
+                    $posX += $larguras[0];
 
-                // Nome do produto
-                $pdf->Rect($posX, $y, $larguras[2], $alturaLinhaDados, 'FD');
-                $pdf->SetXY($posX + 5, $y);
-                $pdf->Cell($larguras[2] - 10, $alturaLinhaDados, utf8_decode($row['nome_produto']), 0, 0, 'L');
-                $posX += $larguras[2];
+                    // Barcode
+                    $pdf->Rect($posX, $y, $larguras[1], $alturaLinhaDados, 'FD');
+                    $pdf->SetXY($posX + 5, $y);
+                    $pdf->Cell($larguras[1] - 10, $alturaLinhaDados, $row['barcode'], 0, 0, 'L');
+                    $posX += $larguras[1];
 
-                // Quantidade
-                $pdf->Rect($posX, $y, $larguras[3], $alturaLinhaDados, 'FD');
-                $pdf->SetXY($posX, $y);
-                if ($estoqueCritico) {
-                    $pdf->SetTextColor($corAlerta[0], $corAlerta[1], $corAlerta[2]);
-                    $pdf->SetFont('Arial', 'B', 10);
+                    // Nome do produto
+                    $pdf->Rect($posX, $y, $larguras[2], $alturaLinhaDados, 'FD');
+                    $pdf->SetXY($posX + 5, $y);
+                    $pdf->Cell($larguras[2] - 10, $alturaLinhaDados, utf8_decode($row['nome_produto']), 0, 0, 'L');
+                    $posX += $larguras[2];
+
+                    // Quantidade
+                    $pdf->Rect($posX, $y, $larguras[3], $alturaLinhaDados, 'FD');
+                    $pdf->SetXY($posX, $y);
+                    if ($estoqueCritico) {
+                        $pdf->SetTextColor($corAlerta[0], $corAlerta[1], $corAlerta[2]);
+                        $pdf->SetFont('Arial', 'B', 10);
+                    }
+                    $pdf->Cell($larguras[3], $alturaLinhaDados, $row['quantidade'], 0, 0, 'C');
+                    $pdf->SetTextColor($corPreto[0], $corPreto[1], $corPreto[2]);
+                    $pdf->SetFont('Arial', '', 10);
+                    $posX += $larguras[3];
+
+                    // Categoria
+                    $pdf->Rect($posX, $y, $larguras[4], $alturaLinhaDados, 'FD');
+                    $pdf->SetXY($posX + 5, $y);
+                    $pdf->Cell($larguras[4] - 10, $alturaLinhaDados, utf8_decode($row['natureza']), 0, 0, 'L');
+                } else {
+                    // ID
+                    $pdf->Rect($posX, $y, $larguras[0], $alturaLinhaDados, 'FD');
+                    $pdf->SetXY($posX, $y);
+                    $pdf->Cell($larguras[0], $alturaLinhaDados, $row['id'], 0, 0, 'C');
+                    $posX += $larguras[0];
+
+                    // Nome do produto
+                    $pdf->Rect($posX, $y, $larguras[1], $alturaLinhaDados, 'FD');
+                    $pdf->SetXY($posX + 5, $y);
+                    $pdf->Cell($larguras[1] - 10, $alturaLinhaDados, utf8_decode($row['nome_produto']), 0, 0, 'L');
+                    $posX += $larguras[1];
+
+                    // Tipo de movimentação
+                    $pdf->Rect($posX, $y, $larguras[2], $alturaLinhaDados, 'FD');
+                    $pdf->SetXY($posX + 5, $y);
+                    $pdf->Cell($larguras[2] - 10, $alturaLinhaDados, utf8_decode($row['tipo_movimentacao']), 0, 0, 'C');
+                    $posX += $larguras[2];
+
+                    // Quantidade
+                    $pdf->Rect($posX, $y, $larguras[3], $alturaLinhaDados, 'FD');
+                    $pdf->SetXY($posX, $y);
+                    $pdf->Cell($larguras[3], $alturaLinhaDados, $row['quantidade'], 0, 0, 'C');
+                    $posX += $larguras[3];
+
+                    // Data
+                    $pdf->Rect($posX, $y, $larguras[4], $alturaLinhaDados, 'FD');
+                    $pdf->SetXY($posX + 5, $y);
+                    $pdf->Cell($larguras[4] - 10, $alturaLinhaDados, date("d/m/Y H:i", strtotime($row['data_movimentacao'])), 0, 0, 'C');
+                    $posX += $larguras[4];
+
+                    // Categoria
+                    $pdf->Rect($posX, $y, $larguras[5], $alturaLinhaDados, 'FD');
+                    $pdf->SetXY($posX + 5, $y);
+                    $pdf->Cell($larguras[5] - 10, $alturaLinhaDados, utf8_decode($row['natureza']), 0, 0, 'L');
                 }
-                $pdf->Cell($larguras[3], $alturaLinhaDados, $row['quantidade'], 0, 0, 'C');
-                $pdf->SetTextColor($corPreto[0], $corPreto[1], $corPreto[2]);
-                $pdf->SetFont('Arial', '', 10);
-                $posX += $larguras[3];
-
-                // Categoria
-                $pdf->Rect($posX, $y, $larguras[4], $alturaLinhaDados, 'FD');
-                $pdf->SetXY($posX + 5, $y);
-                $pdf->Cell($larguras[4] - 10, $alturaLinhaDados, utf8_decode($row['natureza']), 0, 0, 'L');
 
                 $y += $alturaLinhaDados;
                 $linhaAlternada = !$linhaAlternada;
@@ -1397,7 +1511,7 @@ class gerenciamento
                     // Adicionar cantos arredondados na última linha da tabela
                     $pdf->SetDrawColor(220, 220, 220);
                     $pdf->RoundedRect($margemTabela, $y - $alturaLinhaDados, $larguras[0], $alturaLinhaDados, 5, 'D', '4');
-                    $pdf->RoundedRect($posX, $y - $alturaLinhaDados, $larguras[4], $alturaLinhaDados, 5, 'D', '3');
+                    $pdf->RoundedRect($posX, $y - $alturaLinhaDados, $larguras[count($colunas) - 1], $alturaLinhaDados, 5, 'D', '3');
                 }
             }
         } else {
@@ -1407,14 +1521,13 @@ class gerenciamento
             $pdf->SetFillColor(250, 250, 250);
             $pdf->RoundedRect($margemTabela, $y, array_sum($larguras), 40, 5, 'FD');
             $pdf->SetXY($margemTabela, $y + 12);
-            $pdf->Cell(array_sum($larguras), 16, utf8_decode("Não existem produtos cadastrados no sistema"), 0, 1, 'C');
+            $mensagem = $tipo == 'estoque' ? "Não existem produtos cadastrados no sistema" : "Nenhuma movimentação no período selecionado";
+            $pdf->Cell(array_sum($larguras), 16, utf8_decode($mensagem), 0, 1, 'C');
         }
 
-        // ===== RODAPÉ PROFISSIONAL =====
+        // RODAPÉ
         $pdf->SetY(-60);
         $y = $pdf->GetY();
-
-
 
         $pdf->SetTextColor($corBranco[0], $corBranco[1], $corBranco[2]);
         $pdf->SetFont('Arial', '', 9);
