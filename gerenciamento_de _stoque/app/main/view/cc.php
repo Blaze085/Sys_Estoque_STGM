@@ -4,15 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Página de login do sistema EEEP Salaberga">
-    <meta name="keywords" content="login, EEEP Salaberga, escola, educação">
+    <meta name="description" content="Página de criação de conta do sistema EEEP Salaberga">
+    <meta name="keywords" content="criar conta, EEEP Salaberga, escola, educação">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTcomDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="../img/Design sem nome.svg" type="image/x-icon">
     <link rel="icon" href="/img/favicon.png" type="image/png">
-    <title>Login - EEEP Salaberga</title>
+    <title>Criar Conta - EEEP Salaberga</title>
     <style>
         :root {
             --primary-color: #4CAF50;
@@ -95,6 +95,7 @@
             padding: 0.75rem 1rem;
             font-size: 1rem;
             width: 100%;
+            margin-bottom: 1rem;
         }
 
         .input-group {
@@ -187,22 +188,25 @@
             <img src="/img/salaberga_logo.png" alt="Logo EEEP Salaberga" class="mt-3" style="max-width: 150px;">
         </div>
         <div class="form-container">
-            <h2>Login</h2>
-            <form id="login-form" action="/controller/login.php" method="POST">
+            <h2>Criar Conta</h2>
+            <form id="register-form" action="../controller/register.php" method="POST">
                 <div class="input-group">
-                    <input type="email" class="form-control" id="inputEmail3" name="email" placeholder="Digite seu email" required aria-required="true">
+                    <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Digite seu email" required aria-required="true">
                     <i class="fas fa-user"></i>
                 </div>
                 <div class="input-group">
-                    <input type="password" class="form-control" id="inputPassword3" name="password" placeholder="Digite sua senha" required aria-required="true">
+                    <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Digite sua senha" required aria-required="true">
                     <i class="fas fa-eye toggle-password"></i>
                 </div>
+                <div class="input-group">
+                    <input type="password" class="form-control" id="inputConfirmPassword" name="confirmPassword" placeholder="Confirme sua senha" required aria-required="true">
+                    <i class="fas fa-eye toggle-confirm-password"></i>
+                </div>
                 <div class="d-grid">
-                    <button class="btn btn-primary" type="submit">Entrar</button>
+                    <button class="btn btn-primary" type="submit">Criar Conta</button>
                 </div>
                 <div class="links">
-                    <a href="./view/cc.php">Criar Conta</a>
-                    <a href="./view/rs.php">Recuperar Senha</a>
+                    <a href="../index.php">Já tem uma conta? Faça login</a>
                 </div>
                 <div class="error" id="error-message"></div>
             </form>
@@ -210,7 +214,7 @@
     </div>
     <script>
         const togglePassword = document.querySelector('.toggle-password');
-        const passwordInput = document.getElementById('inputPassword3');
+        const passwordInput = document.getElementById('inputPassword');
         togglePassword.addEventListener('click', () => {
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);
@@ -218,17 +222,27 @@
             togglePassword.classList.toggle('fa-eye-slash');
         });
 
-        const form = document.getElementById('login-form');
+        const toggleConfirmPassword = document.querySelector('.toggle-confirm-password');
+        const confirmPasswordInput = document.getElementById('inputConfirmPassword');
+        toggleConfirmPassword.addEventListener('click', () => {
+            const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            confirmPasswordInput.setAttribute('type', type);
+            toggleConfirmPassword.classList.toggle('fa-eye');
+            toggleConfirmPassword.classList.toggle('fa-eye-slash');
+        });
+
+        const form = document.getElementById('register-form');
         const errorMessage = document.getElementById('error-message');
         const button = form.querySelector('button');
 
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            const email = document.getElementById('inputEmail3').value.trim();
-            const password = document.getElementById('inputPassword3').value.trim();
+            const email = document.getElementById('inputEmail').value.trim();
+            const password = document.getElementById('inputPassword').value.trim();
+            const confirmPassword = document.getElementById('inputConfirmPassword').value.trim();
 
-            if (!email || !password) {
+            if (!email || !password || !confirmPassword) {
                 errorMessage.textContent = 'Por favor, preencha todos os campos.';
                 return;
             }
@@ -243,7 +257,12 @@
                 return;
             }
 
-            button.textContent = 'Entrando...';
+            if (password !== confirmPassword) {
+                errorMessage.textContent = 'As senhas não coincidem.';
+                return;
+            }
+
+            button.textContent = 'Criando...';
             button.disabled = true;
             errorMessage.textContent = '';
 
@@ -262,14 +281,14 @@
                 const data = await response.json();
 
                 if (data.success) {
-                    window.location.href = '/paginainicial.php';
+                    window.location.href = '../index.php';
                 } else {
-                    errorMessage.textContent = data.message || 'Erro ao fazer login. Tente novamente.';
+                    errorMessage.textContent = data.message || 'Erro ao criar conta. Tente novamente.';
                 }
             } catch (error) {
-                errorMessage.textContent = 'Erro no email ou senha. Tente novamente mais tarde.';
+                errorMessage.textContent = 'Erro de conexão. Tente novamente mais tarde.';
             } finally {
-                button.textContent = 'Entrar';
+                button.textContent = 'Criar Conta';
                 button.disabled = false;
             }
         });
