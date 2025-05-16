@@ -131,23 +131,6 @@
             outline: none;
         }
 
-        .links {
-            margin-top: 1.5rem;
-            text-align: center;
-        }
-
-        .links a {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-size: 0.9rem;
-            margin: 0 1rem;
-        }
-
-        .links a:hover {
-            text-decoration: underline;
-            color: #218838;
-        }
-
         .error {
             color: red;
             font-size: 0.9rem;
@@ -184,11 +167,10 @@
         <div class="img-gradient">
             <h1>EEEP Salaberga</h1>
             <p>Transformando o futuro através da educação e inovação</p>
-            <img src="/img/salaberga_logo.png" alt="Logo EEEP Salaberga" class="mt-3" style="max-width: 150px;">
         </div>
         <div class="form-container">
             <h2>Login</h2>
-            <form id="login-form" action="/controller/login.php" method="POST">
+            <form id="login-form">
                 <div class="input-group">
                     <input type="email" class="form-control" id="inputEmail3" name="email" placeholder="Digite seu email" required aria-required="true">
                     <i class="fas fa-user"></i>
@@ -199,10 +181,6 @@
                 </div>
                 <div class="d-grid">
                     <button class="btn btn-primary" type="submit">Entrar</button>
-                </div>
-                <div class="links">
-                    <a href="./view/cc.php">Criar Conta</a>
-                    <a href="./view/rs.php">Recuperar Senha</a>
                 </div>
                 <div class="error" id="error-message"></div>
             </form>
@@ -222,11 +200,13 @@
         const errorMessage = document.getElementById('error-message');
         const button = form.querySelector('button');
 
-        form.addEventListener('submit', async function(e) {
+        form.addEventListener('submit', function(e) {
             e.preventDefault();
 
             const email = document.getElementById('inputEmail3').value.trim();
             const password = document.getElementById('inputPassword3').value.trim();
+            const validEmail = "Estoque2025S@email.com";
+            const validPassword = "estoque2025.";
 
             if (!email || !password) {
                 errorMessage.textContent = 'Por favor, preencha todos os campos.';
@@ -238,40 +218,19 @@
                 return;
             }
 
-            if (password.length < 6) {
-                errorMessage.textContent = 'A senha deve ter pelo menos 6 caracteres.';
-                return;
-            }
-
             button.textContent = 'Entrando...';
             button.disabled = true;
             errorMessage.textContent = '';
 
-            try {
-                const response = await fetch('../control/register.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: new URLSearchParams({
-                        email: email,
-                        password: password
-                    })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    window.location.href = '/paginainicial.php';
+            setTimeout(() => {
+                if (email === validEmail && password === validPassword) {
+                    window.location.href = './view/paginainicial.php';
                 } else {
-                    errorMessage.textContent = data.message || 'Erro ao fazer login. Tente novamente.';
+                    errorMessage.textContent = 'Email ou senha incorretos.';
                 }
-            } catch (error) {
-                errorMessage.textContent = 'Erro no email ou senha. Tente novamente mais tarde.';
-            } finally {
                 button.textContent = 'Entrar';
                 button.disabled = false;
-            }
+            }, 1000);
         });
     </script>
 </body>
