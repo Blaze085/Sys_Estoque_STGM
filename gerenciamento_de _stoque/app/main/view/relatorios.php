@@ -1,15 +1,3 @@
-<?php
- if(isset($_GET['resultado'])){
-
-}else{
-    header('location:../control/controllerGerarRelatorios.php');
-}
-
-
-
-
-?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -142,7 +130,6 @@
             filter: drop-shadow(0 4px 3px rgba(255, 165, 0, 0.3));
         }
         
-        /* Estilos para o header melhorado */
         .header-nav-link {
             position: relative;
             transition: all 0.3s ease;
@@ -248,7 +235,7 @@
 </head>
 
 <body class="min-h-screen flex flex-col font-sans bg-light">
-    <!-- Header Melhorado -->
+    <!-- Header -->
     <header class="sticky top-0 bg-gradient-to-r from-primary to-dark text-white py-4 shadow-lg z-50">
         <div class="container mx-auto px-4 flex justify-between items-center">
             <div class="flex items-center">
@@ -258,13 +245,13 @@
                 </a>
             </div>
             
-            <button class="mobile-menu-button focus:outline-none" aria-label="Menu" id="menuButton">
+            <button class="mobile-menu-button focus:outline-none" aria-label="Menu">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
             
-            <nav class="header-nav md:flex items-center space-x-1" id="headerNav">
+            <nav class="header-nav md:flex items-center space-x-1">
                 <a href="../index.php" class="header-nav-link flex items-center">
                     <i class="fas fa-home mr-2"></i>
                     <span>Início</span>
@@ -317,47 +304,34 @@
                 </button>
             </div>
 
-            <!-- Relatório de Movimentações -->
+            <!-- Relatório de Estoque por Data -->
             <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in" style="animation-delay: 0.1s">
                 <div class="card-shine"></div>
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-primary mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
-                <h2 class="text-xl font-bold text-primary mb-2">Relatório de Movimentações</h2>
-                <p class="text-gray-600 text-center mb-4">Gerar relatório de entradas e saídas</p>
+                <h2 class="text-xl font-bold text-primary mb-2">Estoque por Data</h2>
+                <p class="text-gray-600 text-center mb-4">Relatório de estoque por período</p>
                 <button class="bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold">
                     Gerar Relatório
                 </button>
             </div>
 
-            <!-- Relatório por Categoria -->
+            <!-- Relatório de Estoque por Categoria -->
             <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in" style="animation-delay: 0.2s">
                 <div class="card-shine"></div>
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-primary mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                 </svg>
-                <h2 class="text-xl font-bold text-primary mb-2">Relatório por Categoria</h2>
-                <p class="text-gray-600 text-center mb-4">Gerar relatório por categoria de produtos</p>
-                <button class="bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold">
-                    Gerar Relatório
-                </button>
-            </div>
-
-            <!-- Relatório de Produtos com Baixo Estoque -->
-            <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in" style="animation-delay: 0.3s">
-                <div class="card-shine"></div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-primary mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
-                <h2 class="text-xl font-bold text-primary mb-2">Baixo Estoque</h2>
-                <p class="text-gray-600 text-center mb-4">Relatório de produtos com estoque baixo</p>
+                <h2 class="text-xl font-bold text-primary mb-2">Estoque por Categoria</h2>
+                <p class="text-gray-600 text-center mb-4">Relatório por categoria de produtos</p>
                 <button class="bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold">
                     Gerar Relatório
                 </button>
             </div>
 
             <!-- Relatório de Solicitações -->
-            <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in" style="animation-delay: 0.4s">
+            <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in" style="animation-delay: 0.3s">
                 <div class="card-shine"></div>
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-primary mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -370,13 +344,13 @@
             </div>
 
             <!-- Relatório Personalizado -->
-            <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in" style="animation-delay: 0.5s">
+            <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in" style="animation-delay: 0.4s">
                 <div class="card-shine"></div>
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-primary mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                 </svg>
                 <h2 class="text-xl font-bold text-primary mb-2">Relatório Personalizado</h2>
-                <p class="text-gray-600 text-center mb-4">Crie um relatório com parâmetros personalizados</p>
+                <p class="text-gray-600 text-center mb-4">Combina estoque, data e categoria</p>
                 <button class="bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold">
                     Criar Relatório
                 </button>
@@ -457,61 +431,8 @@
             </div>
         </div>
     </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Menu mobile toggle
-            const menuButton = document.getElementById('menuButton');
-            const headerNav = document.getElementById('headerNav');
-            
-            if (menuButton && headerNav) {
-                menuButton.addEventListener('click', function() {
-                    headerNav.classList.toggle('show');
-                    
-                    // Animação para o botão do menu
-                    const spans = menuButton.querySelectorAll('span');
-                    spans.forEach(span => {
-                        span.classList.toggle('active');
-                    });
-                });
-            }
-            
-            // Adicionar suporte para dropdown no mobile
-            const dropdownToggle = document.querySelector('.group > a');
-            const dropdownMenu = document.querySelector('.group > div');
-            
-            if (window.innerWidth <= 768) {
-                dropdownToggle.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    dropdownMenu.classList.toggle('scale-0');
-                    dropdownMenu.classList.toggle('scale-100');
-                });
-            }
-            
-            // Adicionar efeito de hover nos cards
-            const cards = document.querySelectorAll('.card-item');
-            cards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    const shine = this.querySelector('.card-shine');
-                    if (shine) {
-                        shine.style.left = '-100%';
-                        setTimeout(() => {
-                            shine.style.left = '150%';
-                        }, 50);
-                    }
-                });
-                
-                // Botões de relatório
-                const btn = card.querySelector('button');
-                if (btn) {
-                    btn.addEventListener('click', function() {
-                        // Aqui iria a lógica para gerar os relatórios
-                        console.log('Gerando relatório');
-                    });
-                }
-            });
-        });
-    </script>
 </body>
 
 </html>
+
+
