@@ -1085,6 +1085,4 @@ class gerenciamento
 
 
 }
-
-
 ?>

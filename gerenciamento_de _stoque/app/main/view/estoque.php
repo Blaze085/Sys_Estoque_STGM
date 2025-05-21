@@ -1,10 +1,9 @@
 <?php
- if(isset($_GET['resultado'])){
-
-}else{
-    header('location:../control/controllerEstoque.php');
+if (isset($_GET['resultado'])) {
+    // Handle result if needed
+} else {
+    header('location:../control/controllerGerarRelatorios.php');
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -13,7 +12,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualizar Estoque</title>
+    <title>Gerar Relatórios</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
@@ -82,6 +81,52 @@
             height: 3px;
             background-color: #FFA500;
             border-radius: 3px;
+        }
+
+        .card-item {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            will-change: transform;
+        }
+
+        .card-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 90, 36, 0.2), 0 10px 10px -5px rgba(0, 90, 36, 0.1);
+            border-color: #FFA500;
+        }
+        
+        .card-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 165, 0, 0.1) 0%, rgba(0, 90, 36, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+
+        .card-item:hover::before {
+            opacity: 1;
+        }
+
+        .card-shine {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 100%);
+            transform: skewX(-25deg);
+            transition: all 0.75s ease;
+            z-index: 2;
+        }
+
+        .card-item:hover .card-shine {
+            left: 150%;
         }
 
         .social-icon {
@@ -220,7 +265,7 @@
                     <i class="fas fa-home mr-2"></i>
                     <span>Início</span>
                 </a>
-                <a href="estoque.php" class="header-nav-link active flex items-center">
+                <a href="estoque.php" class="header-nav-link flex items-center">
                     <i class="fas fa-boxes mr-2"></i>
                     <span>Estoque</span>
                 </a>
@@ -243,7 +288,7 @@
                         </a>
                     </div>
                 </div>
-                <a href="relatorios.php" class="header-nav-link flex items-center">
+                <a href="relatorios.php" class="header-nav-link active flex items-center">
                     <i class="fas fa-chart-bar mr-2"></i>
                     <span>Relatórios</span>
                 </a>
@@ -252,129 +297,92 @@
     </header>
 
     <main class="container mx-auto px-4 py-8 md:py-12 flex-1">
-        <h1 class="text-primary text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center page-title tracking-tight font-heading">VISUALIZAR ESTOQUE</h1>
+        <h1 class="text-primary text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center page-title tracking-tight font-heading">GERAR RELATÓRIOS</h1>
 
-        <div class="mb-6 flex flex-col md:flex-row justify-between items-center gap-4 animate-fade-in">
-            <div class="flex-1">
-                <input type="text" id="pesquisar" placeholder="Pesquisar produto..." 
-                    class="w-full px-4 py-3 border-2 border-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent">
-            </div>
-            <div class="flex gap-2">
-                <select id="filtroCategoria" class="px-4 py-3 border-2 border-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent">
-                    <option value="">Todas as categorias</option>
-                    <option value="limpeza">Limpeza</option>
-                    <option value="expedientes">Expedientes</option>
-                    <option value="manutencao">Manutenção</option>
-                    <option value="eletrico">Elétrico</option>
-                    <option value="hidraulico">Hidráulico</option>
-                    <option value="educacao_fisica">Educação Física</option>
-                    <option value="epi">EPI</option>
-                    <option value="copa_e_cozinha">Copa e Cozinha</option>
-                    <option value="informatica">Informática</option>
-                    <option value="ferramentas">Ferramentas</option>
-                </select>
-                <button id="filtrarBtn" class="bg-secondary text-white font-bold py-3 px-6 rounded-lg hover:bg-opacity-90 transition-colors">
-                    Filtrar
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            <!-- Relatório de Estoque -->
+            <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in">
+                <div class="card-shine"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-primary mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+                <h2 class="text-xl font-bold text-primary mb-2">Relatório de Estoque</h2>
+                <p class="text-gray-600 text-center mb-4">Gerar relatório completo do estoque atual</p>
+                <button class="bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold">
+                    Gerar Relatório
                 </button>
             </div>
-        </div>
 
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden border-2 border-primary animate-fade-in" style="animation-delay: 0.1s">
-            <div class="overflow-x-auto">
-                <table class="w-full">
-                    <thead class="bg-primary text-white">
-                        <tr>
-                            <th class="py-3 px-4 text-left">Barcode</th>
-                            <th class="py-3 px-4 text-left">Nome</th>
-                            <th class="py-3 px-4 text-left">Quantidade</th>
-                            <th class="py-3 px-4 text-left">Categoria</th>
-                            <th class="py-3 px-4 text-left">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabelaEstoque">
-                        <?php
-                        if(isset($_GET['resultado'])) {
-                            $resultado = json_decode($_GET['resultado'], true);
-                            if(is_array($resultado) && count($resultado) > 0) {
-                                foreach($resultado as $produto) {
-                                    $quantidadeClass = $produto['quantidade'] <= 5 ? 'text-red-600 font-bold' : 'text-gray-700';
-                                    ?>
-                                    <tr class="border-b border-gray-200 hover:bg-gray-50">
-                                        <td class="py-3 px-4"><?php echo htmlspecialchars($produto['barcode']); ?></td>
-                                        <td class="py-3 px-4"><?php echo htmlspecialchars($produto['nome_produto']); ?></td>
-                                        <td class="py-3 px-4 <?php echo $quantidadeClass; ?>"><?php echo htmlspecialchars($produto['quantidade']); ?></td>
-                                        <td class="py-3 px-4"><?php echo htmlspecialchars($produto['natureza']); ?></td>
-                                        <td class="py-3 px-4 flex space-x-2">
-                                            <button class="text-primary hover:text-secondary mr-2">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                                </svg>
-                                            </button>
-                                            <button class="text-red-500 hover:text-red-700">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                </svg>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <?php
-                                }
-                            } else {
-                                echo '<tr><td colspan="5" class="py-4 px-4 text-center text-gray-500">Nenhum produto encontrado</td></tr>';
-                            }
-                        } else {
-                            echo '<tr><td colspan="5" class="py-4 px-4 text-center text-gray-500">Carregando produtos...</td></tr>';
-                        }
-                        ?>
-                        <!-- Exemplos estáticos para visualização -->
-                        <tr class="border-b border-gray-200 hover:bg-gray-50">
-                            <td class="py-3 px-4">001</td>
-                            <td class="py-3 px-4">Papel A4</td>
-                            <td class="py-3 px-4">100</td>
-                            <td class="py-3 px-4">Expedientes</td>
-                            <td class="py-3 px-4">
-                                <button class="text-primary hover:text-secondary mr-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                    </svg>
-                                </button>
-                                <button class="text-red-500 hover:text-red-700">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr class="border-b border-gray-200 hover:bg-gray-50">
-                            <td class="py-3 px-4">002</td>
-                            <td class="py-3 px-4">Detergente</td>
-                            <td class="py-3 px-4">50</td>
-                            <td class="py-3 px-4">Limpeza</td>
-                            <td class="py-3 px-4">
-                                <button class="text-primary hover:text-secondary mr-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                    </svg>
-                                </button>
-                                <button class="text-red-500 hover:text-red-700">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-        <div class="mt-6 flex justify-center animate-fade-in" style="animation-delay: 0.2s">
-            <button id="exportarBtn" class="bg-primary text-white font-bold py-3 px-6 rounded-lg hover:bg-opacity-90 transition-colors flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            <!-- Relatório de Movimentações -->
+            <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in" style="animation-delay: 0.1s">
+                <div class="card-shine"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-primary mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
                 </svg>
-                Exportar para Excel
-            </button>
+                <h2 class="text-xl font-bold text-primary mb-2">Relatório de Movimentações</h2>
+                <p class="text-gray-600 text-center mb-4">Gerar relatório de entradas e saídas por período</p>
+                <form action="../control/controllerGerarRelatorios.php" method="POST" class="w-full flex flex-col items-center">
+                    <div class="flex flex-col sm:flex-row gap-2 mb-4 w-full">
+                        <input type="date" name="data_inicio" class="border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary" required>
+                        <input type="date" name="data_fim" class="border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary" required>
+                    </div>
+                    <button type="submit" name="relatorio_movimentacoes" class="bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold">
+                        Gerar Relatório
+                    </button>
+                </form>
+            </div>
+
+            <!-- Relatório por Categoria -->
+            <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in" style="animation-delay: 0.2s">
+                <div class="card-shine"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-primary mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                </svg>
+                <h2 class="text-xl font-bold text-primary mb-2">Relatório por Categoria</h2>
+                <p class="text-gray-600 text-center mb-4">Gerar relatório por categoria de produtos</p>
+                <button class="bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold">
+                    Gerar Relatório
+                </button>
+            </div>
+
+            <!-- Relatório de Produtos com Baixo Estoque -->
+            <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in" style="animation-delay: 0.3s">
+                <div class="card-shine"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-primary mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <h2 class="text-xl font-bold text-primary mb-2">Baixo Estoque</h2>
+                <p class="text-gray-600 text-center mb-4">Relatório de produtos com estoque baixo</p>
+                <button class="bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold">
+                    Gerar Relatório
+                </button>
+            </div>
+
+            <!-- Relatório de Solicitações -->
+            <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in" style="animation-delay: 0.4s">
+                <div class="card-shine"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-primary mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+                <h2 class="text-xl font-bold text-primary mb-2">Relatório de Solicitações</h2>
+                <p class="text-gray-600 text-center mb-4">Histórico de solicitações realizadas</p>
+                <button class="bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold">
+                    Gerar Relatório
+                </button>
+            </div>
+
+            <!-- Relatório Personalizado -->
+            <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in" style="animation-delay: 0.5s">
+                <div class="card-shine"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-primary mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+                <h2 class="text-xl font-bold text-primary mb-2">Relatório Personalizado</h2>
+                <p class="text-gray-600 text-center mb-4">Crie um relatório com parâmetros personalizados</p>
+                <button class="bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold">
+                    Criar Relatório
+                </button>
+            </div>
         </div>
     </main>
 
@@ -482,41 +490,28 @@
                 });
             }
             
-            // Código existente para filtrar produtos
-            const pesquisarInput = document.getElementById('pesquisar');
-            const filtroCategoria = document.getElementById('filtroCategoria');
-            const filtrarBtn = document.getElementById('filtrarBtn');
-            const tabelaEstoque = document.getElementById('tabelaEstoque');
-            
-            if (filtrarBtn) {
-                filtrarBtn.addEventListener('click', function() {
-                    const termo = pesquisarInput.value.toLowerCase();
-                    const categoria = filtroCategoria.value.toLowerCase();
-                    
-                    // Filtrar linhas da tabela
-                    const linhas = tabelaEstoque.querySelectorAll('tr');
-                    linhas.forEach(linha => {
-                        const colunas = linha.querySelectorAll('td');
-                        if (colunas.length > 0) {
-                            const nome = colunas[1].textContent.toLowerCase();
-                            const cat = colunas[3].textContent.toLowerCase();
-                            
-                            const matchTermo = nome.includes(termo);
-                            const matchCategoria = categoria === '' || cat === categoria;
-                            
-                            linha.style.display = matchTermo && matchCategoria ? '' : 'none';
-                        }
+            // Adicionar efeito de hover nos cards
+            const cards = document.querySelectorAll('.card-item');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    const shine = this.querySelector('.card-shine');
+                    if (shine) {
+                        shine.style.left = '-100%';
+                        setTimeout(() => {
+                            shine.style.left = '150%';
+                        }, 50);
+                    }
+                });
+                
+                // Botões de relatório
+                const btn = card.querySelector('button');
+                if (btn) {
+                    btn.addEventListener('click', function() {
+                        // Aqui iria a lógica para gerar os relatórios
+                        console.log('Gerando relatório');
                     });
-                });
-            }
-            
-            // Botão de exportar
-            const exportarBtn = document.getElementById('exportarBtn');
-            if (exportarBtn) {
-                exportarBtn.addEventListener('click', function() {
-                    window.location.href = '../control/gerar_relatorio.php';
-                });
-            }
+                }
+            });
         });
     </script>
 </body>
