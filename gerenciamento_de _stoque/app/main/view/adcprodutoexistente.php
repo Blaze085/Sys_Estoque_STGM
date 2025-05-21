@@ -1,3 +1,20 @@
+<?php
+// Capturar o barcode da URL
+$barcode = isset($_GET['barcode']) ? $_GET['barcode'] : '';
+
+// Conexão com o banco de dados
+$pdo = new PDO("mysql:host=localhost;dbname=gerenciamento_estoque", "root", "");
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+// Consulta SQL usando prepared statement
+$consulta = "SELECT * FROM produtos WHERE barcode = :barcode";
+$query = $pdo->prepare($consulta);
+$query->bindValue(":barcode", $barcode, PDO::PARAM_STR); // Tratar como string
+$query->execute();
+$resultado = $query->fetchAll(PDO::FETCH_ASSOC);
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -389,9 +406,22 @@
             <form action="../control/controllerAdicionarProduto.php" method="POST" class="space-y-6">
                 <div class="space-y-4">
                     <div>
+
                         <h1 type="text" placeholder="NOME DO PRODUTO" id="nome" name="nome"
                             class="w-full px-4 py-3 border-2 border-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent text-center font-semibold"
-                            aria-label="Nome do produto">PRODUTO</h1>
+                            aria-label="Nome do produto"><?php
+                                                            if ($resultado) {
+                                                                echo "<ul>";
+                                                                foreach ($resultado as $linha) {
+                                                                    echo "<li>" . htmlspecialchars($linha['nome_produto']);"</li>";
+                                                                }
+                                                                echo "</ul>";
+                                                            } else {
+                                                                echo "<p>Nenhum produto encontrado para o barcode: " . htmlspecialchars($barcode) . "</p>";
+                                                            }
+                                                            ?>
+
+                        </h1>
                     </div>
 
                     <div>

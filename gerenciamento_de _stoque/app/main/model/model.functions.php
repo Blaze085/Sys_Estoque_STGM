@@ -995,7 +995,7 @@ class gerenciamento
         $produto = $query->fetch(PDO::FETCH_ASSOC);
 
         if ($produto) {
-           header("location: ../view/adcprodutoexistente.php");
+           header("location: ../view/adcprodutoexistente.php?barcode=" . urlencode($barcode));
         } else {
             $insert = "INSERT INTO produtos VALUES (null, :barcode, :nome, :quantidade, :natureza)";
             $query = $pdo->prepare($insert);
