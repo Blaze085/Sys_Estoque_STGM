@@ -985,7 +985,7 @@ class gerenciamento
     </html>';
     }
 
-    public function adicionarestoque($nome, $barcode, $quantidade, $natureza)
+    public function consultarestoque($barcode,)
     {
         $pdo = new PDO("mysql:host=localhost;dbname=gerenciamento_estoque", "root", "");
         $consulta = "SELECT quantidade FROM produtos WHERE barcode = :barcode";
@@ -995,35 +995,53 @@ class gerenciamento
         $produto = $query->fetch(PDO::FETCH_ASSOC);
 
         if ($produto) {
-           header("location: ../view/adcprodutoexistente.php?barcode=" . urlencode($barcode));
+            header("location: ../view/adcprodutoexistente.php?barcode=" . urlencode($barcode));
         } else {
-            $insert = "INSERT INTO produtos VALUES (null, :barcode, :nome, :quantidade, :natureza)";
-            $query = $pdo->prepare($insert);
-            $query->bindValue(":nome", $nome);
-            $query->bindValue(":barcode", $barcode);
-            $query->bindValue(":quantidade", $quantidade);
-            $query->bindValue(":natureza", $natureza);
-            $query->execute();
+            header("location: ../view/adcnovoproduto.php?barcode=" . urlencode($barcode));
         }
-
     }
 
+    public function adcaoestoque($barcode, $quantidade)
+    {
+        $pdo = new PDO("mysql:host=localhost;dbname=gerenciamento_estoque", "root", "");
+        $consulta = "UPDATE produtos SET quantidade = quantidade + :quantidade WHERE barcode = :barcode";
+        $query = $pdo->prepare($consulta);
+        $query->bindValue(":quantidade", $quantidade);
+        $query->bindValue(":barcode", $barcode);
+        $query->execute();
 
+        header("location:../view/estoque.php");
+    }
+
+    public function adcproduto($barcode, $nome,  $quantidade, $natureza)
+    {
+
+        $pdo = new PDO("mysql:host=localhost;dbname=gerenciamento_estoque", "root", "");
+        $consulta = "INSERT INTO produtos VALUES (null, :barcode, :nome, :quantidade, :natureza)";
+        $query = $pdo->prepare($consulta);
+        $query->bindValue(":nome", $nome);
+        $query->bindValue(":barcode", $barcode);
+        $query->bindValue(":quantidade", $quantidade);
+        $query->bindValue(":natureza", $natureza);
+        $query->execute();
+
+        header("location:../view/estoque.php");
+    }
     public function solicitarproduto($valor_retirada, $barcode)
     {
-            // Conexão com o banco de dados
-            $pdo = new PDO("mysql:host=localhost;dbname=gerenciamento_estoque", "root", "");
+        // Conexão com o banco de dados
+        $pdo = new PDO("mysql:host=localhost;dbname=gerenciamento_estoque", "root", "");
 
-            // Atualiza a quantidade
-            $consulta = "UPDATE produtos SET quantidade = quantidade - :valor_retirada WHERE barcode = :barcode";
-            $query = $pdo->prepare($consulta);
-            $query->bindValue(":valor_retirada", $valor_retirada);
-            $query->bindValue(":barcode", $barcode);
-            $query->execute();
+        // Atualiza a quantidade
+        $consulta = "UPDATE produtos SET quantidade = quantidade - :valor_retirada WHERE barcode = :barcode";
+        $query = $pdo->prepare($consulta);
+        $query->bindValue(":valor_retirada", $valor_retirada);
+        $query->bindValue(":barcode", $barcode);
+        $query->execute();
 
-            // Redireciona para a página de estoque
-            header("Location: ../view/estoque.php");
-        }
+        // Redireciona para a página de estoque
+        header("Location: ../view/estoque.php");
+    }
 
     public function editarProduto($id, $nome, $barcode, $quantidade, $natureza)
     {
@@ -1076,7 +1094,4 @@ class gerenciamento
             return null;
         }
     }
-
-
 }
-?>

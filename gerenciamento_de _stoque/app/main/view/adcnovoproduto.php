@@ -1,3 +1,9 @@
+<?php
+
+$barcode = isset($_GET['barcode']) ? $_GET['barcode'] : '';
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -35,12 +41,22 @@
                     },
                     keyframes: {
                         fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' }
+                            '0%': {
+                                opacity: '0'
+                            },
+                            '100%': {
+                                opacity: '1'
+                            }
                         },
                         slideUp: {
-                            '0%': { transform: 'translateY(20px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                            '0%': {
+                                transform: 'translateY(20px)',
+                                opacity: '0'
+                            },
+                            '100%': {
+                                transform: 'translateY(0)',
+                                opacity: '1'
+                            }
                         }
                     }
                 }
@@ -64,11 +80,11 @@
             cursor: pointer;
             transition: all 0.2s ease;
         }
-        
+
         .custom-radio:hover {
             background-color: rgba(0, 90, 36, 0.05);
         }
-        
+
         .custom-radio input[type="radio"] {
             position: relative;
             cursor: pointer;
@@ -80,12 +96,12 @@
             margin-right: 10px;
             outline: none;
         }
-        
+
         .custom-radio input[type="radio"]:checked {
             background-color: #FFA500;
             border-color: #FFA500;
         }
-        
+
         .custom-radio input[type="radio"]:checked::after {
             content: '';
             position: absolute;
@@ -137,9 +153,11 @@
             .hamburger {
                 display: flex;
             }
+
             .nav-links {
                 display: none;
             }
+
             .nav-links.active {
                 display: flex;
                 flex-direction: column;
@@ -209,7 +227,7 @@
             background-color: #FFA500;
             border-radius: 4px;
         }
-        
+
         /* Estilos para o header melhorado */
         .header-nav-link {
             position: relative;
@@ -218,11 +236,11 @@
             padding: 0.5rem 1rem;
             border-radius: 0.5rem;
         }
-        
+
         .header-nav-link:hover {
             background-color: rgba(255, 255, 255, 0.1);
         }
-        
+
         .header-nav-link::after {
             content: '';
             position: absolute;
@@ -234,23 +252,23 @@
             transition: all 0.3s ease;
             transform: translateX(-50%);
         }
-        
+
         .header-nav-link:hover::after {
             width: 80%;
         }
-        
+
         .header-nav-link.active {
             background-color: rgba(255, 255, 255, 0.15);
         }
-        
+
         .header-nav-link.active::after {
             width: 80%;
         }
-        
+
         .mobile-menu-button {
             display: none;
         }
-        
+
         @media (max-width: 768px) {
             .header-nav {
                 display: none;
@@ -263,18 +281,18 @@
                 box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
                 z-index: 40;
             }
-            
+
             .header-nav.show {
                 display: flex;
                 flex-direction: column;
             }
-            
+
             .header-nav-link {
                 padding: 0.75rem 1rem;
                 text-align: center;
                 margin: 0.25rem 0;
             }
-            
+
             .mobile-menu-button {
                 display: flex;
                 flex-direction: column;
@@ -287,7 +305,7 @@
                 padding: 0;
                 z-index: 10;
             }
-            
+
             .mobile-menu-button span {
                 width: 100%;
                 height: 3px;
@@ -297,16 +315,16 @@
                 position: relative;
                 transform-origin: 1px;
             }
-            
+
             .mobile-menu-button span:first-child.active {
                 transform: rotate(45deg);
                 top: 0px;
             }
-            
+
             .mobile-menu-button span:nth-child(2).active {
                 opacity: 0;
             }
-            
+
             .mobile-menu-button span:nth-child(3).active {
                 transform: rotate(-45deg);
                 top: -1px;
@@ -325,13 +343,13 @@
                     <span class="text-white font-heading text-xl font-semibold hidden md:inline">STGM Estoque</span>
                 </a>
             </div>
-            
+
             <button class="mobile-menu-button focus:outline-none" aria-label="Menu" id="menuButton">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
-            
+
             <nav class="header-nav md:flex items-center space-x-1" id="headerNav">
                 <a href="paginainicial.php" class="header-nav-link flex items-center">
                     <i class="fas fa-home mr-2"></i>
@@ -370,23 +388,88 @@
 
     <main class="container mx-auto px-4 py-8 md:py-12 flex-1">
         <div class="text-center mb-10">
-            <h1 class="text-primary text-3xl md:text-4xl font-bold mb-8 md:mb-6 text-center page-title tracking-tight font-heading inline-block mx-auto">ADICIONAR</h1>
+            <h1 class="text-primary text-3xl md:text-4xl font-bold mb-8 md:mb-6 text-center page-title tracking-tight font-heading inline-block mx-auto">ADICIONAR NOVO PRODUTO</h1>
         </div>
-        
+
         <div class="bg-white rounded-xl shadow-lg p-8 max-w-2xl w-full border-2 border-primary mx-auto">
-            <form action="../control/controllerConsultarProduto.php" method="POST" class="space-y-6">
+            <form action="../control/controllerAdicionarProduto.php?barcode=" method="POST" class="space-y-6">
                 <div class="space-y-4">
                     <div>
-                        <input type="text" placeholder="BARCODE" id="barcode" name="barcode" required
+                        <input type="text" placeholder="NOME DO PRODUTO" id="nome" name="nome" required
                             class="w-full px-4 py-3 border-2 border-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent text-center font-semibold"
-                            aria-label="Código de barras do produto">
-                    </div>                
-                
-                <button type="submit" name="btn" value="Adicionar" class="w-full bg-secondary text-white font-bold py-3 px-4 rounded-lg hover:bg-opacity-90 transition-colors"
-                    aria-label="Adicionar produto">
-                    CONSULTAR
-                </button>
-            </form>
+                            aria-label="Nome do produto">
+                    </div>
+
+                    <div>
+                        <input type="number" placeholder="QUANTIDADE" min="1" id="quantidade" name="quantidade" required
+                            class="w-full px-4 py-3 border-2 border-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent text-center font-semibold"
+                            aria-label="Quantidade do produto">
+                    </div>
+
+                    <div class="p-4 border-2 border-primary rounded-lg">
+                        <p class="font-semibold text-primary mb-3 text-center">Selecione a Categoria</p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                            <label class="custom-radio p-2 rounded-lg">
+                                <input type="radio" id="limpeza" name="natureza" value="limpeza" aria-label="Limpeza">
+                                <span class="text-gray-700">Limpeza</span>
+                            </label>
+
+                            <label class="custom-radio p-2 rounded-lg">
+                                <input type="radio" id="expedientes" name="natureza" value="expedientes" aria-label="Expedientes">
+                                <span class="text-gray-700">Expedientes</span>
+                            </label>
+
+                            <label class="custom-radio p-2 rounded-lg">
+                                <input type="radio" id="manutencao" name="natureza" value="manutencao" aria-label="Manutenção">
+                                <span class="text-gray-700">Manutenção</span>
+                            </label>
+
+                            <label class="custom-radio p-2 rounded-lg">
+                                <input type="radio" id="eletrico" name="natureza" value="eletrico" aria-label="Elétrico">
+                                <span class="text-gray-700">Elétrico</span>
+                            </label>
+
+                            <label class="custom-radio p-2 rounded-lg">
+                                <input type="radio" id="hidraulico" name="natureza" value="hidraulico" aria-label="Hidráulico">
+                                <span class="text-gray-700">Hidráulico</span>
+                            </label>
+
+                            <label class="custom-radio p-2 rounded-lg">
+                                <input type="radio" id="educacao_fisica" name="natureza" value="educacao_fisica" aria-label="Educação Física">
+                                <span class="text-gray-700">Educação Física</span>
+                            </label>
+
+                            <label class="custom-radio p-2 rounded-lg">
+                                <input type="radio" id="epi" name="natureza" value="epi" aria-label="EPI">
+                                <span class="text-gray-700">EPI</span>
+                            </label>
+
+                            <label class="custom-radio p-2 rounded-lg">
+                                <input type="radio" id="copa_e_cozinha" name="natureza" value="copa_e_cozinha" aria-label="Copa e Cozinha">
+                                <span class="text-gray-700">Copa e Cozinha</span>
+                            </label>
+
+                            <label class="custom-radio p-2 rounded-lg">
+                                <input type="radio" id="informatica" name="natureza" value="informatica" aria-label="Informática">
+                                <span class="text-gray-700">Informática</span>
+                            </label>
+
+                            <label class="custom-radio p-2 rounded-lg">
+                                <input type="radio" id="ferramentas" name="natureza" value="ferramentas" aria-label="Ferramentas">
+                                <span class="text-gray-700">Ferramentas</span>
+                            </label>
+                        </div>
+                    </div>
+                    <input type="hidden" name="barcode" value="<?php echo htmlspecialchars($barcode); ?>">
+                </div>
+        </div>
+
+        <button type="submit" name="btn" value="Adicionar" class="w-full bg-secondary text-white font-bold py-3 px-4 rounded-lg hover:bg-opacity-90 transition-colors"
+            aria-label="Adicionar produto">
+            ADICIONAR
+        </button>
+        </form>
         </div>
     </main>
 
@@ -401,7 +484,7 @@
                         EEEP STGM
                     </h3>
                     <p class="text-xs leading-relaxed">
-                        <i class="fas fa-map-marker-alt mr-1 text-xs"></i> 
+                        <i class="fas fa-map-marker-alt mr-1 text-xs"></i>
                         AV. Marta Maria Carvalho Nojoza, SN<br>
                         Maranguape - CE
                     </p>
@@ -432,23 +515,23 @@
                         Dev Team
                     </h3>
                     <div class="grid grid-cols-2 gap-2">
-                        <a href="https://www.instagram.com/dudu.limasx/" target="_blank" 
-                           class="text-xs flex items-center hover:text-secondary transition-colors social-icon">
+                        <a href="https://www.instagram.com/dudu.limasx/" target="_blank"
+                            class="text-xs flex items-center hover:text-secondary transition-colors social-icon">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Carlos E.
                         </a>
-                        <a href="https://www.instagram.com/millenafreires_/" target="_blank" 
-                           class="text-xs flex items-center hover:text-secondary transition-colors social-icon">
+                        <a href="https://www.instagram.com/millenafreires_/" target="_blank"
+                            class="text-xs flex items-center hover:text-secondary transition-colors social-icon">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Millena F.
                         </a>
-                        <a href="https://www.instagram.com/matheusz.mf/" target="_blank" 
-                           class="text-xs flex items-center hover:text-secondary transition-colors social-icon">
+                        <a href="https://www.instagram.com/matheusz.mf/" target="_blank"
+                            class="text-xs flex items-center hover:text-secondary transition-colors social-icon">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Matheus M.
                         </a>
-                        <a href="https://www.instagram.com/yanlucas10__/" target="_blank" 
-                           class="text-xs flex items-center hover:text-secondary transition-colors social-icon">
+                        <a href="https://www.instagram.com/yanlucas10__/" target="_blank"
+                            class="text-xs flex items-center hover:text-secondary transition-colors social-icon">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Ian Lucas
                         </a>
@@ -473,11 +556,11 @@
             // Menu mobile toggle
             const menuButton = document.getElementById('menuButton');
             const headerNav = document.getElementById('headerNav');
-            
+
             if (menuButton && headerNav) {
                 menuButton.addEventListener('click', function() {
                     headerNav.classList.toggle('show');
-                    
+
                     // Animação para o botão do menu
                     const spans = menuButton.querySelectorAll('span');
                     spans.forEach(span => {
@@ -485,11 +568,11 @@
                     });
                 });
             }
-            
+
             // Adicionar suporte para dropdown no mobile
             const dropdownToggle = document.querySelector('.group > a');
             const dropdownMenu = document.querySelector('.group > div');
-            
+
             if (window.innerWidth <= 768) {
                 dropdownToggle.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -497,11 +580,11 @@
                     dropdownMenu.classList.toggle('scale-100');
                 });
             }
-            
+
             // Hamburger menu toggle
             const hamburger = document.querySelector('.hamburger');
             const navLinks = document.querySelector('.nav-links');
-            
+
             if (hamburger && navLinks) {
                 hamburger.addEventListener('click', () => {
                     navLinks.classList.toggle('active');
