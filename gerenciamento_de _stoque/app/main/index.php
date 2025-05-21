@@ -205,7 +205,7 @@
 
             const email = document.getElementById('inputEmail3').value.trim();
             const password = document.getElementById('inputPassword3').value.trim();
-            const validEmail = "Estoque2025S@email.com";
+            const validEmail = "estoque2025S@email.com";
             const validPassword = "estoque2025.";
 
             if (!email || !password) {
