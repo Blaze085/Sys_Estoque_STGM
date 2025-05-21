@@ -995,12 +995,7 @@ class gerenciamento
         $produto = $query->fetch(PDO::FETCH_ASSOC);
 
         if ($produto) {
-            $nova_quantidade = $produto['quantidade'] + $quantidade;
-            $update = "UPDATE produtos SET quantidade = :quantidade WHERE barcode = :barcode";
-            $query = $pdo->prepare($update);
-            $query->bindValue(":quantidade", $nova_quantidade);
-            $query->bindValue(":barcode", $barcode);
-            $query->execute();
+           header("location: ../view/adcprodutoexistente.php");
         } else {
             $insert = "INSERT INTO produtos VALUES (null, :barcode, :nome, :quantidade, :natureza)";
             $query = $pdo->prepare($insert);
@@ -1011,7 +1006,6 @@ class gerenciamento
             $query->execute();
         }
 
-        header("Location: ../view/estoque.php");
     }
 
 
