@@ -114,6 +114,7 @@
 
         .btn-primary {
             background: linear-gradient(135deg, #007A33, #FF8C00);
+            color: #F0F2F5;
             border: none;
             font-weight: 600;
             font-size: 1.1rem;
