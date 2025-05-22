@@ -253,11 +253,9 @@
             </button>
             
             <nav class="header-nav md:flex items-center space-x-1">
-<<<<<<< Updated upstream
-                <a href="paginainicial.php" class="header-nav-link flex items-center">
-=======
+
                 <a href="./paginainicial.php" class="header-nav-link flex items-center">
->>>>>>> Stashed changes
+
                     <i class="fas fa-home mr-2"></i>
                     <span>Início</span>
                 </a>
