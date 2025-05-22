@@ -463,12 +463,13 @@ $barcode = isset($_GET['barcode']) ? $_GET['barcode'] : '';
                     </div>
                     <input type="hidden" name="barcode" value="<?php echo htmlspecialchars($barcode); ?>">
                 </div>
+                <button type="submit" name="btn" value="Adicionar" class="w-full bg-secondary text-white font-bold py-3 px-4 rounded-lg hover:bg-opacity-90 transition-colors"
+                    aria-label="Adicionar produto">
+                    ADICIONAR
+                </button>
         </div>
 
-        <button type="submit" name="btn" value="Adicionar" class="w-full bg-secondary text-white font-bold py-3 px-4 rounded-lg hover:bg-opacity-90 transition-colors"
-            aria-label="Adicionar produto">
-            ADICIONAR
-        </button>
+
         </form>
         </div>
     </main>
