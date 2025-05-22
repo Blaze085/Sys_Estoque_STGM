@@ -233,7 +233,7 @@
                 button.disabled = false;
             }, 1000);
         });
-    </script>
+    </script>  
 </body>
 
 </html>
