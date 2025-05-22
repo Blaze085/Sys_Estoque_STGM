@@ -1,3 +1,20 @@
+<?php
+// Capturar o barcode da URL
+$barcode = isset($_GET['barcode']) ? $_GET['barcode'] : '';
+
+// Conexão com o banco de dados
+$pdo = new PDO("mysql:host=localhost;dbname=gerenciamento_estoque", "root", "");
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+// Consulta SQL usando prepared statement
+$consulta = "SELECT * FROM produtos WHERE barcode = :barcode";
+$query = $pdo->prepare($consulta);
+$query->bindValue(":barcode", $barcode, PDO::PARAM_STR); // Tratar como string
+$query->execute();
+$resultado = $query->fetchAll(PDO::FETCH_ASSOC);
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -35,12 +52,22 @@
                     },
                     keyframes: {
                         fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' }
+                            '0%': {
+                                opacity: '0'
+                            },
+                            '100%': {
+                                opacity: '1'
+                            }
                         },
                         slideUp: {
-                            '0%': { transform: 'translateY(20px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                            '0%': {
+                                transform: 'translateY(20px)',
+                                opacity: '0'
+                            },
+                            '100%': {
+                                transform: 'translateY(0)',
+                                opacity: '1'
+                            }
                         }
                     }
                 }
@@ -64,11 +91,11 @@
             cursor: pointer;
             transition: all 0.2s ease;
         }
-        
+
         .custom-radio:hover {
             background-color: rgba(0, 90, 36, 0.05);
         }
-        
+
         .custom-radio input[type="radio"] {
             position: relative;
             cursor: pointer;
@@ -80,12 +107,12 @@
             margin-right: 10px;
             outline: none;
         }
-        
+
         .custom-radio input[type="radio"]:checked {
             background-color: #FFA500;
             border-color: #FFA500;
         }
-        
+
         .custom-radio input[type="radio"]:checked::after {
             content: '';
             position: absolute;
@@ -137,9 +164,11 @@
             .hamburger {
                 display: flex;
             }
+
             .nav-links {
                 display: none;
             }
+
             .nav-links.active {
                 display: flex;
                 flex-direction: column;
@@ -209,7 +238,7 @@
             background-color: #FFA500;
             border-radius: 4px;
         }
-        
+
         /* Estilos para o header melhorado */
         .header-nav-link {
             position: relative;
@@ -218,11 +247,11 @@
             padding: 0.5rem 1rem;
             border-radius: 0.5rem;
         }
-        
+
         .header-nav-link:hover {
             background-color: rgba(255, 255, 255, 0.1);
         }
-        
+
         .header-nav-link::after {
             content: '';
             position: absolute;
@@ -234,23 +263,23 @@
             transition: all 0.3s ease;
             transform: translateX(-50%);
         }
-        
+
         .header-nav-link:hover::after {
             width: 80%;
         }
-        
+
         .header-nav-link.active {
             background-color: rgba(255, 255, 255, 0.15);
         }
-        
+
         .header-nav-link.active::after {
             width: 80%;
         }
-        
+
         .mobile-menu-button {
             display: none;
         }
-        
+
         @media (max-width: 768px) {
             .header-nav {
                 display: none;
@@ -263,18 +292,18 @@
                 box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
                 z-index: 40;
             }
-            
+
             .header-nav.show {
                 display: flex;
                 flex-direction: column;
             }
-            
+
             .header-nav-link {
                 padding: 0.75rem 1rem;
                 text-align: center;
                 margin: 0.25rem 0;
             }
-            
+
             .mobile-menu-button {
                 display: flex;
                 flex-direction: column;
@@ -287,7 +316,7 @@
                 padding: 0;
                 z-index: 10;
             }
-            
+
             .mobile-menu-button span {
                 width: 100%;
                 height: 3px;
@@ -297,16 +326,16 @@
                 position: relative;
                 transform-origin: 1px;
             }
-            
+
             .mobile-menu-button span:first-child.active {
                 transform: rotate(45deg);
                 top: 0px;
             }
-            
+
             .mobile-menu-button span:nth-child(2).active {
                 opacity: 0;
             }
-            
+
             .mobile-menu-button span:nth-child(3).active {
                 transform: rotate(-45deg);
                 top: -1px;
@@ -325,19 +354,15 @@
                     <span class="text-white font-heading text-xl font-semibold hidden md:inline">STGM Estoque</span>
                 </a>
             </div>
-            
+
             <button class="mobile-menu-button focus:outline-none" aria-label="Menu" id="menuButton">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
-            
+
             <nav class="header-nav md:flex items-center space-x-1" id="headerNav">
-<<<<<<< Updated upstream
                 <a href="paginainicial.php" class="header-nav-link flex items-center">
-=======
-                <a href="./paginainicial.php" class="header-nav-link flex items-center">
->>>>>>> Stashed changes
                     <i class="fas fa-home mr-2"></i>
                     <span>Início</span>
                 </a>
@@ -374,22 +399,46 @@
 
     <main class="container mx-auto px-4 py-8 md:py-12 flex-1">
         <div class="text-center mb-10">
-            <h1 class="text-primary text-3xl md:text-4xl font-bold mb-8 md:mb-6 text-center page-title tracking-tight font-heading inline-block mx-auto">ADICIONAR</h1>
+            <h1 class="text-primary text-3xl md:text-4xl font-bold mb-8 md:mb-6 text-center page-title tracking-tight font-heading inline-block mx-auto">ADICIONAR AO ESTOQUE</h1>
         </div>
-        
+
         <div class="bg-white rounded-xl shadow-lg p-8 max-w-2xl w-full border-2 border-primary mx-auto">
-            <form action="../control/controllerConsultarProduto.php" method="POST" class="space-y-6">
+            <form action="../control/controllerAdicionarAoEstoque.php?barcode=" .$barcode method="POST" class="space-y-6">
                 <div class="space-y-4">
                     <div>
-                        <input type="text" placeholder="BARCODE" id="barcode" name="barcode" required
+
+                        <h1 type="text" placeholder="NOME DO PRODUTO" id="nome" name="nome"
                             class="w-full px-4 py-3 border-2 border-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent text-center font-semibold"
-                            aria-label="Código de barras do produto">
-                    </div>                
-                
-                <button type="submit" name="btn" value="Adicionar" class="w-full bg-secondary text-white font-bold py-3 px-4 rounded-lg hover:bg-opacity-90 transition-colors"
-                    aria-label="Adicionar produto">
-                    CONSULTAR
-                </button>
+                            aria-label="Nome do produto"><?php
+                                                            if ($resultado) {
+                                                                echo "<ul>";
+                                                                foreach ($resultado as $linha) {
+                                                                    echo "<li>" . htmlspecialchars($linha['nome_produto']);
+                                                                    "</li>";
+                                                                }
+                                                                echo "</ul>";
+                                                            } else {
+                                                                echo "<p>Nenhum produto encontrado para o barcode: " . htmlspecialchars($barcode) . "</p>";
+                                                            }
+                                                            ?>
+
+                        </h1>
+                    </div>
+
+                    <input type="hidden" name="barcode" value="<?php echo htmlspecialchars($barcode); ?>">
+
+                    <div>
+                        <input type="number" placeholder="QUANTIDADE" min="1" id="quantidade" name="quantidade" required
+                            class="w-full px-4 py-3 border-2 border-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent text-center font-semibold"
+                            aria-label="Quantidade do produto">
+                    </div>
+
+
+
+                    <button type="submit" name="btn" value="Adicionar" class="w-full bg-secondary text-white font-bold py-3 px-4 rounded-lg hover:bg-opacity-90 transition-colors"
+                        aria-label="Adicionar produto">
+                        ADICIONAR QUANTIDADE
+                    </button>
             </form>
         </div>
     </main>
@@ -405,7 +454,7 @@
                         EEEP STGM
                     </h3>
                     <p class="text-xs leading-relaxed">
-                        <i class="fas fa-map-marker-alt mr-1 text-xs"></i> 
+                        <i class="fas fa-map-marker-alt mr-1 text-xs"></i>
                         AV. Marta Maria Carvalho Nojoza, SN<br>
                         Maranguape - CE
                     </p>
@@ -436,23 +485,23 @@
                         Dev Team
                     </h3>
                     <div class="grid grid-cols-2 gap-2">
-                        <a href="https://www.instagram.com/dudu.limasx/" target="_blank" 
-                           class="text-xs flex items-center hover:text-secondary transition-colors social-icon">
+                        <a href="https://www.instagram.com/dudu.limasx/" target="_blank"
+                            class="text-xs flex items-center hover:text-secondary transition-colors social-icon">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Carlos E.
                         </a>
-                        <a href="https://www.instagram.com/millenafreires_/" target="_blank" 
-                           class="text-xs flex items-center hover:text-secondary transition-colors social-icon">
+                        <a href="https://www.instagram.com/millenafreires_/" target="_blank"
+                            class="text-xs flex items-center hover:text-secondary transition-colors social-icon">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Millena F.
                         </a>
-                        <a href="https://www.instagram.com/matheusz.mf/" target="_blank" 
-                           class="text-xs flex items-center hover:text-secondary transition-colors social-icon">
+                        <a href="https://www.instagram.com/matheusz.mf/" target="_blank"
+                            class="text-xs flex items-center hover:text-secondary transition-colors social-icon">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Matheus M.
                         </a>
-                        <a href="https://www.instagram.com/yanlucas10__/" target="_blank" 
-                           class="text-xs flex items-center hover:text-secondary transition-colors social-icon">
+                        <a href="https://www.instagram.com/yanlucas10__/" target="_blank"
+                            class="text-xs flex items-center hover:text-secondary transition-colors social-icon">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Ian Lucas
                         </a>
@@ -477,11 +526,11 @@
             // Menu mobile toggle
             const menuButton = document.getElementById('menuButton');
             const headerNav = document.getElementById('headerNav');
-            
+
             if (menuButton && headerNav) {
                 menuButton.addEventListener('click', function() {
                     headerNav.classList.toggle('show');
-                    
+
                     // Animação para o botão do menu
                     const spans = menuButton.querySelectorAll('span');
                     spans.forEach(span => {
@@ -489,11 +538,11 @@
                     });
                 });
             }
-            
+
             // Adicionar suporte para dropdown no mobile
             const dropdownToggle = document.querySelector('.group > a');
             const dropdownMenu = document.querySelector('.group > div');
-            
+
             if (window.innerWidth <= 768) {
                 dropdownToggle.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -501,11 +550,11 @@
                     dropdownMenu.classList.toggle('scale-100');
                 });
             }
-            
+
             // Hamburger menu toggle
             const hamburger = document.querySelector('.hamburger');
             const navLinks = document.querySelector('.nav-links');
-            
+
             if (hamburger && navLinks) {
                 hamburger.addEventListener('click', () => {
                     navLinks.classList.toggle('active');
