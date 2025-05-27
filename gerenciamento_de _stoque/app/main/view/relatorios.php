@@ -60,7 +60,8 @@
 
         .page-title {
             position: relative;
-            display: inline-block;
+            width: 100%;
+            text-align: center;
         }
 
         .page-title::after {
@@ -87,7 +88,7 @@
             box-shadow: 0 20px 25px -5px rgba(0, 90, 36, 0.2), 0 10px 10px -5px rgba(0, 90, 36, 0.1);
             border-color: #FFA500;
         }
-        
+
         .card-item::before {
             content: '';
             position: absolute;
@@ -129,7 +130,7 @@
             transform: translateY(-3px);
             filter: drop-shadow(0 4px 3px rgba(255, 165, 0, 0.3));
         }
-        
+
         .header-nav-link {
             position: relative;
             transition: all 0.3s ease;
@@ -137,11 +138,11 @@
             padding: 0.5rem 1rem;
             border-radius: 0.5rem;
         }
-        
+
         .header-nav-link:hover {
             background-color: rgba(255, 255, 255, 0.1);
         }
-        
+
         .header-nav-link::after {
             content: '';
             position: absolute;
@@ -153,23 +154,33 @@
             transition: all 0.3s ease;
             transform: translateX(-50%);
         }
-        
+
         .header-nav-link:hover::after {
             width: 80%;
         }
-        
+
         .header-nav-link.active {
             background-color: rgba(255, 255, 255, 0.15);
         }
-        
+
         .header-nav-link.active::after {
             width: 80%;
         }
-        
+
         .mobile-menu-button {
             display: none;
         }
-        
+
+        .bottom-row {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            max-w-6xl;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
         @media (max-width: 768px) {
             .header-nav {
                 display: none;
@@ -182,18 +193,18 @@
                 box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
                 z-index: 40;
             }
-            
+
             .header-nav.show {
                 display: flex;
                 flex-direction: column;
             }
-            
+
             .header-nav-link {
                 padding: 0.75rem 1rem;
                 text-align: center;
                 margin: 0.25rem 0;
             }
-            
+
             .mobile-menu-button {
                 display: flex;
                 flex-direction: column;
@@ -206,7 +217,7 @@
                 padding: 0;
                 z-index: 10;
             }
-            
+
             .mobile-menu-button span {
                 width: 100%;
                 height: 3px;
@@ -216,21 +227,27 @@
                 position: relative;
                 transform-origin: 1px;
             }
-            
+
             .mobile-menu-button span:first-child.active {
                 transform: rotate(45deg);
                 top: 0px;
             }
-            
+
             .mobile-menu-button span:nth-child(2).active {
                 opacity: 0;
             }
-            
+
             .mobile-menu-button span:nth-child(3).active {
                 transform: rotate(-45deg);
                 top: -1px;
             }
-            
+
+            .bottom-row {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 1.5rem;
+            }
         }
     </style>
 </head>
@@ -245,17 +262,15 @@
                     <span class="text-white font-heading text-xl font-semibold hidden md:inline">STGM Estoque</span>
                 </a>
             </div>
-            
+
             <button class="mobile-menu-button focus:outline-none" aria-label="Menu">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
-            
+
             <nav class="header-nav md:flex items-center space-x-1">
-
                 <a href="./paginainicial.php" class="header-nav-link flex items-center">
-
                     <i class="fas fa-home mr-2"></i>
                     <span>Início</span>
                 </a>
@@ -290,8 +305,8 @@
         </div>
     </header>
 
-    <main class="container mx-auto px-4 py-8 md:py-12 flex-1">
-        <h1 class="text-primary text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center page-title tracking-tight font-heading">GERAR RELATÓRIOS</h1>
+    <main class="container mx-auto px-4 py-8 md:py-12 flex-1 flex flex-col items-center">
+        <h1 class="text-primary text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center page-title tracking-tight font-heading w-full">GERAR RELATÓRIOS</h1>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
             <!-- Relatório de Estoque -->
@@ -328,11 +343,16 @@
                 </svg>
                 <h2 class="text-xl font-bold text-primary mb-2">Estoque por Categoria</h2>
                 <p class="text-gray-600 text-center mb-4">Relatório por categoria de produtos</p>
-                <button class="bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold">
+                <button class="bg-secondary text-white py-2 px-4
+
+ rounded-lg hover:bg-opacity-90 transition-colors font-semibold">
                     Gerar Relatório
                 </button>
             </div>
+        </div>
 
+        <!-- Linha inferior com Relatório de Solicitações e Relatório Personalizado -->
+        <div class="bottom-row max-w-6xl mx-auto">
             <!-- Relatório de Solicitações -->
             <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in" style="animation-delay: 0.3s">
                 <div class="card-shine"></div>
@@ -371,7 +391,7 @@
                         EEEP STGM
                     </h3>
                     <p class="text-xs leading-relaxed">
-                        <i class="fas fa-map-marker-alt mr-1 text-xs"></i> 
+                        <i class="fas fa-map-marker-alt mr-1 text-xs"></i>
                         AV. Marta Maria Carvalho Nojoza, SN<br>
                         Maranguape - CE
                     </p>
@@ -402,22 +422,22 @@
                         Dev Team
                     </h3>
                     <div class="grid grid-cols-2 gap-2">
-                        <a href="https://www.instagram.com/dudu.limasx/" target="_blank" 
+                        <a href="https://www.instagram.com/dudu.limasx/" target="_blank"
                            class="text-xs flex items-center hover:text-secondary transition-colors">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Carlos E.
                         </a>
-                        <a href="https://www.instagram.com/millenafreires_/" target="_blank" 
+                        <a href="https://www.instagram.com/millenafreires_/" target="_blank"
                            class="text-xs flex items-center hover:text-secondary transition-colors">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Millena F.
                         </a>
-                        <a href="https://www.instagram.com/matheusz.mf/" target="_blank" 
+                        <a href="https://www.instagram.com/matheusz.mf/" target="_blank"
                            class="text-xs flex items-center hover:text-secondary transition-colors">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Matheus M.
                         </a>
-                        <a href="https://www.instagram.com/yanlucas10__/" target="_blank" 
+                        <a href="https://www.instagram.com/yanlucas10__/" target="_blank"
                            class="text-xs flex items-center hover:text-secondary transition-colors">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Ian Lucas
@@ -437,5 +457,3 @@
 </body>
 
 </html>
-
-
