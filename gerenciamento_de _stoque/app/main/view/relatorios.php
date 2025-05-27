@@ -35,12 +35,22 @@
                     },
                     keyframes: {
                         fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' }
+                            '0%': {
+                                opacity: '0'
+                            },
+                            '100%': {
+                                opacity: '1'
+                            }
                         },
                         slideUp: {
-                            '0%': { transform: 'translateY(20px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                            '0%': {
+                                transform: 'translateY(20px)',
+                                opacity: '0'
+                            },
+                            '100%': {
+                                transform: 'translateY(0)',
+                                opacity: '1'
+                            }
                         }
                     }
                 }
@@ -83,12 +93,6 @@
             will-change: transform;
         }
 
-        .card-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 90, 36, 0.2), 0 10px 10px -5px rgba(0, 90, 36, 0.1);
-            border-color: #FFA500;
-        }
-
         .card-item::before {
             content: '';
             position: absolute;
@@ -106,6 +110,12 @@
             opacity: 1;
         }
 
+        .card-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 90, 36, 0.2), 0 10px 10px -5px rgba(0, 90, 36, 0.1);
+            border-color: #FFA500;
+        }
+
         .card-shine {
             position: absolute;
             top: 0;
@@ -118,9 +128,31 @@
             z-index: 2;
         }
 
+        .card-item:hover .card-icon {
+            transform: scale(1.1);
+            color: #FFA500;
+        }
+
+        .card-item p {
+            z-index: 2;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .card-item:hover p {
+            color: #005A24;
+        }
+
+        .card-item a {
+            position: relative;
+            z-index: 3;
+            /* Garante que o link fique acima de outros elementos */
+        }
+
         .card-item:hover .card-shine {
             left: 150%;
         }
+
 
         .social-icon {
             transition: all 0.3s ease;
@@ -176,7 +208,6 @@
             justify-content: center;
             gap: 1.5rem;
             margin-top: 1.5rem;
-            max-w-6xl;
             margin-left: auto;
             margin-right: auto;
         }
@@ -310,6 +341,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
             <!-- Relatório de Estoque -->
+
             <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in">
                 <div class="card-shine"></div>
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-primary mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -317,9 +349,9 @@
                 </svg>
                 <h2 class="text-xl font-bold text-primary mb-2">Relatório de Estoque</h2>
                 <p class="text-gray-600 text-center mb-4">Gerar relatório completo do estoque atual</p>
-                <button class="bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold">
+                <a href="../control/controllerEstoqueAtual.php" class="bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold" target="_blank">
                     Gerar Relatório
-                </button>
+                </a>
             </div>
 
             <!-- Relatório de Estoque por Data -->
@@ -423,22 +455,22 @@
                     </h3>
                     <div class="grid grid-cols-2 gap-2">
                         <a href="https://www.instagram.com/dudu.limasx/" target="_blank"
-                           class="text-xs flex items-center hover:text-secondary transition-colors">
+                            class="text-xs flex items-center hover:text-secondary transition-colors">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Carlos E.
                         </a>
                         <a href="https://www.instagram.com/millenafreires_/" target="_blank"
-                           class="text-xs flex items-center hover:text-secondary transition-colors">
+                            class="text-xs flex items-center hover:text-secondary transition-colors">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Millena F.
                         </a>
                         <a href="https://www.instagram.com/matheusz.mf/" target="_blank"
-                           class="text-xs flex items-center hover:text-secondary transition-colors">
+                            class="text-xs flex items-center hover:text-secondary transition-colors">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Matheus M.
                         </a>
                         <a href="https://www.instagram.com/yanlucas10__/" target="_blank"
-                           class="text-xs flex items-center hover:text-secondary transition-colors">
+                            class="text-xs flex items-center hover:text-secondary transition-colors">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Ian Lucas
                         </a>
