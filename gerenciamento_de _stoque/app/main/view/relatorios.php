@@ -35,22 +35,12 @@
                     },
                     keyframes: {
                         fadeIn: {
-                            '0%': {
-                                opacity: '0'
-                            },
-                            '100%': {
-                                opacity: '1'
-                            }
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
                         },
                         slideUp: {
-                            '0%': {
-                                transform: 'translateY(20px)',
-                                opacity: '0'
-                            },
-                            '100%': {
-                                transform: 'translateY(0)',
-                                opacity: '1'
-                            }
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
                         }
                     }
                 }
@@ -143,16 +133,14 @@
             color: #005A24;
         }
 
-        .card-item a {
+        .card-item a, .card-item button {
             position: relative;
             z-index: 3;
-            /* Garante que o link fique acima de outros elementos */
         }
 
         .card-item:hover .card-shine {
             left: 150%;
         }
-
 
         .social-icon {
             transition: all 0.3s ease;
@@ -210,6 +198,101 @@
             margin-top: 1.5rem;
             margin-left: auto;
             margin-right: auto;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: #FFFFFF;
+            padding: 2rem;
+            border-radius: 1rem;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 15px -3px rgba(0, 90, 36, 0.2);
+            animation: slideUp 0.5s ease-out;
+            position: relative;
+        }
+
+        .modal-content h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            color: #005A24;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .modal-content .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-content label {
+            display: block;
+            font-size: 0.875rem;
+            color: #1A3C34;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-content input[type="date"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #E6F4EA;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            color: #1A3C34;
+            background-color: #F8FAF9;
+            transition: border-color 0.3s ease;
+        }
+
+        .modal-content input[type="date"]:focus {
+            border-color: #FFA500;
+            outline: none;
+        }
+
+        .modal-content .confirm-btn {
+            background-color: #FFA500;
+            color: #FFFFFF;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            width: 100%;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .modal-content .confirm-btn:hover {
+            background-color: #E59400;
+            transform: translateY(-2px);
+        }
+
+        .modal-content .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #1A3C34;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .modal-content .close-btn:hover {
+            color: #DC3545;
         }
 
         @media (max-width: 768px) {
@@ -341,7 +424,6 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
             <!-- Relatório de Estoque -->
-
             <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in">
                 <div class="card-shine"></div>
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-primary mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -362,7 +444,7 @@
                 </svg>
                 <h2 class="text-xl font-bold text-primary mb-2">Estoque por Data</h2>
                 <p class="text-gray-600 text-center mb-4">Relatório de estoque por período</p>
-                <button class="bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold">
+                <button id="openDateModal" class="bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold">
                     Gerar Relatório
                 </button>
             </div>
@@ -375,9 +457,7 @@
                 </svg>
                 <h2 class="text-xl font-bold text-primary mb-2">Estoque por Categoria</h2>
                 <p class="text-gray-600 text-center mb-4">Relatório por categoria de produtos</p>
-                <button class="bg-secondary text-white py-2 px-4
-
- rounded-lg hover:bg-opacity-90 transition-colors font-semibold">
+                <button class="bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold">
                     Gerar Relatório
                 </button>
             </div>
@@ -412,6 +492,25 @@
             </div>
         </div>
     </main>
+
+    <!-- Modal for Date Selection -->
+    <div id="dateModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeDateModal">×</button>
+            <h2 class="font-heading">Selecionar Período</h2>
+            <form id="dateForm" class="space-y-4">
+                <div class="form-group">
+                    <label for="data_inicio" class="font-semibold">Data de Início</label>
+                    <input type="date" id="data_inicio" name="data_inicio" class="border border-accent rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-secondary" required>
+                </div>
+                <div class="form-group">
+                    <label for="data_fim" class="font-semibold">Data de Fim</label>
+                    <input type="date" id="data_fim" name="data_fim" class="border border-accent rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-secondary" required>
+                </div>
+                <button type="submit" class="confirm-btn">Confirmar</button>
+            </form>
+        </div>
+    </div>
 
     <footer class="bg-gradient-to-r from-primary to-dark text-white py-6 mt-8">
         <div class="container mx-auto px-4">
@@ -486,6 +585,68 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const openDateModalBtn = document.getElementById('openDateModal');
+            const dateModal = document.getElementById('dateModal');
+            const closeDateModalBtn = document.getElementById('closeDateModal');
+            const dateForm = document.getElementById('dateForm');
+
+            // Open Modal
+            openDateModalBtn.addEventListener('click', function () {
+                dateModal.classList.add('show');
+                // Set default dates to last 30 days
+                const today = new Date();
+                const thirtyDaysAgo = new Date(today);
+                thirtyDaysAgo.setDate(today.getDate() - 30);
+                document.getElementById('data_inicio').value = thirtyDaysAgo.toISOString().split('T')[0];
+                document.getElementById('data_fim').value = today.toISOString().split('T')[0];
+            });
+
+            // Close Modal
+            closeDateModalBtn.addEventListener('click', function () {
+                dateModal.classList.remove('show');
+            });
+
+            // Close Modal when clicking outside
+            dateModal.addEventListener('click', function (e) {
+                if (e.target === dateModal) {
+                    dateModal.classList.remove('show');
+                }
+            });
+
+            // Form Submission
+            dateForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const data_inicio = document.getElementById('data_inicio').value;
+                const data_fim = document.getElementById('data_fim').value;
+
+                // Basic validation
+                if (!data_inicio || !data_fim) {
+                    alert('Por favor, preencha ambas as datas.');
+                    return;
+                }
+
+                if (new Date(data_inicio) > new Date(data_fim)) {
+                    alert('A data de início deve ser anterior à data de fim.');
+                    return;
+                }
+
+                window.location.href = `../control/controllerRelatorioData.php?data_inicio=${data_inicio}&data_fim=${data_fim}`;
+            });
+
+            // Mobile Menu Toggle
+            const mobileMenuButton = document.querySelector('.mobile-menu-button');
+            const headerNav = document.querySelector('.header-nav');
+            const menuSpans = document.querySelectorAll('.mobile-menu-button span');
+
+            mobileMenuButton.addEventListener('click', () => {
+                headerNav.classList.toggle('show');
+                menuSpans.forEach(span => span.classList.toggle('active'));
+            });
+        });
+    </script>
 </body>
 
 </html>
