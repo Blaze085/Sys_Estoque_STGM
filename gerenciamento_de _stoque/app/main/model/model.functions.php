@@ -1027,20 +1027,73 @@ class gerenciamento
 
         header("location:../view/estoque.php");
     }
-    public function solicitarproduto($valor_retirada, $barcode)
+
+    public function solicitarproduto($valor_retirada, $barcode, $retirante)
     {
-        // Conexão com o banco de dados
-        $pdo = new PDO("mysql:host=localhost;dbname=gerenciamento_estoque", "root", "");
+        try {
+            // Conexão com o banco de dados
+            $pdo = new PDO("mysql:host=localhost;dbname=gerenciamento_estoque;charset=utf8", "root", "");
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        // Atualiza a quantidade
-        $consulta = "UPDATE produtos SET quantidade = quantidade - :valor_retirada WHERE barcode = :barcode";
-        $query = $pdo->prepare($consulta);
-        $query->bindValue(":valor_retirada", $valor_retirada);
-        $query->bindValue(":barcode", $barcode);
-        $query->execute();
+            // Iniciar transação
+            $pdo->beginTransaction();
 
-        // Redireciona para a página de estoque
-        header("Location: ../view/estoque.php");
+            // Obter o ID do produto a partir do barcode
+            $consultaProduto = "SELECT id FROM produtos WHERE barcode = :barcode";
+            $queryProduto = $pdo->prepare($consultaProduto);
+            $queryProduto->bindValue(":barcode", $barcode);
+            $queryProduto->execute();
+            $produto = $queryProduto->fetch(PDO::FETCH_ASSOC);
+
+            if (!$produto) {
+                throw new Exception("Produto com barcode $barcode não encontrado.");
+            }
+            $fk_produtos_id = $produto['id'];
+
+            // Obter o ID do responsável a partir do nome
+            $consultaResponsavel = "SELECT id FROM responsaveis WHERE nome = :nome";
+            $queryResponsavel = $pdo->prepare($consultaResponsavel);
+            $queryResponsavel->bindValue(":nome", $retirante);
+            $queryResponsavel->execute();
+            $responsavel = $queryResponsavel->fetch(PDO::FETCH_ASSOC);
+
+            if (!$responsavel) {
+                throw new Exception("Responsável $retirante não encontrado.");
+            }
+            $fk_responsaveis_id = $responsavel['id']; // Correção aqui
+
+            // Atualiza a quantidade na tabela produtos
+            $consultaUpdate = "UPDATE produtos SET quantidade = quantidade - :valor_retirada WHERE barcode = :barcode";
+            $queryUpdate = $pdo->prepare($consultaUpdate);
+            $queryUpdate->bindValue(":valor_retirada", $valor_retirada, PDO::PARAM_INT);
+            $queryUpdate->bindValue(":barcode", $barcode);
+            $queryUpdate->execute();
+
+            // Insere o registro na tabela movimentacao
+            $consultaInsert = "INSERT INTO movimentacao (fk_produtos_id, fk_responsaveis_id, barcode_produto, datareg, quantidade_retirada)
+                           VALUES (:fk_produtos_id, :fk_responsaveis_id, :barcode_produto, NOW(), :quantidade_retirada)";
+            $queryInsert = $pdo->prepare($consultaInsert);
+            $queryInsert->bindValue(":fk_produtos_id", $fk_produtos_id, PDO::PARAM_INT);
+            $queryInsert->bindValue(":fk_responsaveis_id", $fk_responsaveis_id, PDO::PARAM_INT);
+            $queryInsert->bindValue(":barcode_produto", $barcode);
+            $queryInsert->bindValue(":quantidade_retirada", $valor_retirada, PDO::PARAM_INT);
+            $queryInsert->execute();
+
+            // Confirmar transação
+            $pdo->commit();
+
+            // Redireciona para a página de estoque
+            header("Location: ../view/estoque.php");
+            exit;
+        } catch (PDOException $e) {
+            // Reverter transação em caso de erro
+            $pdo->rollBack();
+            echo "Erro na conexão ou consulta: " . $e->getMessage();
+        } catch (Exception $e) {
+            // Reverter transação em caso de erro
+            $pdo->rollBack();
+            echo "Erro: " . $e->getMessage();
+        }
     }
 
     public function editarProduto($id, $nome, $barcode, $quantidade, $natureza)
