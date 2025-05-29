@@ -6,5 +6,7 @@ $produto = $_POST['produto'];
 $retirante = $_POST['retirante'];
 $valor_retirada = $_POST['quantidade'];
 
-print_r($produto,$retirante,$valor_retirada);}
+$x = new gerenciamento();
+$x-> solicitarproduto($valor_retirada,$produto);
+}
 ?>
