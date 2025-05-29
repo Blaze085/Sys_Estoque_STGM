@@ -207,7 +207,7 @@
             const email = document.getElementById('inputEmail3').value.trim();
             const password = document.getElementById('inputPassword3').value.trim();
             const validEmail = "estoque2025S@gmail.com";
-            const validPassword = "estoque2025.";
+            const validPassword = "Est8690@#$";
 
             if (!email || !password) {
                 errorMessage.textContent = 'Por favor, preencha todos os campos.';

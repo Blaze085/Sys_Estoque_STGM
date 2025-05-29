@@ -84,45 +84,34 @@
             filter: drop-shadow(0 4px 3px rgba(255, 165, 0, 0.3));
         }
 
-        .custom-select-container {
-            position: relative;
+        .custom-input, .custom-select {
             width: 100%;
-        }
-        
-        .custom-select {
-            display: none;
-            position: absolute;
-            width: 100%;
-            max-height: 200px;
-            overflow-y: auto;
+            padding: 0.75rem;
             border: 2px solid #005A24;
             border-radius: 0.5rem;
-            background-color: white;
-            z-index: 10;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            font-size: 1rem;
+            color: #1A3C34;
+            background-color: #F8FAF9;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            text-align: center;
         }
-        
-        .custom-select div {
-            padding: 10px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            transition: background-color 0.2s;
+
+        .custom-select {
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23005A24%22%3E%3Cpath%20d%3D%22M7%2010l5%205%205-5H7z%22%2F%3E%3C%2Fsvg%3E');
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1rem;
         }
-        
-        .custom-select div:hover {
-            background-color: rgba(0, 90, 36, 0.1);
+
+        .custom-input:focus, .custom-select:focus {
+            border-color: #FFA500;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.2);
         }
-        
-        .custom-select div img {
-            width: 30px;
-            height: 30px;
-            margin-right: 10px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-        
-        /* Estilos para o header melhorado */
+
         .header-nav-link {
             position: relative;
             transition: all 0.3s ease;
@@ -130,11 +119,11 @@
             padding: 0.5rem 1rem;
             border-radius: 0.5rem;
         }
-        
+
         .header-nav-link:hover {
             background-color: rgba(255, 255, 255, 0.1);
         }
-        
+
         .header-nav-link::after {
             content: '';
             position: absolute;
@@ -146,23 +135,23 @@
             transition: all 0.3s ease;
             transform: translateX(-50%);
         }
-        
+
         .header-nav-link:hover::after {
             width: 80%;
         }
-        
+
         .header-nav-link.active {
             background-color: rgba(255, 255, 255, 0.15);
         }
-        
+
         .header-nav-link.active::after {
             width: 80%;
         }
-        
+
         .mobile-menu-button {
             display: none;
         }
-        
+
         @media (max-width: 768px) {
             .header-nav {
                 display: none;
@@ -175,18 +164,18 @@
                 box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
                 z-index: 40;
             }
-            
+
             .header-nav.show {
                 display: flex;
                 flex-direction: column;
             }
-            
+
             .header-nav-link {
                 padding: 0.75rem 1rem;
                 text-align: center;
                 margin: 0.25rem 0;
             }
-            
+
             .mobile-menu-button {
                 display: flex;
                 flex-direction: column;
@@ -199,7 +188,7 @@
                 padding: 0;
                 z-index: 10;
             }
-            
+
             .mobile-menu-button span {
                 width: 100%;
                 height: 3px;
@@ -209,16 +198,16 @@
                 position: relative;
                 transform-origin: 1px;
             }
-            
+
             .mobile-menu-button span:first-child.active {
                 transform: rotate(45deg);
                 top: 0px;
             }
-            
+
             .mobile-menu-button span:nth-child(2).active {
                 opacity: 0;
             }
-            
+
             .mobile-menu-button span:nth-child(3).active {
                 transform: rotate(-45deg);
                 top: -1px;
@@ -228,7 +217,7 @@
 </head>
 
 <body class="min-h-screen flex flex-col font-sans bg-light">
-    <!-- Header Melhorado -->
+    <!-- Header -->
     <header class="sticky top-0 bg-gradient-to-r from-primary to-dark text-white py-4 shadow-lg z-50">
         <div class="container mx-auto px-4 flex justify-between items-center">
             <div class="flex items-center">
@@ -237,17 +226,15 @@
                     <span class="text-white font-heading text-xl font-semibold hidden md:inline">STGM Estoque</span>
                 </a>
             </div>
-            
+
             <button class="mobile-menu-button focus:outline-none" aria-label="Menu" id="menuButton">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
-            
+
             <nav class="header-nav md:flex items-center space-x-1" id="headerNav">
-
                 <a href="paginainicial.php" class="header-nav-link flex items-center">
-
                     <i class="fas fa-home mr-2"></i>
                     <span>Início</span>
                 </a>
@@ -286,63 +273,51 @@
         <div class="text-center mb-10">
             <h1 class="text-primary text-3xl md:text-4xl font-bold mb-8 md:mb-6 text-center page-title tracking-tight font-heading inline-block mx-auto">SOLICITAR PRODUTO</h1>
         </div>
-        
-      
-        
+
         <div class="bg-white rounded-xl shadow-lg p-8 max-w-2xl w-full border-2 border-primary mx-auto">
             <form action="../control/controllersolicitar.php" method="POST" class="space-y-6">
                 <div class="space-y-4">
                     <div>
-                        <input type="text" placeholder="BARCODE" id="barcode" name="barcode" required
-                            class="w-full px-4 py-3 border-2 border-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent text-center font-semibold"
-                            aria-label="Código de barras do produto">
+                        <select id="barcode" name="barcode" required class="custom-select" aria-label="Selecionar produto">
+                            <option value="" disabled selected>SELECIONAR PRODUTO</option>
+                            <?php
+                            try {
+                                $pdo = new PDO('mysql:host=localhost;dbname=gerenciamento_estoque;charset=utf8', 'root', '');
+                                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                                $stmt = $pdo->query('SELECT barcode, nome_produto FROM produtos ORDER BY nome_produto');
+                                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                    echo "<option value='" . htmlspecialchars($row['barcode']) . "'>" . htmlspecialchars($row['nome_produto']) . " (Barcode: " . htmlspecialchars($row['barcode']) . ")</option>";
+                                }
+                            } catch (PDOException $e) {
+                                echo "<option value='' disabled>Erro ao conectar ao banco: " . htmlspecialchars($e->getMessage()) . "</option>";
+                            }
+                            ?>
+                        </select>
                     </div>
-                    
+
                     <div>
                         <input type="number" placeholder="QUANTIDADE" min="1" id="quantidade" name="quantidade" required
-                            class="w-full px-4 py-3 border-2 border-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent text-center font-semibold"
-                            aria-label="Quantidade do produto">
+                            class="custom-input" aria-label="Quantidade do produto">
                     </div>
-                    
-                    <div class="custom-select-container">
-                        <input type="text" placeholder="RETIRANTE" id="retirante" readonly onclick="toggleSelect()"
-                            class="w-full px-4 py-3 border-2 border-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent text-center font-semibold cursor-pointer"
-                            aria-label="Selecionar retirante">
-                        
-                        <div class="custom-select rounded-lg mt-1" id="retiranteSelect">
-                            <div onclick="selectRetirante('Marcelo Cabral')" class="hover:bg-gray-100">
-                                <img src="../assets/imagens/user-icon.png" alt="Marcelo Cabral Icon">
-                                Marcelo Cabral
-                            </div>
-                            <div onclick="selectRetirante('Otávio Filho')" class="hover:bg-gray-100">
-                                <img src="../assets/imagens/user-icon.png" alt="Otávio Filho Icon">
-                                Otávio Filho
-                            </div>
-                            <div onclick="selectRetirante('Lindiane')" class="hover:bg-gray-100">
-                                <img src="../assets/imagens/user-icon.png" alt="Lindiane Icon">
-                                Lindiane
-                            </div>
-                            <div onclick="selectRetirante('Jarderson Soares')" class="hover:bg-gray-100">
-                                <img src="../assets/imagens/user-icon.png" alt="Jarderson Soares Icon">
-                                Jarderson Soares
-                            </div>
-                            <div onclick="selectRetirante('Silene')" class="hover:bg-gray-100">
-                                <img src="../assets/imagens/user-icon.png" alt="Silene Icon">
-                                Silene
-                            </div>
-                            <div onclick="selectRetirante('Rosemeire Russo')" class="hover:bg-gray-100">
-                                <img src="../assets/imagens/user-icon.png" alt="Rosemeire Russo Icon">
-                                Rosemeire Russo
-                            </div>
-                            <div onclick="selectRetirante('Jackson')" class="hover:bg-gray-100">
-                                <img src="../assets/imagens/user-icon.png" alt="Jackson Icon">
-                                Jackson
-                            </div>
-                        </div>
+
+                    <div>
+                        <select id="retirante" name="retirante" required class="custom-select" aria-label="Selecionar retirante">
+                            <option value="" disabled selected>SELECIONAR RETIRANTE</option>
+                            <?php
+                            try {
+                                $stmt = $pdo->query('SELECT nome FROM responsaveis ORDER BY nome');
+                                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                    echo "<option value='" . htmlspecialchars($row['nome']) . "'>" . htmlspecialchars($row['nome']) . "</option>";
+                                }
+                            } catch (PDOException $e) {
+                                echo "<option value='' disabled>Erro ao conectar ao banco: " . htmlspecialchars($e->getMessage()) . "</option>";
+                            }
+                            ?>
+                        </select>
                     </div>
                 </div>
-                
-                <button type="submit" name="btn"  class="w-full bg-secondary text-white font-bold py-3 px-4 rounded-lg hover:bg-opacity-90 transition-colors"
+
+                <button type="submit" name="btn" class="w-full bg-secondary text-white font-bold py-3 px-4 rounded-lg hover:bg-opacity-90 transition-colors"
                     aria-label="Confirmar solicitação">
                     CONFIRMAR
                 </button>
@@ -360,7 +335,7 @@
                         EEEP STGM
                     </h3>
                     <p class="text-xs leading-relaxed">
-                        <i class="fas fa-map-marker-alt mr-1 text-xs"></i> 
+                        <i class="fas fa-map-marker-alt mr-1 text-xs"></i>
                         AV. Marta Maria Carvalho Nojoza, SN<br>
                         Maranguape - CE
                     </p>
@@ -391,23 +366,23 @@
                         Dev Team
                     </h3>
                     <div class="grid grid-cols-2 gap-2">
-                        <a href="https://www.instagram.com/dudu.limasx/" target="_blank" 
-                           class="text-xs flex items-center hover:text-secondary transition-colors social-icon">
+                        <a href="https://www.instagram.com/dudu.limasx/" target="_blank"
+                            class="text-xs flex items-center hover:text-secondary transition-colors social-icon">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Carlos E.
                         </a>
-                        <a href="https://www.instagram.com/millenafreires_/" target="_blank" 
-                           class="text-xs flex items-center hover:text-secondary transition-colors social-icon">
+                        <a href="https://www.instagram.com/millenafreires_/" target="_blank"
+                            class="text-xs flex items-center hover:text-secondary transition-colors social-icon">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Millena F.
                         </a>
-                        <a href="https://www.instagram.com/matheusz.mf/" target="_blank" 
-                           class="text-xs flex items-center hover:text-secondary transition-colors social-icon">
+                        <a href="https://www.instagram.com/matheusz.mf/" target="_blank"
+                            class="text-xs flex items-center hover:text-secondary transition-colors social-icon">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Matheus M.
                         </a>
-                        <a href="https://www.instagram.com/yanlucas10__/" target="_blank" 
-                           class="text-xs flex items-center hover:text-secondary transition-colors social-icon">
+                        <a href="https://www.instagram.com/yanlucas10__/" target="_blank"
+                            class="text-xs flex items-center hover:text-secondary transition-colors social-icon">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Ian Lucas
                         </a>
@@ -425,75 +400,30 @@
     </footer>
 
     <script>
-        // Menu mobile toggle
         document.addEventListener('DOMContentLoaded', function() {
             const menuButton = document.getElementById('menuButton');
             const headerNav = document.getElementById('headerNav');
-            
+
             if (menuButton && headerNav) {
                 menuButton.addEventListener('click', function() {
                     headerNav.classList.toggle('show');
-                    
-                    // Animação para o botão do menu
                     const spans = menuButton.querySelectorAll('span');
                     spans.forEach(span => {
                         span.classList.toggle('active');
                     });
                 });
             }
-            
+
             // Adicionar suporte para dropdown no mobile
             const dropdownToggle = document.querySelector('.group > a');
             const dropdownMenu = document.querySelector('.group > div');
-            
+
             if (window.innerWidth <= 768) {
                 dropdownToggle.addEventListener('click', function(e) {
                     e.preventDefault();
                     dropdownMenu.classList.toggle('scale-0');
                     dropdownMenu.classList.toggle('scale-100');
                 });
-            }
-        
-            function toggleSelect() {
-                const select = document.getElementById('retiranteSelect');
-                select.style.display = select.style.display === 'block' ? 'none' : 'block';
-            }
-
-            function selectRetirante(name) {
-                const input = document.getElementById('retirante');
-                input.value = name;
-                toggleSelect();
-            }
-            
-            // Fechar o dropdown ao clicar fora
-            document.addEventListener('click', function(event) {
-                const select = document.getElementById('retiranteSelect');
-                const input = document.getElementById('retirante');
-                
-                if (event.target !== input && !select.contains(event.target)) {
-                    select.style.display = 'none';
-                }
-            });
-        });
-        
-        function toggleSelect() {
-            const select = document.getElementById('retiranteSelect');
-            select.style.display = select.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function selectRetirante(name) {
-            const input = document.getElementById('retirante');
-            input.value = name;
-            toggleSelect();
-        }
-        
-        // Fechar o dropdown ao clicar fora
-        document.addEventListener('click', function(event) {
-            const select = document.getElementById('retiranteSelect');
-            const input = document.getElementById('retirante');
-            
-            if (event.target !== input && !select.contains(event.target)) {
-                select.style.display = 'none';
             }
         });
     </script>
