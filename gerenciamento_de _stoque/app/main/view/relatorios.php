@@ -81,6 +81,8 @@
             position: relative;
             overflow: hidden;
             will-change: transform;
+            width: 100%;
+            max-width: 320px; /* Standard width for all cards */
         }
 
         .card-item::before {
@@ -422,7 +424,7 @@
     <main class="container mx-auto px-4 py-8 md:py-12 flex-1 flex flex-col items-center">
         <h1 class="text-primary text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center page-title tracking-tight font-heading w-full">GERAR RELATÓRIOS</h1>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 max-w-6xl mx-auto justify-items-center">
             <!-- Relatório de Estoque -->
             <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in">
                 <div class="card-shine"></div>
@@ -448,48 +450,6 @@
                     Gerar Relatório
                 </button>
             </div>
-
-            <!-- Relatório de Estoque por Categoria -->
-            <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in" style="animation-delay: 0.2s">
-                <div class="card-shine"></div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-primary mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                </svg>
-                <h2 class="text-xl font-bold text-primary mb-2">Estoque por Categoria</h2>
-                <p class="text-gray-600 text-center mb-4">Relatório por categoria de produtos</p>
-                <button class="bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold">
-                    Gerar Relatório
-                </button>
-            </div>
-        </div>
-
-        <!-- Linha inferior com Relatório de Solicitações e Relatório Personalizado -->
-        <div class="bottom-row max-w-6xl mx-auto">
-            <!-- Relatório de Solicitações -->
-            <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in" style="animation-delay: 0.3s">
-                <div class="card-shine"></div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-primary mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
-                <h2 class="text-xl font-bold text-primary mb-2">Relatório de Solicitações</h2>
-                <p class="text-gray-600 text-center mb-4">Histórico de solicitações realizadas</p>
-                <button class="bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold">
-                    Gerar Relatório
-                </button>
-            </div>
-
-            <!-- Relatório Personalizado -->
-            <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in" style="animation-delay: 0.4s">
-                <div class="card-shine"></div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-primary mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                </svg>
-                <h2 class="text-xl font-bold text-primary mb-2">Relatório Personalizado</h2>
-                <p class="text-gray-600 text-center mb-4">Combina estoque, data e categoria</p>
-                <button class="bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold">
-                    Criar Relatório
-                </button>
-            </div>
         </div>
     </main>
 
@@ -498,7 +458,7 @@
         <div class="modal-content">
             <button class="close-btn" id="closeDateModal">×</button>
             <h2 class="font-heading">Selecionar Período</h2>
-            <form id="dateForm" class="space-y-4">
+            <form id="dateForm" action="../control/controllerRelatorioData.php" method="GET" target="_blank" class="space-y-4">
                 <div class="form-group">
                     <label for="data_inicio" class="font-semibold">Data de Início</label>
                     <input type="date" id="data_inicio" name="data_inicio" class="border border-accent rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-secondary" required>
@@ -633,7 +593,8 @@
                     return;
                 }
 
-                window.location.href = `../control/controllerRelatorioData.php?data_inicio=${data_inicio}&data_fim=${data_fim}`;
+                // Submit the form to open in a new tab
+                dateForm.submit();
             });
 
             // Mobile Menu Toggle
