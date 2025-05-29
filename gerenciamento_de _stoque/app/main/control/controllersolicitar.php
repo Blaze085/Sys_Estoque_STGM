@@ -2,10 +2,9 @@
 require ("../model/model.functions.php");
 
 if(isset($_POST ['btn'])){
-$barcode = $_POST['barcode'];
+$produto = $_POST['produto'];
+$retirante = $_POST['retirante'];
 $valor_retirada = $_POST['quantidade'];
 
-$x = new gerenciamento();
-$x-> solicitarproduto($valor_retirada,$barcode);
-}
+print_r($produto,$retirante,$valor_retirada);}
 ?>

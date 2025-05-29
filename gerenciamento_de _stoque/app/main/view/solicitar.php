@@ -278,7 +278,7 @@
             <form action="../control/controllersolicitar.php" method="POST" class="space-y-6">
                 <div class="space-y-4">
                     <div>
-                        <select id="barcode" name="barcode" required class="custom-select" aria-label="Selecionar produto">
+                        <select id="produto" name="produto" required class="custom-select" aria-label="Selecionar produto">
                             <option value="" disabled selected>SELECIONAR PRODUTO</option>
                             <?php
                             try {
