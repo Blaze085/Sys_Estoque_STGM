@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+    header("Location: ../index.php");
+    exit;
+}
+// Restante do código de paginainicial.php...
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -303,9 +311,6 @@
                     <div class="text-4xl mb-4">👤</div>
                     <p class="font-bold text-primary text-xl mb-2 text-center">PAPEL HIGIÊNICO</p>
                     <p class="text-gray-600 text-center">CONTATO: (85) 9-9999-9999</p>
-                    <button class="mt-4 bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold" aria-label="Solicitar Papel Higiênico">
-                        Solicitar
-                    </button>
                 </div>
 
                 <!-- Card 2 -->
@@ -314,9 +319,6 @@
                     <div class="text-4xl mb-4">👤</div>
                     <p class="font-bold text-primary text-xl mb-2 text-center">PAPEL TOALHA</p>
                     <p class="text-gray-600 text-center">CONTATO: (85) 9-8888-8888</p>
-                    <button class="mt-4 bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold" aria-label="Solicitar Papel Toalha">
-                        Solicitar
-                    </button>
                 </div>
 
                 <!-- Card 3 -->
@@ -325,9 +327,6 @@
                     <div class="text-4xl mb-4">👤</div>
                     <p class="font-bold text-primary text-xl mb-2 text-center">SABÃO EM PÓ</p>
                     <p class="text-gray-600 text-center">CONTATO: (85) 9-7777-7777</p>
-                    <button class="mt-4 bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold" aria-label="Solicitar Sabão em Pó">
-                        Solicitar
-                    </button>
                 </div>
 
                 <!-- Card 4 -->
@@ -336,9 +335,6 @@
                     <div class="text-4xl mb-4">👤</div>
                     <p class="font-bold text-primary text-xl mb-2 text-center">DETERGENTE</p>
                     <p class="text-gray-600 text-center">CONTATO: (85) 9-6666-6666</p>
-                    <button class="mt-4 bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold" aria-label="Solicitar Detergente">
-                        Solicitar
-                    </button>
                 </div>
 
                 <!-- Card 5 -->
@@ -347,9 +343,6 @@
                     <div class="text-4xl mb-4">👤</div>
                     <p class="font-bold text-primary text-xl mb-2 text-center">ÁLCOOL EM GEL</p>
                     <p class="text-gray-600 text-center">CONTATO: (85) 9-5555-5555</p>
-                    <button class="mt-4 bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold" aria-label="Solicitar Álcool em Gel">
-                        Solicitar
-                    </button>
                 </div>
 
                 <!-- Card 6 -->
@@ -358,9 +351,6 @@
                     <div class="text-4xl mb-4">👤</div>
                     <p class="font-bold text-primary text-xl mb-2 text-center">ESPONJA</p>
                     <p class="text-gray-600 text-center">CONTATO: (85) 9-4444-4444</p>
-                    <button class="mt-4 bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold" aria-label="Solicitar Esponja">
-                        Solicitar
-                    </button>
                 </div>
             </div>
         </div>

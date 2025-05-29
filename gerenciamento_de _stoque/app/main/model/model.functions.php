@@ -83,8 +83,14 @@ class gerenciamento
 
     public function estoque()
     {
+        session_start();
+        if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+            header("Location: ../index.php");
+            exit;
+        }
+
         try {
-            $pdo = new PDO("mysql:host=localhost;dbname=gerenciamento_estoque", "root", "");
+            $pdo = new PDO("mysql:host=localhost;dbname=gerenciamento_estoque;charset=utf8", "root", "");
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $consulta = "SELECT * FROM produtos";
             $query = $pdo->prepare($consulta);
@@ -1201,9 +1207,7 @@ class relatorios
         // Data de geração
         $pdf->SetXY($pdf->GetPageWidth() - 200, 30);
         $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(160, 15, utf8_decode(date("d/m/Y")), 0, 1, 'R');
-        $pdf->SetXY($pdf->GetPageWidth() - 200, 45);
-        $pdf->Cell(160, 15, utf8_decode(date("H:i:s")), 0, 1, 'R');
+        $pdf->Cell(160, 15, utf8_decode("Gerado no dia: " . date("d/m/Y", time())), 0, 1, 'R');
 
         // ===== RESUMO DE DADOS EM CARDS =====
         $consultaResumo = "SELECT 
@@ -1571,7 +1575,7 @@ class relatorios
             // Data de geração e período
             $pdf->SetXY($pdf->GetPageWidth() - 200, 30);
             $pdf->SetFont('Arial', '', 10);
-            $pdf->Cell(160, 15, utf8_decode("Gerado em: " . date("d/m/Y H:i", time())), 0, 1, 'R');
+            $pdf->Cell(160, 15, utf8_decode("Gerado no dia: " . date("d/m/Y", time())), 0, 1, 'R');
             $pdf->SetXY($pdf->GetPageWidth() - 200, 45);
             $pdf->Cell(160, 15, utf8_decode("Período: " . date("d/m/Y", strtotime($data_inicio)) . " a " . date("d/m/Y", strtotime($data_fim))), 0, 1, 'R');
 

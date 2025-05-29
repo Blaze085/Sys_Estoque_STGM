@@ -1,6 +1,12 @@
+<?php
+session_start();
+if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
+    header("Location: ./view/paginainicial.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,14 +26,12 @@
             --bg-color: #F0F2F5;
             --shadow-color: rgba(0, 0, 0, 0.1);
         }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
         }
-
         body {
             display: flex;
             justify-content: center;
@@ -35,7 +39,6 @@
             min-height: 100vh;
             background-color: var(--bg-color);
         }
-
         .retangulo {
             position: relative;
             width: 900px;
@@ -47,7 +50,6 @@
             box-shadow: 0 20px 40px var(--shadow-color);
             overflow: hidden;
         }
-
         .img-gradient {
             width: 45%;
             height: 100%;
@@ -61,18 +63,15 @@
             padding: 2rem;
             text-align: center;
         }
-
         h1 {
             font-size: 2rem;
             font-weight: 700;
             margin-bottom: 1rem;
         }
-
         p {
             font-size: 1rem;
             line-height: 1.5;
         }
-
         .form-container {
             width: 55%;
             padding: 2rem;
@@ -80,7 +79,6 @@
             flex-direction: column;
             justify-content: center;
         }
-
         h2 {
             font-size: 2.5rem;
             font-weight: 900;
@@ -88,7 +86,6 @@
             margin-bottom: 1.5rem;
             text-align: center;
         }
-
         .form-control {
             background-color: #f5f5f5;
             border-radius: 5px;
@@ -96,12 +93,10 @@
             font-size: 1rem;
             width: 100%;
         }
-
         .input-group {
             position: relative;
             margin-bottom: 1.5rem;
         }
-
         .input-group i {
             position: absolute;
             right: 15px;
@@ -111,7 +106,6 @@
             font-size: 1.2rem;
             cursor: pointer;
         }
-
         .btn-primary {
             background: linear-gradient(135deg, #007A33, #FF8C00);
             color: #F0F2F5;
@@ -122,7 +116,6 @@
             border-radius: 5px;
             width: 100%;
         }
-
         .btn-primary:hover,
         .btn-primary:focus,
         .btn-primary:active,
@@ -131,38 +124,32 @@
             box-shadow: none;
             outline: none;
         }
-
         .error {
             color: red;
             font-size: 0.9rem;
             margin-top: 0.5rem;
             text-align: center;
         }
-
         @media (max-width: 768px) {
             .retangulo {
                 flex-direction: column;
                 width: 90%;
                 height: auto;
             }
-
             .img-gradient {
                 width: 100%;
                 padding: 1rem;
             }
-
             .form-container {
                 width: 100%;
                 padding: 1.5rem;
             }
-
             h2 {
                 font-size: 2rem;
             }
         }
     </style>
 </head>
-
 <body>
     <div class="retangulo">
         <div class="img-gradient">
@@ -206,8 +193,6 @@
 
             const email = document.getElementById('inputEmail3').value.trim();
             const password = document.getElementById('inputPassword3').value.trim();
-            const validEmail = "estoque2025S@gmail.com";
-            const validPassword = "Est8690@#$";
 
             if (!email || !password) {
                 errorMessage.textContent = 'Por favor, preencha todos os campos.';
@@ -223,17 +208,29 @@
             button.disabled = true;
             errorMessage.textContent = '';
 
-            setTimeout(() => {
-                if (email === validEmail && password === validPassword) {
+            fetch('login.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
                     window.location.href = './view/paginainicial.php';
                 } else {
-                    errorMessage.textContent = 'Email ou senha incorretos.';
+                    errorMessage.textContent = data.message || 'Email ou senha incorretos.';
                 }
                 button.textContent = 'Entrar';
                 button.disabled = false;
-            }, 1000);
+            })
+            .catch(error => {
+                errorMessage.textContent = 'Erro ao conectar com o servidor.';
+                button.textContent = 'Entrar';
+                button.disabled = false;
+            });
         });
-    </script>  
+    </script>
 </body>
-
 </html>
