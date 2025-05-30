@@ -386,7 +386,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                         <a href="../view/solicitar.php" class="block px-4 py-2 text-primary hover:bg-primary hover:text-white transition-colors">
                             <i class="fas fa-clipboard-check mr-2"></i>Solicitar Produto
                         </a>
-                        <a href="../view/solicitarnovproduto.php" class="ブロック px-4 py-2 text-primary hover:bg-primary hover:text-white transition-colors">
+                        <a href="solicitarnovproduto.php" class="block px-4 py-2 text-primary hover:bg-primary hover:text-white transition-colors">
                             <i class="fas fa-plus-square mr-2"></i>Solicitar Novo Produto
                         </a>
                     </div>
