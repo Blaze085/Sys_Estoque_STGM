@@ -194,7 +194,6 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
             font-weight: bold;
         }
 
-        /* Estilos para o header melhorado */
         .header-nav-link {
             position: relative;
             transition: all 0.3s ease;
@@ -297,7 +296,6 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
             }
         }
 
-        /* New styles for header and footer */
         .nav-link {
             position: relative;
             transition: color 0.3s ease;
@@ -315,9 +313,6 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
             transition: width 0.3s ease;
         }
 
- 
-
-      
         .back-to-top {
             position: fixed;
             bottom: 20px;
@@ -351,10 +346,14 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     <!-- Improved Header -->
     <header class="sticky top-0 bg-gradient-to-r from-primary to-dark text-white py-4 shadow-lg z-50">
         <div class="container mx-auto px-4 flex justify-between items-center">
-            <div class="flex items-center">
+            <div class="flex items-center space-x-4">
                 <a href="../index.php" class="flex items-center">
                     <img src="../assets/imagens/logostgm.png" alt="Logo S" class="h-12 mr-3 transition-transform hover:scale-105">
                     <span class="text-white font-heading text-xl font-semibold hidden md:inline">STGM Estoque</span>
+                </a>
+                <a href="../control/logout.php" class="header-nav-link flex items-center text-sm md:text-base">
+                    <i class="fas fa-sign-out-alt mr-2"></i>
+                    <span>Sair</span>
                 </a>
             </div>
             
@@ -387,7 +386,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                         <a href="../view/solicitar.php" class="block px-4 py-2 text-primary hover:bg-primary hover:text-white transition-colors">
                             <i class="fas fa-clipboard-check mr-2"></i>Solicitar Produto
                         </a>
-                        <a href="../view/solicitarnovproduto.php" class="block px-4 py-2 text-primary hover:bg-primary hover:text-white transition-colors">
+                        <a href="../view/solicitarnovproduto.php" class="ブロック px-4 py-2 text-primary hover:bg-primary hover:text-white transition-colors">
                             <i class="fas fa-plus-square mr-2"></i>Solicitar Novo Produto
                         </a>
                     </div>
@@ -400,7 +399,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
         </div>
     </header>
 
-    <!-- Main content (unchanged) -->
+    <!-- Main content -->
     <main class="container mx-auto px-4 py-8 md:py-12 flex-1 flex flex-col items-center justify-center">
         <h1 class="text-primary text-3xl md:text-4xl font-bold mb-12 md:mb-16 mt-6 md:mt-8 text-center page-title tracking-tight font-heading">GERENCIAMENTO DE ESTOQUE</h1>
         
@@ -410,7 +409,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                     <div class="card-shine"></div>
                     <div class="card-badge absolute top-0 right-0 bg-accent w-10 h-10 md:w-12 md:h-12 rounded-bl-xl md:rounded-bl-2xl rounded-tr-xl md:rounded-tr-2xl flex items-center justify-center">
                         <span class="text-primary text-xs font-bold">1</span>
-    </div>
+                    </div>
                     <i class="fas fa-boxes card-icon text-4xl md:text-5xl text-primary mb-4 md:mb-5"></i>
                     <p class="text-secondary font-bold text-center text-base md:text-lg leading-tight">ESTOQUE</p>
                 </div>
@@ -463,78 +462,78 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     </main>
 
     <footer class="bg-gradient-to-r from-primary to-dark text-white py-6 mt-8">
-    <div class="container mx-auto px-4">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Sobre a Escola -->
-            <div>
-                <h3 class="font-heading text-lg font-semibold mb-3 flex items-center">
-                    <i class="fas fa-school mr-2 text-sm"></i>
-                    EEEP STGM
-                </h3>
-                <p class="text-xs leading-relaxed">
-                    <i class="fas fa-map-marker-alt mr-1 text-xs"></i> 
-                    AV. Marta Maria Carvalho Nojoza, SN<br>
-                    Maranguape - CE
-                </p>
-    </div>
-
-            <!-- Contato -->
-        <div>
-                <h3 class="font-heading text-lg font-semibold mb-3 flex items-center">
-                    <i class="fas fa-address-book mr-2 text-sm"></i>
-                    Contato
-                </h3>
-                <div class="text-xs leading-relaxed space-y-1">
-                    <p class="flex items-start">
-                        <i class="fas fa-phone-alt mr-1 mt-0.5 text-xs"></i>
-                        (85) 3341-3990
-                    </p>
-                    <p class="flex items-start">
-                        <i class="fas fa-envelope mr-1 mt-0.5 text-xs"></i>
-                        eeepsantariamata@gmail.com
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Sobre a Escola -->
+                <div>
+                    <h3 class="font-heading text-lg font-semibold mb-3 flex items-center">
+                        <i class="fas fa-school mr-2 text-sm"></i>
+                        EEEP STGM
+                    </h3>
+                    <p class="text-xs leading-relaxed">
+                        <i class="fas fa-map-marker-alt mr-1 text-xs"></i> 
+                        AV. Marta Maria Carvalho Nojoza, SN<br>
+                        Maranguape - CE
                     </p>
                 </div>
-        </div>
 
-            <!-- Desenvolvedores em Grid -->
-        <div>
-                <h3 class="font-heading text-lg font-semibold mb-3 flex items-center">
-                    <i class="fas fa-code mr-2 text-sm"></i>
-                    Dev Team
-                </h3>
-                <div class="grid grid-cols-2 gap-2">
-                    <a href="https://www.instagram.com/dudu.limasx/" target="_blank" 
-                       class="text-xs flex items-center hover:text-secondary transition-colors">
-                        <i class="fab fa-instagram mr-1 text-xs"></i>
-                        Carlos E.
-                    </a>
-                    <a href="https://www.instagram.com/millenafreires_/" target="_blank" 
-                       class="text-xs flex items-center hover:text-secondary transition-colors">
-                        <i class="fab fa-instagram mr-1 text-xs"></i>
-                        Millena F.
-                    </a>
-                    <a href="https://www.instagram.com/matheusz.mf/" target="_blank" 
-                       class="text-xs flex items-center hover:text-secondary transition-colors">
-                        <i class="fab fa-instagram mr-1 text-xs"></i>
-                        Matheus M.
-                    </a>
-                    <a href="https://www.instagram.com/yanlucas10__/" target="_blank" 
-                       class="text-xs flex items-center hover:text-secondary transition-colors">
-                        <i class="fab fa-instagram mr-1 text-xs"></i>
-                    Ian Lucas
-            </a>
+                <!-- Contato -->
+                <div>
+                    <h3 class="font-heading text-lg font-semibold mb-3 flex items-center">
+                        <i class="fas fa-address-book mr-2 text-sm"></i>
+                        Contato
+                    </h3>
+                    <div class="text-xs leading-relaxed space-y-1">
+                        <p class="flex items-start">
+                            <i class="fas fa-phone-alt mr-1 mt-0.5 text-xs"></i>
+                            (85) 3341-3990
+                        </p>
+                        <p class="flex items-start">
+                            <i class="fas fa-envelope mr-1 mt-0.5 text-xs"></i>
+                            eeepsantariamata@gmail.com
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Desenvolvedores em Grid -->
+                <div>
+                    <h3 class="font-heading text-lg font-semibold mb-3 flex items-center">
+                        <i class="fas fa-code mr-2 text-sm"></i>
+                        Dev Team
+                    </h3>
+                    <div class="grid grid-cols-2 gap-2">
+                        <a href="https://www.instagram.com/dudu.limasx/" target="_blank" 
+                           class="text-xs flex items-center hover:text-secondary transition-colors">
+                            <i class="fab fa-instagram mr-1 text-xs"></i>
+                            Carlos E.
+                        </a>
+                        <a href="https://www.instagram.com/millenafreires_/" target="_blank" 
+                           class="text-xs flex items-center hover:text-secondary transition-colors">
+                            <i class="fab fa-instagram mr-1 text-xs"></i>
+                            Millena F.
+                        </a>
+                        <a href="https://www.instagram.com/matheusz.mf/" target="_blank" 
+                           class="text-xs flex items-center hover:text-secondary transition-colors">
+                            <i class="fab fa-instagram mr-1 text-xs"></i>
+                            Matheus M.
+                        </a>
+                        <a href="https://www.instagram.com/yanlucas10__/" target="_blank" 
+                           class="text-xs flex items-center hover:text-secondary transition-colors">
+                            <i class="fab fa-instagram mr-1 text-xs"></i>
+                            Ian Lucas
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Rodapé inferior compacto -->
-        <div class="border-t border-white/20 pt-4 mt-4 text-center">
-            <p class="text-xs">
-                © 2024 STGM v1.2.0 | Desenvolvido por alunos EEEP STGM
-            </p>
+            <!-- Rodapé inferior compacto -->
+            <div class="border-t border-white/20 pt-4 mt-4 text-center">
+                <p class="text-xs">
+                    © 2024 STGM v1.2.0 | Desenvolvido por alunos EEEP STGM
+                </p>
+            </div>
         </div>
-    </div>
-</footer>
+    </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
