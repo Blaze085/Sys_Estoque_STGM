@@ -400,7 +400,7 @@ $barcode = isset($_GET['barcode']) ? $_GET['barcode'] : '';
             <form action="../control/controllerAdicionarProduto.php?barcode=" method="POST" class="space-y-6">
                 <div class="space-y-4">
                     <div>
-                        <input type="text" placeholder="NOME DO PRODUTO" id="nome" name="nome" required
+                        <input type="text" placeholder="NOME DO PRODUTO" id="nome" name="nome" style="text-transform: uppercase;" oninput="this.value = this.value.toUpperCase();" required
                             class="w-full px-4 py-3 border-2 border-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent text-center font-semibold"
                             aria-label="Nome do produto">
                     </div>
