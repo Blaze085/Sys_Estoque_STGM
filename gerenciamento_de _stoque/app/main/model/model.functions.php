@@ -1037,6 +1037,11 @@ class gerenciamento
     public function solicitarproduto($valor_retirada, $barcode, $retirante)
     {
         try {
+            // Iniciar a sessão, caso ainda não esteja iniciada
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+
             // Conexão com o banco de dados
             $pdo = new PDO("mysql:host=localhost;dbname=gerenciamento_estoque;charset=utf8", "root", "");
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -1044,8 +1049,8 @@ class gerenciamento
             // Iniciar transação
             $pdo->beginTransaction();
 
-            // Obter o ID do produto a partir do barcode
-            $consultaProduto = "SELECT id FROM produtos WHERE barcode = :barcode";
+            // Obter o ID e a quantidade do produto a partir do barcode
+            $consultaProduto = "SELECT id, quantidade FROM produtos WHERE barcode = :barcode";
             $queryProduto = $pdo->prepare($consultaProduto);
             $queryProduto->bindValue(":barcode", $barcode);
             $queryProduto->execute();
@@ -1055,6 +1060,12 @@ class gerenciamento
                 throw new Exception("Produto com barcode $barcode não encontrado.");
             }
             $fk_produtos_id = $produto['id'];
+            $quantidade_atual = $produto['quantidade'];
+
+            // Verificar se a quantidade solicitada é válida
+            if ($valor_retirada > $quantidade_atual) {
+                throw new Exception("Quantidade solicitada ($valor_retirada) excede o estoque disponível ($quantidade_atual).");
+            }
 
             // Obter o ID do responsável a partir do nome
             $consultaResponsavel = "SELECT id FROM responsaveis WHERE nome = :nome";
@@ -1066,7 +1077,7 @@ class gerenciamento
             if (!$responsavel) {
                 throw new Exception("Responsável $retirante não encontrado.");
             }
-            $fk_responsaveis_id = $responsavel['id']; // Correção aqui
+            $fk_responsaveis_id = $responsavel['id'];
 
             // Atualiza a quantidade na tabela produtos
             $consultaUpdate = "UPDATE produtos SET quantidade = quantidade - :valor_retirada WHERE barcode = :barcode";
@@ -1077,7 +1088,7 @@ class gerenciamento
 
             // Insere o registro na tabela movimentacao
             $consultaInsert = "INSERT INTO movimentacao (fk_produtos_id, fk_responsaveis_id, barcode_produto, datareg, quantidade_retirada)
-                           VALUES (:fk_produtos_id, :fk_responsaveis_id, :barcode_produto, NOW(), :quantidade_retirada)";
+                       VALUES (:fk_produtos_id, :fk_responsaveis_id, :barcode_produto, NOW(), :quantidade_retirada)";
             $queryInsert = $pdo->prepare($consultaInsert);
             $queryInsert->bindValue(":fk_produtos_id", $fk_produtos_id, PDO::PARAM_INT);
             $queryInsert->bindValue(":fk_responsaveis_id", $fk_responsaveis_id, PDO::PARAM_INT);
@@ -1094,11 +1105,15 @@ class gerenciamento
         } catch (PDOException $e) {
             // Reverter transação em caso de erro
             $pdo->rollBack();
-            echo "Erro na conexão ou consulta: " . $e->getMessage();
+            $_SESSION['erro_solicitacao'] = "Erro na conexão ou consulta: " . $e->getMessage();
+            header("Location: ../view/solicitar.php");
+            exit;
         } catch (Exception $e) {
             // Reverter transação em caso de erro
             $pdo->rollBack();
-            echo "Erro: " . $e->getMessage();
+            $_SESSION['erro_solicitacao'] = $e->getMessage();
+            header("Location: ../view/solicitar.php");
+            exit;
         }
     }
 

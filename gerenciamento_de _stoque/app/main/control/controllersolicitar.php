@@ -1,4 +1,5 @@
 <?php
+session_start();
 require ("../model/model.functions.php");
 
 if (isset($_POST['btn'])) {
