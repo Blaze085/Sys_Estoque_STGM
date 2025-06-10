@@ -1885,7 +1885,7 @@ class relatorios
 
     public function relatoriocriticostoque()
     {
-        $pdo = new PDO("mysql:host=localhost;dbname=gerenciamento_estoque;charset=utf8", "root", "");
+        $pdo = new PDO("mysql:host=localhost;dbname=u750204740_gerenciamentodeestoque;charset=utf8", "root", "");
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $consulta = "SELECT * FROM produtos WHERE quantidade <= 5 ORDER BY natureza, nome_produto";
         $query = $pdo->prepare($consulta);
