@@ -4,7 +4,6 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     header("Location: ../index.php");
     exit;
 }
-// Restante do código de paginainicial.php...
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -363,7 +362,8 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
             .mobile-menu-button span:nth-child(3).active {
                 transform: rotate(-45deg);
-                top: -1px;
+                top: auto;
+                bottom: 0px;
             }
 
             .bottom-row {
@@ -432,11 +432,11 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     <main class="container mx-auto px-4 py-8 md:py-12 flex-1 flex flex-col items-center">
         <h1 class="text-primary text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center page-title tracking-tight font-heading w-full">GERAR RELATÓRIOS</h1>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 max-w-6xl mx-auto justify-items-center">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto justify-items-center">
             <!-- Relatório de Estoque -->
             <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in">
                 <div class="card-shine"></div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-primary mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-primary mb-4 card-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
                 <h2 class="text-xl font-bold text-primary mb-2">Relatório de Estoque</h2>
@@ -449,7 +449,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
             <!-- Relatório de Estoque por Data -->
             <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in" style="animation-delay: 0.1s">
                 <div class="card-shine"></div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-primary mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-primary mb-4 card-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
                 <h2 class="text-xl font-bold text-primary mb-2">Estoque por Data</h2>
@@ -457,6 +457,19 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                 <button id="openDateModal" class="bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold">
                     Gerar Relatório
                 </button>
+            </div>
+
+            <!-- Relatório de Estoque Crítico -->
+            <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in" style="animation-delay: 0.2s">
+                <div class="card-shine"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-primary mb-4 card-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h2 class="text-xl font-bold text-primary mb-2">Estoque Crítico</h2>
+                <p class="text-gray-600 text-center mb-4">Relatório de itens com estoque baixo igual ou abaixo de 5</p>
+                <a href="../control/controllerrelatoriocritico.php" class="bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold" target="_blank">
+                    Gerar Relatório
+                </a>
             </div>
         </div>
     </main>
