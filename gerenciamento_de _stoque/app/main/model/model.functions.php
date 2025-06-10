@@ -90,7 +90,7 @@ class gerenciamento
         }
 
         try {
-            $pdo = new PDO("mysql:host=localhost;dbname=gerenciamento_estoque;charset=utf8", "root", "");
+            $pdo = new PDO("mysql:host=localhost;dbname=u750204740_gerenciamentodeestoque;charset=utf8", "root", "");
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $consulta = "SELECT * FROM produtos";
             $query = $pdo->prepare($consulta);
@@ -993,7 +993,7 @@ class gerenciamento
 
     public function consultarestoque($barcode,)
     {
-        $pdo = new PDO("mysql:host=localhost;dbname=gerenciamento_estoque", "root", "");
+        $pdo = new PDO("mysql:host=localhost;dbname=u750204740_gerenciamentodeestoque", "root", "");
         $consulta = "SELECT quantidade FROM produtos WHERE barcode = :barcode";
         $query = $pdo->prepare($consulta);
         $query->bindValue(":barcode", $barcode);
@@ -1009,7 +1009,7 @@ class gerenciamento
 
     public function adcaoestoque($barcode, $quantidade)
     {
-        $pdo = new PDO("mysql:host=localhost;dbname=gerenciamento_estoque", "root", "");
+        $pdo = new PDO("mysql:host=localhost;dbname=u750204740_gerenciamentodeestoque", "root", "");
         $consulta = "UPDATE produtos SET quantidade = quantidade + :quantidade WHERE barcode = :barcode";
         $query = $pdo->prepare($consulta);
         $query->bindValue(":quantidade", $quantidade);
@@ -1022,7 +1022,7 @@ class gerenciamento
     public function adcproduto($barcode, $nome,  $quantidade, $natureza)
     {
 
-        $pdo = new PDO("mysql:host=localhost;dbname=gerenciamento_estoque", "root", "");
+        $pdo = new PDO("mysql:host=localhost;dbname=u750204740_gerenciamentodeestoque", "root", "");
         $consulta = "INSERT INTO produtos VALUES (null, :barcode, :nome, :quantidade, :natureza)";
         $query = $pdo->prepare($consulta);
         $query->bindValue(":nome", $nome);
@@ -1038,7 +1038,7 @@ class gerenciamento
     {
         try {
             // Conexão com o banco de dados
-            $pdo = new PDO("mysql:host=localhost;dbname=gerenciamento_estoque;charset=utf8", "root", "");
+            $pdo = new PDO("mysql:host=localhost;dbname=u750204740_gerenciamentodeestoque;charset=utf8", "root", "");
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             // Iniciar transação
@@ -1105,7 +1105,7 @@ class gerenciamento
     public function editarProduto($id, $nome, $barcode, $quantidade, $natureza)
     {
         try {
-            $pdo = new PDO("mysql:host=localhost;dbname=gerenciamento_estoque", "root", "");
+            $pdo = new PDO("mysql:host=localhost;dbname=u750204740_gerenciamentodeestoque", "root", "");
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $consulta = "UPDATE produtos SET barcode = :barcode, nome_produto = :nome, quantidade = :quantidade, natureza = :natureza WHERE id = :id";
             $query = $pdo->prepare($consulta);
@@ -1125,7 +1125,7 @@ class gerenciamento
     public function apagarProduto($id)
     {
         try {
-            $pdo = new PDO("mysql:host=localhost;dbname=gerenciamento_estoque", "root", "");
+            $pdo = new PDO("mysql:host=localhost;dbname=u750204740_gerenciamentodeestoque", "root", "");
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $consulta = "DELETE FROM produtos WHERE id = :id";
             $query = $pdo->prepare($consulta);
@@ -1141,7 +1141,7 @@ class gerenciamento
     public function buscarProdutoPorId($id)
     {
         try {
-            $pdo = new PDO("mysql:host=localhost;dbname=gerenciamento_estoque", "root", "");
+            $pdo = new PDO("mysql:host=localhost;dbname=u750204740_gerenciamentodeestoque", "root", "");
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $consulta = "SELECT * FROM produtos WHERE id = :id";
             $query = $pdo->prepare($consulta);
@@ -1159,7 +1159,7 @@ class relatorios
 {
     public function relatorioestoque()
     {
-        $pdo = new PDO("mysql:host=localhost;dbname=gerenciamento_estoque", "root", "");
+        $pdo = new PDO("mysql:host=localhost;dbname=u750204740_gerenciamentodeestoque", "root", "");
         $consulta = "SELECT * FROM produtos ORDER BY natureza, nome_produto";
         $query = $pdo->prepare($consulta);
         $query->execute();
@@ -1516,7 +1516,7 @@ class relatorios
     {
         try {
             // Conexão com o banco de dados
-            $pdo = new PDO("mysql:host=localhost;dbname=gerenciamento_estoque", "root", "");
+            $pdo = new PDO("mysql:host=localhost;dbname=u750204740_gerenciamentodeestoque", "root", "");
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             // Consulta com JOIN, incluindo quantidade_retirada

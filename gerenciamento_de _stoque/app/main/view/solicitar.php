@@ -290,7 +290,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                             <option value="" disabled selected>SELECIONAR PRODUTO</option>
                             <?php
                             try {
-                                $pdo = new PDO('mysql:host=localhost;dbname=gerenciamento_estoque;charset=utf8', 'root', '');
+                                $pdo = new PDO('mysql:host=localhost;dbname=u750204740_gerenciamentodeestoque;charset=utf8', 'root', '');
                                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                                 $stmt = $pdo->query('SELECT barcode, nome_produto FROM produtos ORDER BY nome_produto');
                                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {

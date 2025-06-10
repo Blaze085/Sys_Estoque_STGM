@@ -9,7 +9,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 $barcode = isset($_GET['barcode']) ? $_GET['barcode'] : '';
 
 // Conexão com o banco de dados
-$pdo = new PDO("mysql:host=localhost;dbname=gerenciamento_estoque", "root", "");
+$pdo = new PDO("mysql:host=localhost;dbname=u750204740_gerenciamentodeestoque", "root", "");
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 // Consulta SQL usando prepared statement
