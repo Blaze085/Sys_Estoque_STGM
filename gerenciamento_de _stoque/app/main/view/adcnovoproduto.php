@@ -1,14 +1,3 @@
-<?php
-
-session_start();
-if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
-    header("Location: ../index.php");
-    exit;
-}
-$barcode = isset($_GET['barcode']) ? $_GET['barcode'] : '';
-
-?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 
