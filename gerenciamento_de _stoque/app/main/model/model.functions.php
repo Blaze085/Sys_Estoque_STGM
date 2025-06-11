@@ -77,12 +77,6 @@ class gerenciamento
 
     public function estoque()
     {
-        session_start();
-        if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
-            header("Location: ../index.php");
-            exit;
-        }
-
         try {
             $pdo = new PDO("mysql:host=localhost;dbname=u750204740_gerenciamentodeestoque;charset=utf8", "root", "");
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
