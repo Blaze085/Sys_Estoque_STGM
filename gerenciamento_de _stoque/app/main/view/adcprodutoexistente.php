@@ -349,8 +349,8 @@ $resultado = $query->fetchAll(PDO::FETCH_ASSOC);
     <header class="sticky top-0 bg-gradient-to-r from-primary to-dark text-white py-4 shadow-lg z-50">
         <div class="container mx-auto px-4 flex justify-between items-center">
             <div class="flex items-center">
-                    <img src="../assets/imagens/logostgm.png" alt="Logo STGM" class="h-12 mr-3 transition-transform hover:scale-105">
-                    <span class="text-white font-heading text-xl font-semibold hidden md:inline">STGM Estoque</span>
+                <img src="../assets/imagens/logostgm.png" alt="Logo STGM" class="h-12 mr-3 transition-transform hover:scale-105">
+                <span class="text-white font-heading text-xl font-semibold hidden md:inline">STGM Estoque</span>
             </div>
 
             <button class="mobile-menu-button focus:outline-none" aria-label="Menu" id="menuButton">

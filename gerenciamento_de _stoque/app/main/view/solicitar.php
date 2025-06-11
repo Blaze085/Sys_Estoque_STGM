@@ -35,12 +35,22 @@
                     },
                     keyframes: {
                         fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' }
+                            '0%': {
+                                opacity: '0'
+                            },
+                            '100%': {
+                                opacity: '1'
+                            }
                         },
                         slideUp: {
-                            '0%': { transform: 'translateY(20px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                            '0%': {
+                                transform: 'translateY(20px)',
+                                opacity: '0'
+                            },
+                            '100%': {
+                                transform: 'translateY(0)',
+                                opacity: '1'
+                            }
                         }
                     }
                 }
@@ -84,7 +94,8 @@
             filter: drop-shadow(0 4px 3px rgba(255, 165, 0, 0.3));
         }
 
-        .custom-input, .custom-select {
+        .custom-input,
+        .custom-select {
             width: 100%;
             padding: 0.75rem;
             border: 2px solid #005A24;
@@ -118,7 +129,8 @@
             padding-left: 10px;
         }
 
-        .custom-input:focus, .custom-select:focus {
+        .custom-input:focus,
+        .custom-select:focus {
             border-color: #FFA500;
             outline: none;
             box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.2);
@@ -233,8 +245,8 @@
     <header class="sticky top-0 bg-gradient-to-r from-primary to-dark text-white py-4 shadow-lg z-50">
         <div class="container mx-auto px-4 flex justify-between items-center">
             <div class="flex items-center">
-                    <img src="../assets/imagens/logostgm.png" alt="Logo STGM" class="h-12 mr-3 transition-transform hover:scale-105">
-                    <span class="text-white font-heading text-xl font-semibold hidden md:inline">STGM Estoque</span>
+                <img src="../assets/imagens/logostgm.png" alt="Logo STGM" class="h-12 mr-3 transition-transform hover:scale-105">
+                <span class="text-white font-heading text-xl font-semibold hidden md:inline">STGM Estoque</span>
             </div>
 
             <button class="mobile-menu-button focus:outline-none" aria-label="Menu" id="menuButton">
@@ -439,4 +451,4 @@
     </script>
 </body>
 
-</html> 
+</html>

@@ -35,12 +35,22 @@
                     },
                     keyframes: {
                         fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' }
+                            '0%': {
+                                opacity: '0'
+                            },
+                            '100%': {
+                                opacity: '1'
+                            }
                         },
                         slideUp: {
-                            '0%': { transform: 'translateY(20px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                            '0%': {
+                                transform: 'translateY(20px)',
+                                opacity: '0'
+                            },
+                            '100%': {
+                                transform: 'translateY(0)',
+                                opacity: '1'
+                            }
                         }
                     }
                 }
@@ -135,7 +145,8 @@
             color: #005A24;
         }
 
-        .card-item a, .card-item button {
+        .card-item a,
+        .card-item button {
             position: relative;
             z-index: 3;
         }
@@ -373,8 +384,8 @@
     <header class="sticky top-0 bg-gradient-to-r from-primary to-dark text-white py-4 shadow-lg z-50">
         <div class="container mx-auto px-4 flex justify-between items-center">
             <div class="flex items-center">
-                    <img src="../assets/imagens/logostgm.png" alt="Logo S" class="h-12 mr-3 transition-transform hover:scale-105">
-                    <span class="text-white font-heading text-xl font-semibold hidden md:inline">STGM Estoque</span>
+                <img src="../assets/imagens/logostgm.png" alt="Logo S" class="h-12 mr-3 transition-transform hover:scale-105">
+                <span class="text-white font-heading text-xl font-semibold hidden md:inline">STGM Estoque</span>
             </div>
 
             <button class="mobile-menu-button focus:outline-none" aria-label="Menu">
@@ -608,7 +619,7 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const openDateModalBtn = document.getElementById('openDateModal');
             const dateModal = document.getElementById('dateModal');
             const closeDateModalBtn = document.getElementById('closeDateModal');
@@ -620,7 +631,7 @@
             const productForm = document.getElementById('productForm');
 
             // Open Date Modal
-            openDateModalBtn.addEventListener('click', function () {
+            openDateModalBtn.addEventListener('click', function() {
                 dateModal.classList.add('show');
                 const today = new Date();
                 const thirtyDaysAgo = new Date(today);
@@ -630,13 +641,13 @@
             });
 
             // Close Date Modal
-            closeDateModalBtn.addEventListener('click', function () {
+            closeDateModalBtn.addEventListener('click', function() {
                 dateModal.classList.remove('show');
                 dateForm.reset();
             });
 
             // Open Product Modal
-            openProductModalBtn.addEventListener('click', function () {
+            openProductModalBtn.addEventListener('click', function() {
                 productModal.classList.add('show');
                 const today = new Date();
                 const thirtyDaysAgo = new Date(today);
@@ -646,14 +657,14 @@
             });
 
             // Close Product Modal
-            closeProductModalBtn.addEventListener('click', function () {
+            closeProductModalBtn.addEventListener('click', function() {
                 productModal.classList.remove('show');
                 productForm.reset();
             });
 
             // Close Modals when clicking outside
             [dateModal, productModal].forEach(modal => {
-                modal.addEventListener('click', function (e) {
+                modal.addEventListener('click', function(e) {
                     if (e.target === modal) {
                         modal.classList.remove('show');
                         if (modal === dateModal) {
@@ -666,7 +677,7 @@
             });
 
             // Form Submission for Date
-            dateForm.addEventListener('submit', function (e) {
+            dateForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 const data_inicio = document.getElementById('data_inicio').value;
                 const data_fim = document.getElementById('data_fim').value;
@@ -685,7 +696,7 @@
             });
 
             // Form Submission for Product
-            productForm.addEventListener('submit', function (e) {
+            productForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 const produto = document.getElementById('produto').value;
                 const data_inicio = document.getElementById('data_inicio_product').value;

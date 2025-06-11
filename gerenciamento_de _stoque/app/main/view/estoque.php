@@ -1,7 +1,6 @@
 <?php
- if(isset($_GET['resultado'])){
-
-}else{
+if (isset($_GET['resultado'])) {
+} else {
     header('location:../control/controllerEstoque.php');
 }
 
@@ -44,12 +43,22 @@
                     },
                     keyframes: {
                         fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' }
+                            '0%': {
+                                opacity: '0'
+                            },
+                            '100%': {
+                                opacity: '1'
+                            }
                         },
                         slideUp: {
-                            '0%': { transform: 'translateY(20px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                            '0%': {
+                                transform: 'translateY(20px)',
+                                opacity: '0'
+                            },
+                            '100%': {
+                                transform: 'translateY(0)',
+                                opacity: '1'
+                            }
                         }
                     }
                 }
@@ -92,7 +101,7 @@
             transform: translateY(-3px);
             filter: drop-shadow(0 4px 3px rgba(255, 165, 0, 0.3));
         }
-        
+
         /* Estilos para o header melhorado */
         .header-nav-link {
             position: relative;
@@ -101,11 +110,11 @@
             padding: 0.5rem 1rem;
             border-radius: 0.5rem;
         }
-        
+
         .header-nav-link:hover {
             background-color: rgba(255, 255, 255, 0.1);
         }
-        
+
         .header-nav-link::after {
             content: '';
             position: absolute;
@@ -117,23 +126,23 @@
             transition: all 0.3s ease;
             transform: translateX(-50%);
         }
-        
+
         .header-nav-link:hover::after {
             width: 80%;
         }
-        
+
         .header-nav-link.active {
             background-color: rgba(255, 255, 255, 0.15);
         }
-        
+
         .header-nav-link.active::after {
             width: 80%;
         }
-        
+
         .mobile-menu-button {
             display: none;
         }
-        
+
         @media (max-width: 768px) {
             .header-nav {
                 display: none;
@@ -146,18 +155,18 @@
                 box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
                 z-index: 40;
             }
-            
+
             .header-nav.show {
                 display: flex;
                 flex-direction: column;
             }
-            
+
             .header-nav-link {
                 padding: 0.75rem 1rem;
                 text-align: center;
                 margin: 0.25rem 0;
             }
-            
+
             .mobile-menu-button {
                 display: flex;
                 flex-direction: column;
@@ -170,7 +179,7 @@
                 padding: 0;
                 z-index: 10;
             }
-            
+
             .mobile-menu-button span {
                 width: 100%;
                 height: 3px;
@@ -180,16 +189,16 @@
                 position: relative;
                 transform-origin: 1px;
             }
-            
+
             .mobile-menu-button span:first-child.active {
                 transform: rotate(45deg);
                 top: 0px;
             }
-            
+
             .mobile-menu-button span:nth-child(2).active {
                 opacity: 0;
             }
-            
+
             .mobile-menu-button span:nth-child(3).active {
                 transform: rotate(-45deg);
                 top: -1px;
@@ -208,13 +217,13 @@
                     <span class="text-white font-heading text-xl font-semibold hidden md:inline">STGM Estoque</span>
                 </a>
             </div>
-            
+
             <button class="mobile-menu-button focus:outline-none" aria-label="Menu" id="menuButton">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
-            
+
             <nav class="header-nav md:flex items-center space-x-1" id="headerNav">
                 <a href="paginainicial.php" class="header-nav-link flex items-center">
                     <i class="fas fa-home mr-2"></i>
@@ -256,7 +265,7 @@
 
         <div class="mb-6 flex flex-col md:flex-row justify-between items-center gap-4 animate-fade-in">
             <div class="flex-1">
-                <input type="text" id="pesquisar" placeholder="Pesquisar produto..." 
+                <input type="text" id="pesquisar" placeholder="Pesquisar produto..."
                     class="w-full px-4 py-3 border-2 border-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent">
             </div>
             <div class="flex gap-2">
@@ -293,12 +302,12 @@
                     </thead>
                     <tbody id="tabelaEstoque">
                         <?php
-                        if(isset($_GET['resultado'])) {
+                        if (isset($_GET['resultado'])) {
                             $resultado = json_decode($_GET['resultado'], true);
-                            if(is_array($resultado) && count($resultado) > 0) {
-                                foreach($resultado as $produto) {
+                            if (is_array($resultado) && count($resultado) > 0) {
+                                foreach ($resultado as $produto) {
                                     $quantidadeClass = $produto['quantidade'] <= 5 ? 'text-red-600 font-bold' : 'text-gray-700';
-                                    ?>
+                        ?>
                                     <tr class="border-b border-gray-200 hover:bg-gray-50">
                                         <td class="py-3 px-4"><?php echo htmlspecialchars($produto['barcode']); ?></td>
                                         <td class="py-3 px-4"><?php echo htmlspecialchars($produto['nome_produto']); ?></td>
@@ -317,7 +326,7 @@
                                             </button>
                                         </td>
                                     </tr>
-                                    <?php
+                        <?php
                                 }
                             } else {
                                 echo '<tr><td colspan="5" class="py-4 px-4 text-center text-gray-500">Nenhum produto encontrado</td></tr>';
@@ -367,7 +376,7 @@
                 </table>
             </div>
         </div>
-        
+
         <div class="mt-6 flex justify-center animate-fade-in" style="animation-delay: 0.2s">
             <button id="exportarBtn" class="bg-primary text-white font-bold py-3 px-6 rounded-lg hover:bg-opacity-90 transition-colors flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -388,7 +397,7 @@
                         EEEP STGM
                     </h3>
                     <p class="text-xs leading-relaxed">
-                        <i class="fas fa-map-marker-alt mr-1 text-xs"></i> 
+                        <i class="fas fa-map-marker-alt mr-1 text-xs"></i>
                         AV. Marta Maria Carvalho Nojoza, SN<br>
                         Maranguape - CE
                     </p>
@@ -419,23 +428,23 @@
                         Dev Team
                     </h3>
                     <div class="grid grid-cols-2 gap-2">
-                        <a href="https://www.instagram.com/dudu.limasx/" target="_blank" 
-                           class="text-xs flex items-center hover:text-secondary transition-colors">
+                        <a href="https://www.instagram.com/dudu.limasx/" target="_blank"
+                            class="text-xs flex items-center hover:text-secondary transition-colors">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Carlos E.
                         </a>
-                        <a href="https://www.instagram.com/millenafreires_/" target="_blank" 
-                           class="text-xs flex items-center hover:text-secondary transition-colors">
+                        <a href="https://www.instagram.com/millenafreires_/" target="_blank"
+                            class="text-xs flex items-center hover:text-secondary transition-colors">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Millena F.
                         </a>
-                        <a href="https://www.instagram.com/matheusz.mf/" target="_blank" 
-                           class="text-xs flex items-center hover:text-secondary transition-colors">
+                        <a href="https://www.instagram.com/matheusz.mf/" target="_blank"
+                            class="text-xs flex items-center hover:text-secondary transition-colors">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Matheus M.
                         </a>
-                        <a href="https://www.instagram.com/yanlucas10__/" target="_blank" 
-                           class="text-xs flex items-center hover:text-secondary transition-colors">
+                        <a href="https://www.instagram.com/yanlucas10__/" target="_blank"
+                            class="text-xs flex items-center hover:text-secondary transition-colors">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Ian Lucas
                         </a>
@@ -457,11 +466,11 @@
             // Menu mobile toggle
             const menuButton = document.getElementById('menuButton');
             const headerNav = document.getElementById('headerNav');
-            
+
             if (menuButton && headerNav) {
                 menuButton.addEventListener('click', function() {
                     headerNav.classList.toggle('show');
-                    
+
                     // Animação para o botão do menu
                     const spans = menuButton.querySelectorAll('span');
                     spans.forEach(span => {
@@ -469,11 +478,11 @@
                     });
                 });
             }
-            
+
             // Adicionar suporte para dropdown no mobile
             const dropdownToggle = document.querySelector('.group > a');
             const dropdownMenu = document.querySelector('.group > div');
-            
+
             if (window.innerWidth <= 768) {
                 dropdownToggle.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -481,18 +490,18 @@
                     dropdownMenu.classList.toggle('scale-100');
                 });
             }
-            
+
             // Código existente para filtrar produtos
             const pesquisarInput = document.getElementById('pesquisar');
             const filtroCategoria = document.getElementById('filtroCategoria');
             const filtrarBtn = document.getElementById('filtrarBtn');
             const tabelaEstoque = document.getElementById('tabelaEstoque');
-            
+
             if (filtrarBtn) {
                 filtrarBtn.addEventListener('click', function() {
                     const termo = pesquisarInput.value.toLowerCase();
                     const categoria = filtroCategoria.value.toLowerCase();
-                    
+
                     // Filtrar linhas da tabela
                     const linhas = tabelaEstoque.querySelectorAll('tr');
                     linhas.forEach(linha => {
@@ -500,16 +509,16 @@
                         if (colunas.length > 0) {
                             const nome = colunas[1].textContent.toLowerCase();
                             const cat = colunas[3].textContent.toLowerCase();
-                            
+
                             const matchTermo = nome.includes(termo);
                             const matchCategoria = categoria === '' || cat === categoria;
-                            
+
                             linha.style.display = matchTermo && matchCategoria ? '' : 'none';
                         }
                     });
                 });
             }
-            
+
             // Botão de exportar
             const exportarBtn = document.getElementById('exportarBtn');
             if (exportarBtn) {
