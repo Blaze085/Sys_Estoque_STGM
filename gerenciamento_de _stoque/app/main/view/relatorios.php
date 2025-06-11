@@ -89,7 +89,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
             overflow: hidden;
             will-change: transform;
             width: 100%;
-            max-width: 320px; /* Standard width for all cards */
+            max-width: 320px;
         }
 
         .card-item::before {
@@ -209,7 +209,6 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
             margin-right: auto;
         }
 
-        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -432,7 +431,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     <main class="container mx-auto px-4 py-8 md:py-12 flex-1 flex flex-col items-center">
         <h1 class="text-primary text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center page-title tracking-tight font-heading w-full">GERAR RELATÓRIOS</h1>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto justify-items-center">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-6xl mx-auto justify-items-center">
             <!-- Relatório de Estoque -->
             <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in">
                 <div class="card-shine"></div>
@@ -471,6 +470,19 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                     Gerar Relatório
                 </a>
             </div>
+
+            <!-- Relatório de Estoque por Produto -->
+            <div class="card-item bg-white border-2 border-primary rounded-xl shadow-lg p-6 flex flex-col items-center animate-fade-in" style="animation-delay: 0.3s">
+                <div class="card-shine"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-primary mb-4 card-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                </svg>
+                <h2 class="text-xl font-bold text-primary mb-2">Estoque por Produto</h2>
+                <p class="text-gray-600 text-center mb-4">Relatório detalhado por produto e data específica</p>
+                <button id="openProductModal" class="bg-secondary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors font-semibold">
+                    Gerar Relatório
+                </button>
+            </div>
         </div>
     </main>
 
@@ -487,6 +499,43 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                 <div class="form-group">
                     <label for="data_fim" class="font-semibold">Data de Fim</label>
                     <input type="date" id="data_fim" name="data_fim" class="border border-accent rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-secondary" required>
+                </div>
+                <button type="submit" class="confirm-btn">Confirmar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Product Selection -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeProductModal">×</button>
+            <h2 class="font-heading">Selecionar Produto</h2>
+            <form id="productForm" action="../control/controllerRelatorioProduto.php" method="GET" target="_blank" class="space-y-4">
+                <div class="form-group">
+                    <label for="data_inicio" class="font-semibold">Data de Início</label>
+                    <input type="date" id="data_inicio_product" name="data_inicio" class="border border-accent rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-secondary" required>
+                </div>
+                <div class="form-group">
+                    <label for="data_fim" class="font-semibold">Data de Fim</label>
+                    <input type="date" id="data_fim_product" name="data_fim" class="border border-accent rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-secondary" required>
+                </div>
+                <div class="form-group">
+                    <label for="produto" class="font-semibold">Produto</label>
+                    <select id="produto" name="produto" class="border border-accent rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-secondary" required>
+                        <option value="" disabled selected>SELECIONAR PRODUTO</option>
+                        <?php
+                        try {
+                            $pdo = new PDO('mysql:host=localhost;dbname=u750204740_gerenciamentodeestoque;charset=utf8', 'root', '');
+                            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                            $stmt = $pdo->query('SELECT id, nome_produto FROM produtos ORDER BY nome_produto');
+                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                echo "<option value='" . htmlspecialchars($row['id']) . "'>" . strtoupper(htmlspecialchars($row['nome_produto'])) . "</option>";
+                            }
+                        } catch (PDOException $e) {
+                            echo "<option value='' disabled>Erro ao carregar produtos: " . htmlspecialchars($e->getMessage()) . "</option>";
+                        }
+                        ?>
+                    </select>
                 </div>
                 <button type="submit" class="confirm-btn">Confirmar</button>
             </form>
@@ -574,10 +623,14 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
             const closeDateModalBtn = document.getElementById('closeDateModal');
             const dateForm = document.getElementById('dateForm');
 
-            // Open Modal
+            const openProductModalBtn = document.getElementById('openProductModal');
+            const productModal = document.getElementById('productModal');
+            const closeProductModalBtn = document.getElementById('closeProductModal');
+            const productForm = document.getElementById('productForm');
+
+            // Open Date Modal
             openDateModalBtn.addEventListener('click', function () {
                 dateModal.classList.add('show');
-                // Set default dates to last 30 days
                 const today = new Date();
                 const thirtyDaysAgo = new Date(today);
                 thirtyDaysAgo.setDate(today.getDate() - 30);
@@ -585,25 +638,48 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                 document.getElementById('data_fim').value = today.toISOString().split('T')[0];
             });
 
-            // Close Modal
+            // Close Date Modal
             closeDateModalBtn.addEventListener('click', function () {
                 dateModal.classList.remove('show');
+                dateForm.reset();
             });
 
-            // Close Modal when clicking outside
-            dateModal.addEventListener('click', function (e) {
-                if (e.target === dateModal) {
-                    dateModal.classList.remove('show');
-                }
+            // Open Product Modal
+            openProductModalBtn.addEventListener('click', function () {
+                productModal.classList.add('show');
+                const today = new Date();
+                const thirtyDaysAgo = new Date(today);
+                thirtyDaysAgo.setDate(today.getDate() - 30);
+                document.getElementById('data_inicio_product').value = thirtyDaysAgo.toISOString().split('T')[0];
+                document.getElementById('data_fim_product').value = today.toISOString().split('T')[0];
             });
 
-            // Form Submission
+            // Close Product Modal
+            closeProductModalBtn.addEventListener('click', function () {
+                productModal.classList.remove('show');
+                productForm.reset();
+            });
+
+            // Close Modals when clicking outside
+            [dateModal, productModal].forEach(modal => {
+                modal.addEventListener('click', function (e) {
+                    if (e.target === modal) {
+                        modal.classList.remove('show');
+                        if (modal === dateModal) {
+                            dateForm.reset();
+                        } else if (modal === productModal) {
+                            productForm.reset();
+                        }
+                    }
+                });
+            });
+
+            // Form Submission for Date
             dateForm.addEventListener('submit', function (e) {
                 e.preventDefault();
                 const data_inicio = document.getElementById('data_inicio').value;
                 const data_fim = document.getElementById('data_fim').value;
 
-                // Basic validation
                 if (!data_inicio || !data_fim) {
                     alert('Por favor, preencha ambas as datas.');
                     return;
@@ -614,8 +690,30 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                     return;
                 }
 
-                // Submit the form to open in a new tab
                 dateForm.submit();
+            });
+
+            // Form Submission for Product
+            productForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const produto = document.getElementById('produto').value;
+                const data_inicio = document.getElementById('data_inicio_product').value;
+                const data_fim = document.getElementById('data_fim_product').value;
+
+                if (!produto) {
+                    alert('Por favor, selecione um produto.');
+                    return;
+                }
+                if (!data_inicio || !data_fim) {
+                    alert('Por favor, preencha ambas as datas.');
+                    return;
+                }
+                if (new Date(data_inicio) > new Date(data_fim)) {
+                    alert('A data de início deve ser anterior à data de fim.');
+                    return;
+                }
+
+                productForm.submit();
             });
 
             // Mobile Menu Toggle

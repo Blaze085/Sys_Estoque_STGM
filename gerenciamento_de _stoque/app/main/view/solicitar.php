@@ -111,6 +111,18 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
             background-repeat: no-repeat;
             background-position: right 0.75rem center;
             background-size: 1rem;
+            text-align: center;
+            text-align-last: center;
+        }
+
+        .select-wrapper {
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .custom-select option {
+            text-align: left;
+            padding-left: 10px;
         }
 
         .custom-input:focus, .custom-select:focus {
@@ -281,29 +293,10 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
             <h1 class="text-primary text-3xl md:text-4xl font-bold mb-8 md:mb-6 text-center page-title tracking-tight font-heading inline-block mx-auto">SOLICITAR PRODUTO</h1>
         </div>
 
-        <!-- Modal para mensagens de erro -->
-        <?php if (isset($_SESSION['erro_solicitacao'])): ?>
-        <div id="errorModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full mx-4">
-                <div class="flex items-center mb-4">
-                    <i class="fas fa-exclamation-circle text-red-500 text-2xl mr-2"></i>
-                    <h2 class="text-xl font-bold text-red-700">Erro</h2>
-                </div>
-                <p class="text-red-700 mb-6"><?php echo htmlspecialchars($_SESSION['erro_solicitacao']); ?></p>
-                <div class="flex justify-end">
-                    <button id="closeModal" class="bg-secondary text-white font-bold py-2 px-4 rounded-lg hover:bg-opacity-90 transition-colors">
-                        Fechar
-                    </button>
-                </div>
-            </div>
-        </div>
-        <?php unset($_SESSION['erro_solicitacao']); ?>
-        <?php endif; ?>
-
         <div class="bg-white rounded-xl shadow-lg p-8 max-w-2xl w-full border-2 border-primary mx-auto">
             <form action="../control/controllersolicitar.php" method="POST" class="space-y-6">
                 <div class="space-y-4">
-                    <div>
+                    <div class="select-wrapper">
                         <select id="produto" name="produto" required class="custom-select" aria-label="Selecionar produto">
                             <option value="" disabled selected>SELECIONAR PRODUTO</option>
                             <?php
@@ -326,7 +319,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                             class="custom-input" aria-label="Quantidade do produto">
                     </div>
 
-                    <div>
+                    <div class="select-wrapper">
                         <select id="retirante" name="retirante" required class="custom-select" aria-label="Selecionar retirante">
                             <option value="" disabled selected>SELECIONAR RETIRANTE</option>
                             <?php
@@ -429,10 +422,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
         document.addEventListener('DOMContentLoaded', function() {
             const menuButton = document.getElementById('menuButton');
             const headerNav = document.getElementById('headerNav');
-            const errorModal = document.getElementById('errorModal');
-            const closeModalButton = document.getElementById('closeModal');
 
-            // Menu mobile
             if (menuButton && headerNav) {
                 menuButton.addEventListener('click', function() {
                     headerNav.classList.toggle('show');
@@ -443,7 +433,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                 });
             }
 
-            // Suporte para dropdown no mobile
+            // Adicionar suporte para dropdown no mobile
             const dropdownToggle = document.querySelector('.group > a');
             const dropdownMenu = document.querySelector('.group > div');
 
@@ -454,24 +444,8 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                     dropdownMenu.classList.toggle('scale-100');
                 });
             }
-
-            // Fechar o modal ao clicar no botão
-            if (closeModalButton && errorModal) {
-                closeModalButton.addEventListener('click', function() {
-                    errorModal.style.display = 'none';
-                });
-            }
-
-            // Fechar o modal ao clicar fora do conteúdo
-            if (errorModal) {
-                errorModal.addEventListener('click', function(e) {
-                    if (e.target === errorModal) {
-                        errorModal.style.display = 'none';
-                    }
-                });
-            }
         });
     </script>
 </body>
 
-</html>
+</html> 
