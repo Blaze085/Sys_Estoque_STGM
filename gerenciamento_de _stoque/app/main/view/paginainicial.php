@@ -35,12 +35,22 @@
                     },
                     keyframes: {
                         fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' }
+                            '0%': {
+                                opacity: '0'
+                            },
+                            '100%': {
+                                opacity: '1'
+                            }
                         },
                         slideUp: {
-                            '0%': { transform: 'translateY(20px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                            '0%': {
+                                transform: 'translateY(20px)',
+                                opacity: '0'
+                            },
+                            '100%': {
+                                transform: 'translateY(0)',
+                                opacity: '1'
+                            }
                         }
                     }
                 }
@@ -114,9 +124,17 @@
         }
 
         @keyframes pulse {
-            0% { transform: translateY(-50%) translateX(-50%) scale(1); }
-            50% { transform: translateY(-50%) translateX(-50%) scale(1.05); }
-            100% { transform: translateY(-50%) translateX(-50%) scale(1); }
+            0% {
+                transform: translateY(-50%) translateX(-50%) scale(1);
+            }
+
+            50% {
+                transform: translateY(-50%) translateX(-50%) scale(1.05);
+            }
+
+            100% {
+                transform: translateY(-50%) translateX(-50%) scale(1);
+            }
         }
 
         .social-icon {
@@ -193,11 +211,11 @@
             padding: 0.5rem 1rem;
             border-radius: 0.5rem;
         }
-        
+
         .header-nav-link:hover {
             background-color: rgba(255, 255, 255, 0.1);
         }
-        
+
         .header-nav-link::after {
             content: '';
             position: absolute;
@@ -209,23 +227,23 @@
             transition: all 0.3s ease;
             transform: translateX(-50%);
         }
-        
+
         .header-nav-link:hover::after {
             width: 80%;
         }
-        
+
         .header-nav-link.active {
             background-color: rgba(255, 255, 255, 0.15);
         }
-        
+
         .header-nav-link.active::after {
             width: 80%;
         }
-        
+
         .mobile-menu-button {
             display: none;
         }
-        
+
         @media (max-width: 768px) {
             .header-nav {
                 display: none;
@@ -238,18 +256,18 @@
                 box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
                 z-index: 40;
             }
-            
+
             .header-nav.show {
                 display: flex;
                 flex-direction: column;
             }
-            
+
             .header-nav-link {
                 padding: 0.75rem 1rem;
                 text-align: center;
                 margin: 0.25rem 0;
             }
-            
+
             .mobile-menu-button {
                 display: flex;
                 flex-direction: column;
@@ -262,7 +280,7 @@
                 padding: 0;
                 z-index: 10;
             }
-            
+
             .mobile-menu-button span {
                 width: 100%;
                 height: 3px;
@@ -272,16 +290,16 @@
                 position: relative;
                 transform-origin: 1px;
             }
-            
+
             .mobile-menu-button span:first-child.active {
                 transform: rotate(45deg);
                 top: 0px;
             }
-            
+
             .mobile-menu-button span:nth-child(2).active {
                 opacity: 0;
             }
-            
+
             .mobile-menu-button span:nth-child(3).active {
                 transform: rotate(-45deg);
                 top: -1px;
@@ -338,23 +356,21 @@
     <!-- Improved Header -->
     <header class="sticky top-0 bg-gradient-to-r from-primary to-dark text-white py-4 shadow-lg z-50">
         <div class="container mx-auto px-4 flex justify-between items-center">
-            <div class="flex items-center space-x-4">
-                <a href="../index.php" class="flex items-center">
-                    <img src="../assets/imagens/logostgm.png" alt="Logo S" class="h-12 mr-3 transition-transform hover:scale-105">
-                    <span class="text-white font-heading text-xl font-semibold hidden md:inline">STGM Estoque</span>
-                </a>
-                <a href="../control/logout.php" class="header-nav-link flex items-center text-sm md:text-base">
+             <div class="flex items-center">
+                <img src="../assets/imagens/logostgm.png" alt="Logo S" class="h-12 mr-3 transition-transform hover:scale-105">
+                <span class="text-white font-heading text-xl font-semibold hidden md:inline">STGM Estoque</span>
+                <a href="https://salaberga.com/salaberga/portalsalaberga/app/main/views/autenticacao/login.php" class="header-nav-link flex items-center text-sm md:text-base">
                     <i class="fas fa-sign-out-alt mr-2"></i>
                     <span>Sair</span>
                 </a>
             </div>
-            
+
             <button class="mobile-menu-button focus:outline-none" aria-label="Menu" id="menuButton">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
-            
+
             <nav class="header-nav md:flex items-center space-x-1" id="headerNav">
                 <a href="paginainicial.php" class="header-nav-link active flex items-center">
                     <i class="fas fa-home mr-2"></i>
@@ -394,7 +410,7 @@
     <!-- Main content -->
     <main class="container mx-auto px-4 py-8 md:py-12 flex-1 flex flex-col items-center justify-center">
         <h1 class="text-primary text-3xl md:text-4xl font-bold mb-12 md:mb-16 mt-6 md:mt-8 text-center page-title tracking-tight font-heading">GERENCIAMENTO DE ESTOQUE</h1>
-        
+
         <div class="w-full max-w-7xl grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 px-2">
             <a href="../view/estoque.php" class="group animate-fade-in">
                 <div class="card-item bg-white border-2 border-primary rounded-xl md:rounded-2xl shadow-card w-full h-48 md:h-56 flex flex-col items-center justify-center p-4 md:p-6 relative">
@@ -406,8 +422,8 @@
                     <p class="text-secondary font-bold text-center text-base md:text-lg leading-tight">ESTOQUE</p>
                 </div>
             </a>
-            
-            <a href="../view/adicionarproduto.php"  class="group animate-fade-in" style="animation-delay: 0.1s">
+
+            <a href="../view/adicionarproduto.php" class="group animate-fade-in" style="animation-delay: 0.1s">
                 <div class="card-item bg-white border-2 border-primary rounded-xl md:rounded-2xl shadow-card w-full h-48 md:h-56 flex flex-col items-center justify-center p-4 md:p-6 relative">
                     <div class="card-shine"></div>
                     <div class="card-badge absolute top-0 right-0 bg-accent w-10 h-10 md:w-12 md:h-12 rounded-bl-xl md:rounded-bl-2xl rounded-tr-xl md:rounded-tr-2xl flex items-center justify-center">
@@ -417,8 +433,8 @@
                     <p class="text-secondary font-bold text-center text-base md:text-lg leading-tight">ADICIONAR</p>
                 </div>
             </a>
-            
-            <a href="../view/solicitar.php"  class="group animate-fade-in" style="animation-delay: 0.2s">
+
+            <a href="../view/solicitar.php" class="group animate-fade-in" style="animation-delay: 0.2s">
                 <div class="card-item bg-white border-2 border-primary rounded-xl md:rounded-2xl shadow-card w-full h-48 md:h-56 flex flex-col items-center justify-center p-4 md:p-6 relative">
                     <div class="card-shine"></div>
                     <div class="card-badge absolute top-0 right-0 bg-accent w-10 h-10 md:w-12 md:h-12 rounded-bl-xl md:rounded-bl-2xl rounded-tr-xl md:rounded-tr-2xl flex items-center justify-center">
@@ -428,8 +444,8 @@
                     <p class="text-secondary font-bold text-center text-base md:text-lg leading-tight">SOLICITAR</p>
                 </div>
             </a>
-            
-            <a href="../view/solicitarnovproduto.php"  class="group animate-fade-in" style="animation-delay: 0.3s">
+
+            <a href="../view/solicitarnovproduto.php" class="group animate-fade-in" style="animation-delay: 0.3s">
                 <div class="card-item bg-white border-2 border-primary rounded-xl md:rounded-2xl shadow-card w-full h-48 md:h-56 flex flex-col items-center justify-center p-4 md:p-6 relative">
                     <div class="card-shine"></div>
                     <div class="card-badge absolute top-0 right-0 bg-accent w-10 h-10 md:w-12 md:h-12 rounded-bl-xl md:rounded-bl-2xl rounded-tr-xl md:rounded-tr-2xl flex items-center justify-center">
@@ -439,8 +455,8 @@
                     <p class="text-secondary font-bold text-center text-base md:text-lg leading-tight">SUPRIMENTOS</p>
                 </div>
             </a>
-            
-            <a href="../view/relatorios.php"  class="group animate-fade-in" style="animation-delay: 0.4s" target="_blank">
+
+            <a href="../view/relatorios.php" class="group animate-fade-in" style="animation-delay: 0.4s" target="_blank">
                 <div class="card-item bg-white border-2 border-primary rounded-xl md:rounded-2xl shadow-card w-full h-48 md:h-56 flex flex-col items-center justify-center p-4 md:p-6 relative">
                     <div class="card-shine"></div>
                     <div class="card-badge absolute top-0 right-0 bg-accent w-10 h-10 md:w-12 md:h-12 rounded-bl-xl md:rounded-bl-2xl rounded-tr-xl md:rounded-tr-2xl flex items-center justify-center">
@@ -463,7 +479,7 @@
                         EEEP STGM
                     </h3>
                     <p class="text-xs leading-relaxed">
-                        <i class="fas fa-map-marker-alt mr-1 text-xs"></i> 
+                        <i class="fas fa-map-marker-alt mr-1 text-xs"></i>
                         AV. Marta Maria Carvalho Nojoza, SN<br>
                         Maranguape - CE
                     </p>
@@ -494,23 +510,23 @@
                         Dev Team
                     </h3>
                     <div class="grid grid-cols-2 gap-2">
-                        <a href="https://www.instagram.com/dudu.limasx/" target="_blank" 
-                           class="text-xs flex items-center hover:text-secondary transition-colors">
+                        <a href="https://www.instagram.com/dudu.limasx/" target="_blank"
+                            class="text-xs flex items-center hover:text-secondary transition-colors">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Carlos E.
                         </a>
-                        <a href="https://www.instagram.com/millenafreires_/" target="_blank" 
-                           class="text-xs flex items-center hover:text-secondary transition-colors">
+                        <a href="https://www.instagram.com/millenafreires_/" target="_blank"
+                            class="text-xs flex items-center hover:text-secondary transition-colors">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Millena F.
                         </a>
-                        <a href="https://www.instagram.com/matheusz.mf/" target="_blank" 
-                           class="text-xs flex items-center hover:text-secondary transition-colors">
+                        <a href="https://www.instagram.com/matheusz.mf/" target="_blank"
+                            class="text-xs flex items-center hover:text-secondary transition-colors">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Matheus M.
                         </a>
-                        <a href="https://www.instagram.com/yanlucas10__/" target="_blank" 
-                           class="text-xs flex items-center hover:text-secondary transition-colors">
+                        <a href="https://www.instagram.com/yanlucas10__/" target="_blank"
+                            class="text-xs flex items-center hover:text-secondary transition-colors">
                             <i class="fab fa-instagram mr-1 text-xs"></i>
                             Ian Lucas
                         </a>
@@ -532,11 +548,11 @@
             // Menu mobile toggle
             const menuButton = document.getElementById('menuButton');
             const headerNav = document.getElementById('headerNav');
-            
+
             if (menuButton && headerNav) {
                 menuButton.addEventListener('click', function() {
                     headerNav.classList.toggle('show');
-                    
+
                     // Animação para o botão do menu
                     const spans = menuButton.querySelectorAll('span');
                     spans.forEach(span => {
@@ -544,11 +560,11 @@
                     });
                 });
             }
-            
+
             // Adicionar suporte para dropdown no mobile
             const dropdownToggle = document.querySelector('.group > a');
             const dropdownMenu = document.querySelector('.group > div');
-            
+
             if (window.innerWidth <= 768 && dropdownToggle && dropdownMenu) {
                 dropdownToggle.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -560,7 +576,7 @@
             // Hamburger menu toggle
             const hamburger = document.querySelector('.hamburger');
             const navLinks = document.querySelector('.nav-links');
-            
+
             if (hamburger && navLinks) {
                 hamburger.addEventListener('click', () => {
                     navLinks.classList.toggle('active');
@@ -588,7 +604,7 @@
                     card.classList.remove('translate-y-4', 'opacity-0');
                 }, index * 100);
             });
-            
+
             // Lazy loading for images
             if ('loading' in HTMLImageElement.prototype) {
                 const images = document.querySelectorAll('img[loading="lazy"]');
@@ -596,14 +612,16 @@
                     img.loading = 'lazy';
                 });
             }
-            
+
             // Preload linked pages
             const links = document.querySelectorAll('a[target="_blank"]');
             links.forEach(link => {
                 link.addEventListener('mouseover', () => {
                     const href = link.getAttribute('href');
                     if (href) {
-                        fetch(href, { mode: 'no-cors' })
+                        fetch(href, {
+                                mode: 'no-cors'
+                            })
                             .catch(() => {});
                     }
                 });
