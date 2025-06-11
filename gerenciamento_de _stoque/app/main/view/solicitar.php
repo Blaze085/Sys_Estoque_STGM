@@ -314,7 +314,7 @@
 
                     <div class="select-wrapper">
                         <select id="retirante" name="retirante" required class="custom-select" aria-label="Selecionar retirante">
-                            <option value="" disabled selected>SELECIONAR RETIRANTE</option>
+                            <option value="" disabled selected>SELECIONAR RESPONSÁVEL</option>
                             <?php
                             try {
                                 $stmt = $pdo->query('SELECT nome FROM responsaveis ORDER BY nome');
